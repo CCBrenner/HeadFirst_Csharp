@@ -9,17 +9,27 @@ namespace PaintballGun
         private int balls = 0;
         private int ballsLoaded = 0;
 
-        public int GetBalls() { return balls; }
-        public void SetBalls(int numberOfBalls)
+        // Using a Property here; can be used to get and set the private field; PascalCase
+        // for properties instead of camelCase which is used for fields
+        public int Balls
         {
-            if (numberOfBalls > 0)
+            get { return balls; }
+            set
             {
-                balls = numberOfBalls;
+                if (value > 0)
+                {
+                    balls = value;
+                }
+                Reload();
             }
-            Reload();
         }
 
-        public int GetBallsLoaded() {  return ballsLoaded; }
+        // Uses private *backing field* 'ballsLoaded'
+        public int BallsLoaded
+        {
+            get { return ballsLoaded; }
+            set { ballsLoaded = value; }
+        }
 
         public bool IsEmpty() { return ballsLoaded == 0; }
 
@@ -46,12 +56,15 @@ namespace PaintballGun
 
             while (true)
             {
-                Console.WriteLine($"{gun.GetBalls()} balls, {gun.GetBallsLoaded()} loaded.");
+                // gun.Balls property is used here as a 'get' for the balls field
+                Console.WriteLine($"{gun.Balls} balls, {gun.BallsLoaded} loaded.");
                 if (gun.IsEmpty()) Console.WriteLine("Space to shoot, r to reload, + to add ammo, q to quit.");
                 char key = Console.ReadKey(true).KeyChar;
                 if (key == ' ') gun.Shoot();
                 else if (key == 'r') gun.Reload();
-                else if (key == '+') gun.SetBalls(gun.GetBalls() + PaintballGun.MAGAZINE_SIZE);
+                // This assignment uses the 'set' method of the property 'Balls' to
+                // update the private field via the (public) Property
+                else if (key == '+') gun.Balls += PaintballGun.MAGAZINE_SIZE;
                 else if (key == 'q') return;
             }
         }
