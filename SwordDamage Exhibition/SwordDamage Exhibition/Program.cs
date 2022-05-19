@@ -1,58 +1,46 @@
 ﻿using System;
 
-class SwordDamage
+namespace SwordDamage
 {
-    public const int BASE_DAMAGE = 3;
-    public const int FLAME_DAMAGE = 2;
-
-    public int Roll;
-    public decimal MagicMultiplier = 1M;
-    // The book has this variable, but what is it for? It's always 0 and where
-    // it would potentially be used, FLAME_DAMAGE is used instead.
-    public int FlamingDamage = 0;
-    public int Damage;
-
-    public void CalculateDamage()
+    public class SwordDamage
     {
-        Damage = BASE_DAMAGE + (int)(Roll * MagicMultiplier) + FlamingDamage;
-    }
+        public const int BASE_DAMAGE = 3;
+        public const int FLAME_DAMAGE = 2;
 
-    public void SetMagic(bool magical)
-    {
-        if (magical)
+        public int Roll;
+        // *Made private for purposes of improving encapsulation
+        private decimal magicMultiplier = 1M;
+        private int flamingDamage = 0;
+        public int Damage;
+
+        private void CalculateDamage()
         {
-            MagicMultiplier = 1.75M;
+            Damage = BASE_DAMAGE + (int)(Roll * magicMultiplier) + flamingDamage;
+            Debug.WriteLine($"CalculateDamage finished: {Damage} (roll: {Roll})");
         }
-        else
-        {
-            MagicMultiplier = 1M;
-        }
-        CalculateDamage();
-    }
 
-    public void SetFlaming(bool flaming)
-    {
-        CalculateDamage();
-        if (flaming)
+        public void SetMagic(bool magical)
         {
-            Damage += FLAME_DAMAGE;
+            if (magical)
+            {
+                magicMultiplier = 1.75M;
+            }
+            else
+            {
+                magicMultiplier = 1M;
+            }
+            CalculateDamage();
+            Debug.WriteLine($"SetFlaming finished: {Damage} (roll: {Roll})");
         }
-    }
 
-    public static void Main()
-    {
-        while (true)
+        public void SetFlaming(bool flaming)
         {
-            SwordDamage swordDamage = new SwordDamage();
-            Random random = new Random();
-            Console.Write("0 for no magic/flaming, 1 for magic, 2 for flaming, 3 for both, any other key to quit: ");
-            char choice = Console.ReadKey(false).KeyChar;
-            if (choice != '0' && choice != '1' && choice != '2' && choice != '3') return;
-            swordDamage.Roll = random.Next(1, 7) + random.Next(1, 7) + random.Next(1, 7);
-            swordDamage.CalculateDamage();
-            swordDamage.SetMagic(choice == '1' || choice == '3'); 
-            swordDamage.SetFlaming(choice == '2' || choice == '3');
-            Console.WriteLine("\nRolled " + swordDamage.Roll + " for " + swordDamage.Damage + " HP.\n");
+            CalculateDamage();
+            if (flaming)
+            {
+                Damage += FLAME_DAMAGE;
+            }
+            Debug.WriteLine($"SetFlaming finished: {Damage} (roll: {Roll})");
         }
     }
 }
