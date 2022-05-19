@@ -16,9 +16,9 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <CheckBox x:Name="flaming" Content="magical" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="flaming_Checked" Unchecked="flaming_Unchecked"/>
-        <CheckBox x:Name="magical" Content="flaming" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="magical_Checked" Unchecked="magical_Unchecked"/>
+        <CheckBox x:Name="flaming" Content="flaming" VerticalAlignment="Center" HorizontalAlignment="Center" Checked="flaming_Checked" Unchecked="flaming_Unchecked"/>
+        <CheckBox x:Name="magical" Content="magical" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Checked="magical_Checked" Unchecked="magical_Unchecked"/>
         <Button Content="Roll 3d6" Grid.Row="1" Grid.ColumnSpan="2" Margin="20,10" Click="Button_Click"/>
-        <TextBlock Text="*sword damage*" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock x:Name="Damage" Text="*sword damage*" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
     </Grid>
 </Window>

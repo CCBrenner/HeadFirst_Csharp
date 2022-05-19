@@ -5,6 +5,11 @@ VisualStudioVersion = 17.1.32414.318
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "swordDamageUI", "swordDamageUI\swordDamageUI.csproj", "{6D3E73CC-494F-4C21-8BC5-4B43962D882F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2A04CAE1-C76D-4DBF-A7AE-58BAB9BE2F6A}"
+	ProjectSection(SolutionItems) = preProject
+		..\SwordDamage Exhibition\SwordDamage Exhibition\Program.cs = ..\SwordDamage Exhibition\SwordDamage Exhibition\Program.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
