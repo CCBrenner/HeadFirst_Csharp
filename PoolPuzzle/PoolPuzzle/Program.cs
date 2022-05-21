@@ -25,6 +25,12 @@ class Program
 {
     public static void Main(string[] args)
     {
+        // CH 5, Pool Puzzle (options that can be used once, more than once, or not at all):
+        // Generates addition or multiplication problem with
+        // ints 1 to 9 inclusive, checks if your int submission is correct, if wrong 
+        // keeps asking for the answer until correct, if non-int entered the program quits
+        // (Collyn got all answers correct the first time with 1 minor mistype of
+        // the constructor paramter type being missing)
         Q q = new Q(Q.R.Next(2) == 1);
         while (true)
         {
