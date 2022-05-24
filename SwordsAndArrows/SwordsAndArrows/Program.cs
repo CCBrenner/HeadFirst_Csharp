@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace SwordAndArrows
 {
@@ -93,10 +94,9 @@ namespace SwordAndArrows
         /// </summary>
         private void CalculateDamage()
         {
-            int baseDamage = Roll * (int)BASE_MULTIPLIER;
-            if (Magic) baseDamage *= (int)MAGIC_MULTIPLIER;
-            // leaving point: What si th default behavior of a decimal cast to an int? (Is it rounded down or truncated?)
-            Damage = Flaming ? (int)Math.Ceiling(baseDamage + FLAME_DAMAGE) : baseDamage;
+            decimal baseDamage = Roll * BASE_MULTIPLIER;
+            if (Magic) baseDamage *= MAGIC_MULTIPLIER;
+            Damage = Flaming ? (int)Math.Ceiling(baseDamage + FLAME_DAMAGE) : (int)baseDamage;
         }
 
         /// <summary>
@@ -168,23 +168,50 @@ namespace SwordAndArrows
 
         static void Main(string[] args)
         {
-            SwordDamage swordDamage = new SwordDamage(RollDice());
+            SwordDamage swordDamage = new SwordDamage(RollDice(3));
+            ArrowDamage arrowDamage = new ArrowDamage(RollDice(1));
+            
             while (true)
             {
-                Console.Write("0 for no magic/flaming, 1 for magic, 2 for flaming, " +
+                Console.Write("S for Sword, A for Arrow, anything else to quit: ");
+                char weaponKey = char.ToUpper(Console.ReadKey().KeyChar);
+                switch (weaponKey)
+                {
+                    case 'S':
+                        Console.Write("\n0 for no magic/flaming, 1 for magic, 2 for flaming, " +
                                 "3 for both, anything else to quit: ");
-                char key = Console.ReadKey().KeyChar;
-                if (key != '0' && key != '1' && key != '2' && key != '3') return;
-                swordDamage.Roll = RollDice();
-                swordDamage.Magic = (key == '1' || key == '3');
-                swordDamage.Flaming = (key == '2' || key == '3');
-                Console.WriteLine($"\nRolled {swordDamage.Roll} for {swordDamage.Damage} HP\n");
+                        char swordKey = Console.ReadKey().KeyChar;
+                        if (swordKey != '0' && swordKey != '1' && swordKey != '2' && swordKey != '3') return;
+                        swordDamage.Roll = RollDice(3);
+                        swordDamage.Magic = (swordKey == '1' || swordKey == '3');
+                        swordDamage.Flaming = (swordKey == '2' || swordKey == '3');
+                        Console.WriteLine($"\nRolled {swordDamage.Roll} for {swordDamage.Damage} HP\n");
+                        break;
+                    case 'A':
+                        Console.Write("\n0 for no magic/flaming, 1 for magic, 2 for flaming, " +
+                                "3 for both, anything else to quit: ");
+                        char arrowKey = Console.ReadKey().KeyChar;
+                        if (arrowKey != '0' && arrowKey != '1' && arrowKey != '2' && arrowKey != '3') return;
+                        arrowDamage.Roll = RollDice(1);
+                        arrowDamage.Magic = (arrowKey == '1' || arrowKey == '3');
+                        arrowDamage.Flaming = (arrowKey == '2' || arrowKey == '3');
+                        Console.WriteLine($"\nRolled {arrowDamage.Roll} for {arrowDamage.Damage} HP\n");
+                        break;
+                    default:
+                        return;
+                }
+                
             }
         }
 
-        private static int RollDice()
+        private static int RollDice(int numberOfRolls)
         {
-            return random.Next(1, 7) + random.Next(1, 7) + random.Next(1, 7);
+            int roll = 0;
+            for (int i = 0; i < numberOfRolls; i++)
+            {
+                roll += random.Next(1, 7);
+            }
+            return roll;
         }
     }
 }
