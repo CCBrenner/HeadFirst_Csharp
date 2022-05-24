@@ -7,7 +7,7 @@ namespace SwordDamage
     {
         public SwordDamage()
         {
-            MagicMultiplier = 1M;
+            magicMultiplier = 1M;
             FlamingDamage = 0;
         }
 
@@ -17,9 +17,20 @@ namespace SwordDamage
 
         public int Roll { get; set; }
 
-        public decimal MagicMultiplier { get; private set; }
-
-        public int FlamingDamage { get; private set; }
+        private decimal magicMultiplier;
+        public decimal MagicMultiplier
+        {
+            get { return magicMultiplier; }
+            // to set magicMultiplier you must to use this kind of set accessor declaration:
+            private set { magicMultiplier = value; }
+        }
+        private int flamingDamage;
+        public int FlamingDamage
+        {
+            get { return flamingDamage; }
+            // to set flamingDamage you must to use this kind of set accessor declaration:
+            private set { flamingDamage = value; }
+        }
 
         public int Damage { get; private set; }
 
@@ -27,8 +38,8 @@ namespace SwordDamage
         {
             MagicMultiplier = isMagical ? 1.75M : 1M;
             FlamingDamage = isFlaming ? FLAME_DAMAGE : 0;
-            Damage = BASE_DAMAGE + (int)(Roll * MagicMultiplier) + FlamingDamage;
-            Debug.WriteLine($"CalculateDamage complete:\nMagicMultiplier = {MagicMultiplier}\nFlamingDamage = {FlamingDamage}\nDamage = {Damage}\nRoll = {Roll}\n");
+            Damage = BASE_DAMAGE + (int)(Roll * magicMultiplier) + flamingDamage;
+            // Debug.WriteLine($"\nCalculateDamage complete:\nmagicMultiplier = {magicMultiplier}\nFlamingDamage = {FlamingDamage}\nDamage = {Damage}\nRoll = {Roll}");
         }
     }
 
