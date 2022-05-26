@@ -32,7 +32,7 @@ class Pigeon : Bird
         Egg[] eggs = new Egg[numberOfEggs];
         for (int i = 0; i < numberOfEggs; i++)
         {
-            double size = Bird.Randomizer.Next(1, 4);
+            double size = Bird.Randomizer.NextDouble() * 2 + 1;
             eggs[i] = new Egg(size, "white");
         }
         return eggs;
@@ -46,7 +46,7 @@ class Ostrich : Bird
         Egg[] eggs = new Egg[numberOfEggs];
         for (int i = 0; i < numberOfEggs; ++i)
         {
-            eggs[i] = new Egg(Bird.Randomizer.Next(12, 14), "speckled");
+            eggs[i] = new Egg(Bird.Randomizer.NextDouble() * 2 + 1, "speckled");
         }
         return eggs;
     }
