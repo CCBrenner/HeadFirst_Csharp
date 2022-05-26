@@ -29,13 +29,24 @@ class Pigeon : Bird
 {
     public override Egg[] LayEggs(int numberOfEggs)
     {
-        // left off here! Egg[] array needs to be given a specified length and
-        // then each added Egg object assigned to their own unique position (no simple append possible in Csharp)
         Egg[] eggs = new Egg[numberOfEggs];
         for (int i = 0; i < numberOfEggs; i++)
         {
-            double size = Randomizer.Next(1, 4);
+            double size = Bird.Randomizer.Next(1, 4);
             eggs[i] = new Egg(size, "white");
+        }
+        return eggs;
+    }
+}
+
+class Ostrich : Bird
+{
+    public override Egg[] LayEggs(int numberOfEggs)
+    {
+        Egg[] eggs = new Egg[numberOfEggs];
+        for (int i = 0; i < numberOfEggs; ++i)
+        {
+            eggs[i] = new Egg(Bird.Randomizer.Next(12, 14), "speckled");
         }
         return eggs;
     }
@@ -52,9 +63,9 @@ class Program
             Console.Write("\nPress P for pigeon, O for ostrich: ");
             char key = Char.ToUpper(Console.ReadKey().KeyChar);
             if (key == 'P') bird = new Pigeon();
-            if (key == 'O') bird = new Ostrich();
+            else if (key == 'O') bird = new Ostrich();
             else return;
-            Console.Write("\nHow many eggs should I lay?");
+            Console.Write("\nHow many eggs should I lay? ");
             if (!int.TryParse(Console.ReadLine(), out int numberOfEggs)) return;
             Egg[] eggs = bird.LayEggs(numberOfEggs);
             foreach (Egg egg in eggs)
