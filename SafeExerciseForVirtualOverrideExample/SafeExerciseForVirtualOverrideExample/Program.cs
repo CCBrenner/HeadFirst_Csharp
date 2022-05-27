@@ -33,8 +33,30 @@ class Locksmith
         string safeContents = safe.Open(Combination);
         ReturnContents(safeContents, owner);
     }
-    protected void ReturnContents(string valuables, SafeOwner owner)
+    protected virtual void ReturnContents(string valuables, SafeOwner owner)
     {
         owner.ReceiveContents(valuables);
+    }
+}
+class JewelThief : Locksmith
+{
+    private string stolenJewels;
+    protected override void ReturnContents(string safeContents, SafeOwner owner)
+    {
+        stolenJewels = safeContents;
+        Console.WriteLine($"I'm stealing the jewels! I stole: {stolenJewels}");
+    }
+}
+class Program
+{
+    public static void Main(string[] args)
+    {
+        SafeOwner owner = new SafeOwner();
+        Safe safe = new Safe();
+        JewelThief lockSmith = new JewelThief();
+        // This calls the Locksmith.ReturnContents() method instead of the JewelThief.ReturnContents() method
+        // lockSmith.ReturnContents(safe.Open("12345"), owner);
+        lockSmith.OpenSafe(safe, owner);
+        Console.ReadKey(true);
     }
 }
