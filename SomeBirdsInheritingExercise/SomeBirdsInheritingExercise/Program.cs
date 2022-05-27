@@ -15,6 +15,15 @@ class Egg
     }
 }
 
+class BrokenEgg : Egg
+{
+    // LINE OF INTEREST: subclass uses its own constructor method but it is defined based on the base class' paramters. So we still need to pass the proper paramters to the base class as the constructor method being inherited
+    public BrokenEgg(string color) : base (0, $"broken {color}")
+    {
+        Console.WriteLine("A bird laid a broken egg.");
+    }
+}
+
 class Bird
 {
     public static Random Randomizer = new Random();
@@ -33,7 +42,10 @@ class Pigeon : Bird
         for (int i = 0; i < numberOfEggs; i++)
         {
             double size = Bird.Randomizer.Next(1, 4);
-            eggs[i] = new Egg(size, "white");
+            if (Bird.Randomizer.Next(4) == 0)
+                eggs[i] = new BrokenEgg("white");
+            else
+                eggs[i] = new Egg(size, "white");
         }
         return eggs;
     }
