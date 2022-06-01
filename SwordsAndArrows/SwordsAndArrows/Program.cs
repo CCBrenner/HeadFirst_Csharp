@@ -3,21 +3,18 @@ using System.Diagnostics;
 
 namespace SwordAndArrows
 {
-    class SwordDamage
+    class WeaponDamage
     {
-        private const int BASE_DAMAGE = 3;
-        private const int FLAME_DAMAGE = 2;
+        public WeaponDamage(int roll, bool magic, bool flaming, int damage)
+        {
+            Roll = roll;
+            Magic = magic;
+            Flaming = flaming;
+            Damage = damage;
+        }
 
-        /// <summary>
-        /// Contains the calculated damage.
-        /// </summary>
-        public int Damage { get; private set; }
-
+        public decimal BaseDamage { get; protected set; }
         private int roll;
-
-        /// <summary>
-        /// Sets or gets the 3d6 roll.
-        /// </summary>
         public int Roll
         {
             get { return roll; }
@@ -27,12 +24,7 @@ namespace SwordAndArrows
                 CalculateDamage();
             }
         }
-
         private bool magic;
-
-        /// <summary>
-        /// True if the sword is magic, false otherwise.
-        /// </summary>
         public bool Magic
         {
             get { return magic; }
@@ -42,12 +34,9 @@ namespace SwordAndArrows
                 CalculateDamage();
             }
         }
+        public decimal MagicMultiplier { get; protected set; }
 
         private bool flaming;
-
-        /// <summary>
-        /// True if the sword is flaming, false otherwise.
-        /// </summary>
         public bool Flaming
         {
             get { return flaming; }
@@ -57,45 +46,73 @@ namespace SwordAndArrows
                 CalculateDamage();
             }
         }
-        /// <summary>
-        /// Calculates the damage based on the current properties.
-        /// </summary>
-        private void CalculateDamage()
-        {
-            decimal magicMultiplier = 1M;
-            if (Magic) magicMultiplier = 1.75M;
+        public decimal FlameDamage { get; protected set; }
+        public int Damage { get; protected set; }
 
-            Damage = BASE_DAMAGE;
-            Damage = (int)(Roll * magicMultiplier) + BASE_DAMAGE;
-            if (Flaming) Damage += FLAME_DAMAGE;
+        protected virtual void CalculateDamage()
+        {
+            /* The subclass overrites this. */
         }
+    }
+    class SwordDamage : WeaponDamage
+    {
 
         /// <summary>
         /// The constructor calculates damage based on default Magic
         /// and Flaming values and a starting 3d6 roll.
         /// </summary>
         /// <param name="startingRoll">Starting 3d6 roll</param>
-        public SwordDamage(int startingRoll)
+        public SwordDamage(int startingRoll) : base(startingRoll, false, false, 0)
+        {
+            Roll = startingRoll;
+            BaseDamage = BASE_DAMAGE;
+            CalculateDamage();
+        }
+        private const int BASE_DAMAGE = 3;
+        private const decimal MAGIC_MULTIPLIER = 1.75M;
+        private const int FLAME_DAMAGE = 2;
+
+        /// <summary>
+        /// Calculates the damage based on the current properties.
+        /// </summary>
+        protected override void CalculateDamage()
+        {
+            MagicMultiplier = Magic ? MAGIC_MULTIPLIER : 1M;
+            FlameDamage = Flaming ? FLAME_DAMAGE : 0;
+            Damage = (int)(BaseDamage + (Roll * MagicMultiplier) + FlameDamage);
+        }
+    }
+
+    class ArrowDamage : WeaponDamage
+    {
+
+        /// <summary>
+        /// The constructor calculates damage based on default Magic
+        /// and Flaming values and a starting 3d6 roll.
+        /// </summary>
+        /// <param name="startingRoll">Starting 3d6 roll</param>
+        public ArrowDamage(int startingRoll) : base(startingRoll, false, false, 0)
         {
             roll = startingRoll;
             CalculateDamage();
         }
-    }
 
-    class ArrowDamage
-    {
-        private const decimal BASE_MULTIPLIER = 0.35M;
+        private const decimal ROLL_MULTIPLIER = 0.35M;
         private const decimal MAGIC_MULTIPLIER = 2.5M; 
         private const decimal FLAME_DAMAGE = 1.25M;
-
 
         /// <summary>
         /// Calculates the damage based on the current properties.
         /// </summary>
         private void CalculateDamage()
         {
-            decimal baseDamage = Roll * BASE_MULTIPLIER;
-            if (Magic) baseDamage *= MAGIC_MULTIPLIER;
+            BaseDamage = Roll * ROLL_MULTIPLIER;
+            MagicMultiplier = Magic ? MAGIC_MULTIPLIER : 1M;
+            FlameDamage = Flaming ? FLAME_DAMAGE : 0M;
+            Damage = (BaseDamage + FlameDamage)  // Stopped here, need to go back and find out what this formula was supposed to be because there are no more remnants of its state
+
+
+            baseDamage = Magic ? baseDamage * MAGIC_MULTIPLIER : baseDamage;
             Damage = Flaming ? (int)Math.Ceiling(baseDamage + FLAME_DAMAGE) : (int)baseDamage;
         }
 
@@ -147,18 +164,6 @@ namespace SwordAndArrows
                 flaming = value;
                 CalculateDamage();
             }
-        }
-        
-
-        /// <summary>
-        /// The constructor calculates damage based on default Magic
-        /// and Flaming values and a starting 3d6 roll.
-        /// </summary>
-        /// <param name="startingRoll">Starting 3d6 roll</param>
-        public ArrowDamage(int startingRoll)
-        {
-            roll = startingRoll;
-            CalculateDamage();
         }
     }
 
