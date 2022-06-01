@@ -3,21 +3,17 @@ using System.Diagnostics;
 
 namespace SwordAndArrows
 {
-    class SwordDamage
+    class WeaponDamage
     {
-        private const int BASE_DAMAGE = 3;
-        private const int FLAME_DAMAGE = 2;
-
-        /// <summary>
-        /// Contains the calculated damage.
-        /// </summary>
-        public int Damage { get; private set; }
+        public WeaponDamage(int roll, bool magic, bool flaming, int damage)
+        {
+            Roll = roll;
+            Magic = magic;
+            Flaming = flaming;
+            Damage = damage;
+        }
 
         private int roll;
-
-        /// <summary>
-        /// Sets or gets the 3d6 roll.
-        /// </summary>
         public int Roll
         {
             get { return roll; }
@@ -29,10 +25,6 @@ namespace SwordAndArrows
         }
 
         private bool magic;
-
-        /// <summary>
-        /// True if the sword is magic, false otherwise.
-        /// </summary>
         public bool Magic
         {
             get { return magic; }
@@ -44,10 +36,6 @@ namespace SwordAndArrows
         }
 
         private bool flaming;
-
-        /// <summary>
-        /// True if the sword is flaming, false otherwise.
-        /// </summary>
         public bool Flaming
         {
             get { return flaming; }
@@ -57,33 +45,57 @@ namespace SwordAndArrows
                 CalculateDamage();
             }
         }
-        /// <summary>
-        /// Calculates the damage based on the current properties.
-        /// </summary>
-        private void CalculateDamage()
-        {
-            decimal magicMultiplier = 1M;
-            if (Magic) magicMultiplier = 1.75M;
+        public int Damage { get; private set; }
 
-            Damage = BASE_DAMAGE;
-            Damage = (int)(Roll * magicMultiplier) + BASE_DAMAGE;
-            if (Flaming) Damage += FLAME_DAMAGE;
+        protected virtual void CalculateDamage()
+        {
+            /* The subclass overrites this. */
         }
+    }
+    class SwordDamage : WeaponDamage
+    {
 
         /// <summary>
         /// The constructor calculates damage based on default Magic
         /// and Flaming values and a starting 3d6 roll.
         /// </summary>
         /// <param name="startingRoll">Starting 3d6 roll</param>
-        public SwordDamage(int startingRoll)
+        public SwordDamage(int startingRoll) : base(startingRoll, false, false, 0)
         {
-            roll = startingRoll;
+            Roll = startingRoll;
             CalculateDamage();
+        }
+        // private const int BASE_DAMAGE = 3;
+        // private const int FLAME_DAMAGE = 2;
+
+        /// <summary>
+        /// Calculates the damage based on the current properties.
+        /// </summary>
+        protected override void CalculateDamage()
+        {
+            decimal magicMultiplier = 1M;
+            if (Magic) magicMultiplier = 1.75M;
+
+            Damage = BaseDamage;
+            Damage = (int)(Roll * magicMultiplier) + BaseDamage;
+            if (Flaming) Damage += FLAME_DAMAGE;
         }
     }
 
     class ArrowDamage
     {
+
+        /// <summary>
+        /// The constructor calculates damage based on default Magic
+        /// and Flaming values and a starting 3d6 roll.
+        /// </summary>
+        /// <param name="startingRoll">Starting 3d6 roll</param>
+        public ArrowDamage(int startingRoll)
+        {
+            roll = startingRoll;
+            CalculateDamage();
+        }
+
         private const decimal BASE_MULTIPLIER = 0.35M;
         private const decimal MAGIC_MULTIPLIER = 2.5M; 
         private const decimal FLAME_DAMAGE = 1.25M;
@@ -147,18 +159,6 @@ namespace SwordAndArrows
                 flaming = value;
                 CalculateDamage();
             }
-        }
-        
-
-        /// <summary>
-        /// The constructor calculates damage based on default Magic
-        /// and Flaming values and a starting 3d6 roll.
-        /// </summary>
-        /// <param name="startingRoll">Starting 3d6 roll</param>
-        public ArrowDamage(int startingRoll)
-        {
-            roll = startingRoll;
-            CalculateDamage();
         }
     }
 

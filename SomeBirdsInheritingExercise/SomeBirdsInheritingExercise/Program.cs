@@ -18,7 +18,7 @@ class Egg
 class BrokenEgg : Egg
 {
     // LINE OF INTEREST: subclass uses its own constructor method but it is defined based on the base class' paramters. So we still need to pass the proper paramters to the base class as the constructor method being inherited
-    public BrokenEgg(string color) : base (0, $"broken {color}")
+    public BrokenEgg(string color) : base(0, $"broken {color}")
     {
         Console.WriteLine("A bird laid a broken egg.");
     }
