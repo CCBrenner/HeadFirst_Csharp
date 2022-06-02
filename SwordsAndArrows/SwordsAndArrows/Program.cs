@@ -49,14 +49,10 @@ namespace SwordAndArrows
         public decimal FlameDamage { get; protected set; }
         public int Damage { get; protected set; }
 
-        protected virtual void CalculateDamage()
-        {
-            /* The subclass overrites this. */
-        }
+        protected virtual void CalculateDamage() { /* The subclass overrites this. */ }
     }
     class SwordDamage : WeaponDamage
     {
-
         /// <summary>
         /// The constructor calculates damage based on default Magic
         /// and Flaming values and a starting 3d6 roll.
@@ -85,7 +81,6 @@ namespace SwordAndArrows
 
     class ArrowDamage : WeaponDamage
     {
-
         /// <summary>
         /// The constructor calculates damage based on default Magic
         /// and Flaming values and a starting 3d6 roll.
@@ -93,7 +88,7 @@ namespace SwordAndArrows
         /// <param name="startingRoll">Starting 3d6 roll</param>
         public ArrowDamage(int startingRoll) : base(startingRoll, false, false, 0)
         {
-            roll = startingRoll;
+            Roll = startingRoll;
             CalculateDamage();
         }
 
@@ -104,66 +99,12 @@ namespace SwordAndArrows
         /// <summary>
         /// Calculates the damage based on the current properties.
         /// </summary>
-        private void CalculateDamage()
+        protected override void CalculateDamage()
         {
             BaseDamage = Roll * ROLL_MULTIPLIER;
             MagicMultiplier = Magic ? MAGIC_MULTIPLIER : 1M;
             FlameDamage = Flaming ? FLAME_DAMAGE : 0M;
-            Damage = (BaseDamage + FlameDamage)  // Stopped here, need to go back and find out what this formula was supposed to be because there are no more remnants of its state
-
-
-            baseDamage = Magic ? baseDamage * MAGIC_MULTIPLIER : baseDamage;
-            Damage = Flaming ? (int)Math.Ceiling(baseDamage + FLAME_DAMAGE) : (int)baseDamage;
-        }
-
-        /// <summary>
-        /// Contains the calculated damage.
-        /// </summary>
-        public int Damage { get; private set; }
-
-        private int roll;
-
-        /// <summary>
-        /// Sets or gets the 3d6 roll.
-        /// </summary>
-        public int Roll
-        {
-            get { return roll; }
-            set
-            {
-                roll = value;
-                CalculateDamage();
-            }
-        }
-
-        private bool magic;
-
-        /// <summary>
-        /// True if the sword is magic, false otherwise.
-        /// </summary>
-        public bool Magic
-        {
-            get { return magic; }
-            set
-            {
-                magic = value;
-                CalculateDamage();
-            }
-        }
-
-        private bool flaming;
-
-        /// <summary>
-        /// True if the sword is flaming, false otherwise.
-        /// </summary>
-        public bool Flaming
-        {
-            get { return flaming; }
-            set
-            {
-                flaming = value;
-                CalculateDamage();
-            }
+            Damage = (int)Math.Ceiling((BaseDamage * MagicMultiplier) + FlameDamage);
         }
     }
 
