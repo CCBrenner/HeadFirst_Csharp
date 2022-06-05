@@ -57,16 +57,16 @@ namespace BeehiveManagementSystem
             Job = title;
         }
 
-        public string Job { get; private set; }
-        public virtual float CostPerShift { get; set; }
+        public string Job { get; set; }
+        public virtual float CostPerShift { get; protected set; }
 
         void WorkTheNextShift()
         {
-
+            if (HoneyVault.ConsumeHoney(CostPerShift)) DoJob();
         }
         protected virtual void DoJob()
         {
-
+            // to be overwritten by subclasses
         }
     }
 
@@ -74,7 +74,35 @@ namespace BeehiveManagementSystem
     {
         public QueenBee() : base("Queen")
         {
+            CostPerShift = 2.15F;
+        }
 
+        private Bee[] workers;
+        private float eggs;
+        private float unassignedWorkers = 3;
+
+        private void AddWorker(new) // left 
+        private void AssignBee(string job)
+        {
+            switch (job)
+            {
+                case "Honey Manufacturer":
+                    Array.Resize(ref workers, workers.Length + 1);
+                    workers[workers.Length - 1] = new HoneyManufacturerBee();
+                    break;
+                case "Nectar Collector":
+                    Array.Resize(ref workers, workers.Length + 1);
+                    workers[workers.Length - 1] = new NectarCollectorBee();
+                    break;
+                case "Egg Care":
+                    Array.Resize(ref workers, workers.Length + 1);
+                    workers[workers.Length - 1] = new EggCareBee();
+                    break;
+            }
+        }
+        protected override void DoJob()
+        {
+            base.DoJob();
         }
     }
 
@@ -82,7 +110,7 @@ namespace BeehiveManagementSystem
     {
         public HoneyManufacturerBee() : base("Honey Manufacturer")
         {
-
+            CostPerShift = 1.7F;
         }
     }
 
@@ -90,7 +118,7 @@ namespace BeehiveManagementSystem
     {
         public NectarCollectorBee() : base("Nectar Collector")
         {
-
+            CostPerShift = 1.95F;
         }
     }
 
@@ -98,7 +126,7 @@ namespace BeehiveManagementSystem
     {
         public EggCareBee() : base("Egg Care")
         {
-
+            CostPerShift = 1.53F;
         }
     }
 
