@@ -15,9 +15,9 @@ using System.Windows.Shapes;
 
 namespace BeehiveManagementSystem
 {
-    class HoneyVault
+    static class HoneyVault
     {
-        public HoneyVault()
+        static HoneyVault()
         {
 
         }
@@ -26,10 +26,10 @@ namespace BeehiveManagementSystem
         public const float LOW_LEVEL_WARNING = 10F;
 
 
-        private float honey = 25F;
-        private float nectar = 100F;
-        private string statusReport;
-        public string StatusReport
+        private static float honey = 25F;
+        private static float nectar = 100F;
+        private static string statusReport;
+        public static string StatusReport
         {
             get
             {
@@ -40,14 +40,66 @@ namespace BeehiveManagementSystem
             }
         }
 
-        public void CollectNectar(float nectarToStore) { nectar += nectarToStore > 0F ? nectarToStore : 0F; }
-        public void ConvertNectarToHoney(float amountToConvert)
+        public static void CollectNectar(float nectarToStore) { nectar += nectarToStore > 0F ? nectarToStore : 0F; }
+        public static void ConvertNectarToHoney(float amountToConvert)
         {
             amountToConvert = amountToConvert > nectar ? nectar : amountToConvert;
             nectar -= amountToConvert;
             honey += amountToConvert * NECTAR_CONVERTION_RATIO;
         }
-        public bool ConsumeHoney(float consumptionAmount) { return consumptionAmount > honey; }
+        public static bool ConsumeHoney(float consumptionAmount) { return consumptionAmount > honey; }
+    }
+
+    class Bee
+    {
+        public Bee(string title)
+        {
+            Job = title;
+        }
+
+        public string Job { get; private set; }
+        public virtual float CostPerShift { get; set; }
+
+        void WorkTheNextShift()
+        {
+
+        }
+        protected virtual void DoJob()
+        {
+
+        }
+    }
+
+    class QueenBee : Bee
+    {
+        public QueenBee() : base("Queen")
+        {
+
+        }
+    }
+
+    class HoneyManufacturerBee : Bee
+    {
+        public HoneyManufacturerBee() : base("Honey Manufacturer")
+        {
+
+        }
+    }
+
+    class NectarCollectorBee : Bee
+    {
+        public NectarCollectorBee() : base("Nectar Collector")
+        {
+
+        }
+    }
+
+    class EggCareBee : Bee
+    {
+        public EggCareBee() : base("Egg Care")
+        {
+
+        }
     }
 
     /// <summary>
@@ -58,6 +110,17 @@ namespace BeehiveManagementSystem
         public MainWindow()
         {
             InitializeComponent();
+            QueenBee theQueen = new QueenBee();
+        }
+
+        private void assignBee_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void workNextShift_Click(object sender, RoutedEventArgs e)
+        {
+            // theQueen.WorkNextShift();
         }
     }
 }
