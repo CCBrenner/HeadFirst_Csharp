@@ -33,7 +33,7 @@ namespace BeehiveManagementSystem
         {
             get
             {
-                statusReport = $"Amount of Honey in Vault: {honey}\nAmount of Nectar in Vault: {nectar}";
+                statusReport = $"Vaultreport:\n{honey} units of honey\n{nectar} units of nectar";
                 if (honey < LOW_LEVEL_WARNING) statusReport += "\nLOW HONEY - ADD A HONEY MANUFACTURER";
                 if (nectar < LOW_LEVEL_WARNING) statusReport += "\nLOW NECTAR - ADD A NECTAR COLLECTOR";
                 return statusReport;
@@ -47,7 +47,15 @@ namespace BeehiveManagementSystem
             nectar -= amountToConvert;
             honey += amountToConvert * NECTAR_CONVERTION_RATIO;
         }
-        public static bool ConsumeHoney(float consumptionAmount) { return consumptionAmount > honey; }
+        public static bool ConsumeHoney(float consumptionAmount) 
+        { 
+            if (consumptionAmount < honey)
+            {
+                honey -= consumptionAmount;
+                return true;
+            }
+            return false; 
+        }
     }
 
     class Bee
@@ -65,7 +73,7 @@ namespace BeehiveManagementSystem
             // This doesn't quite make snes but it's what the book wants; no subtraction of honey from vault as if actually eating, just whether there is enough in there or not per 1 bee (makes this logic pretty useless bc it will always return true if CostPerShift is less than 3 for each bee which is the starting amount and the amount only ever goes up)
             if (HoneyVault.ConsumeHoney(CostPerShift)) DoJob();
         }
-        protected virtual void DoJob() { /* to be overrided */ }
+        protected virtual void DoJob() { /* to be overridden */ }
     }
 
     class QueenBee : Bee
@@ -100,14 +108,41 @@ namespace BeehiveManagementSystem
                     break;
             }
         }
+        private void CareForEggs(float eggsToConvert)
+        {
+            if (eggs >= eggsToConvert)
+            {
+                eggs -= eggsToConvert;
+                unassignedWorkers += eggsToConvert;
+            }
+        }
+        private void UpdateStatusReport()
+        {
+            string status = HoneyVault.StatusReport;
+
+            int honeyManufacturerCount = 0;
+            int nectarCollectorCount = 0;
+            int eggCareCount = 0;
+            foreach (Bee bee in workers)
+            {
+                if (bee.GetType().ToString() == "HoneyManufacturerBee") honeyManufacturerCount += 1;
+                else if (bee.GetType().ToString() == "NectarCollectorBee") nectarCollectorCount += 1;
+                else if (bee.GetType().ToString() == "EggCareBee") eggCareCount += 1;
+            }
+            string pluralH = honeyManufacturerCount == 1 ? "" : "s";
+            string pluralN = nectarCollectorCount == 1 ? "" : "s";
+            string pluralE = eggCareCount == 1 ? "" : "s";
+
+            status += $"Egg count: {eggs}\nUnassigned workers: {unassignedWorkers}\n{nectarCollectorCount} Nector Collector bee{pluralN}\n{honeyManufacturerCount} Honey Manufacturer bee{pluralH}\n{eggCareCount} Egg Care bee{pluralE}\nTOTAL WORKERS: {workers.Length}";
+        }
         protected override void DoJob()
         {
             eggs += EGGS_PER_SHIFT;
             foreach(Bee bee in workers)
             {
-                bee.WorkTheNextShift();  // stopped here, stopped at (in book ) ch06.html#the_queen_class_how_she_manages_the_work
+                bee.WorkTheNextShift();
             }
-
+            UpdateStatusReport();
         }
     }
 
@@ -148,7 +183,7 @@ namespace BeehiveManagementSystem
 
         private void assignBee_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void workNextShift_Click(object sender, RoutedEventArgs e)
