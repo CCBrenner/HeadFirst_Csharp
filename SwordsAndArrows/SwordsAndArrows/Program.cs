@@ -13,7 +13,6 @@ namespace SwordAndArrows
             Damage = damage;
         }
 
-        public decimal BaseDamage { get; protected set; }
         private int roll;
         public int Roll
         {
@@ -24,6 +23,7 @@ namespace SwordAndArrows
                 CalculateDamage();
             }
         }
+        public decimal BaseDamage { get; protected set; }
         private bool magic;
         public bool Magic
         {
@@ -64,6 +64,7 @@ namespace SwordAndArrows
             BaseDamage = BASE_DAMAGE;
             CalculateDamage();
         }
+
         private const int BASE_DAMAGE = 3;
         private const decimal MAGIC_MULTIPLIER = 1.75M;
         private const int FLAME_DAMAGE = 2;

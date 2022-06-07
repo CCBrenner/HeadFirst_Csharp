@@ -60,14 +60,12 @@ namespace BeehiveManagementSystem
         public string Job { get; set; }
         public virtual float CostPerShift { get; protected set; }
 
-        void WorkTheNextShift()
+        public void WorkTheNextShift()
         {
+            // This doesn't quite make snes but it's what the book wants; no subtraction of honey from vault as if actually eating, just whether there is enough in there or not per 1 bee (makes this logic pretty useless bc it will always return true if CostPerShift is less than 3 for each bee which is the starting amount and the amount only ever goes up)
             if (HoneyVault.ConsumeHoney(CostPerShift)) DoJob();
         }
-        protected virtual void DoJob()
-        {
-            // to be overwritten by subclasses
-        }
+        protected virtual void DoJob() { /* to be overrided */ }
     }
 
     class QueenBee : Bee
@@ -77,32 +75,39 @@ namespace BeehiveManagementSystem
             CostPerShift = 2.15F;
         }
 
+        public float EGGS_PER_SHIFT = 0.45f;
+
         private Bee[] workers;
         private float eggs;
         private float unassignedWorkers = 3;
 
-        private void AddWorker(new) // left 
+        private void AddWorker(object newWorker) {
+            Array.Resize(ref workers, workers.Length + 1);
+            workers[workers.Length - 1] = (Bee)newWorker;
+        }
         private void AssignBee(string job)
         {
             switch (job)
             {
                 case "Honey Manufacturer":
-                    Array.Resize(ref workers, workers.Length + 1);
-                    workers[workers.Length - 1] = new HoneyManufacturerBee();
+                    AddWorker(new HoneyManufacturerBee());
                     break;
                 case "Nectar Collector":
-                    Array.Resize(ref workers, workers.Length + 1);
-                    workers[workers.Length - 1] = new NectarCollectorBee();
+                    AddWorker(new NectarCollectorBee());
                     break;
                 case "Egg Care":
-                    Array.Resize(ref workers, workers.Length + 1);
-                    workers[workers.Length - 1] = new EggCareBee();
+                    AddWorker(new EggCareBee());
                     break;
             }
         }
         protected override void DoJob()
         {
-            base.DoJob();
+            eggs += EGGS_PER_SHIFT;
+            foreach(Bee bee in workers)
+            {
+                bee.WorkTheNextShift();  // stopped here, stopped at (in book ) ch06.html#the_queen_class_how_she_manages_the_work
+            }
+
         }
     }
 
