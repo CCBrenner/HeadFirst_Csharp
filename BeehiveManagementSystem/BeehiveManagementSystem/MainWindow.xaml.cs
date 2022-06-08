@@ -89,11 +89,11 @@ namespace BeehiveManagementSystem
         private float eggs;
         private float unassignedWorkers = 3;
 
-        private void AddWorker(object newWorker) {
+        private void AddWorker(Bee newWorker) {
             Array.Resize(ref workers, workers.Length + 1);
-            workers[workers.Length - 1] = (Bee)newWorker;
+            workers[workers.Length - 1] = newWorker;
         }
-        private void AssignBee(string job)
+        public void AssignBee(string job)
         {
             switch (job)
             {
@@ -104,11 +104,11 @@ namespace BeehiveManagementSystem
                     AddWorker(new NectarCollectorBee());
                     break;
                 case "Egg Care":
-                    AddWorker(new EggCareBee());
+                    AddWorker(new EggCareBee(this));
                     break;
             }
         }
-        private void CareForEggs(float eggsToConvert)
+        public void CareForEggs(float eggsToConvert)
         {
             if (eggs >= eggsToConvert)
             {
@@ -137,20 +137,17 @@ namespace BeehiveManagementSystem
         }
         protected override void DoJob()
         {
+            // Lay egg portion
             eggs += EGGS_PER_SHIFT;
+
+            // Have bees do their jobs
             foreach(Bee bee in workers)
             {
                 bee.WorkTheNextShift();
             }
-            UpdateStatusReport();
-        }
-    }
 
-    class HoneyManufacturerBee : Bee
-    {
-        public HoneyManufacturerBee() : base("Honey Manufacturer")
-        {
-            CostPerShift = 1.7F;
+            // Give status report
+            UpdateStatusReport();
         }
     }
 
@@ -160,13 +157,45 @@ namespace BeehiveManagementSystem
         {
             CostPerShift = 1.95F;
         }
+
+        public const float NECTAR_COLLECTED_PER_SHIFT = 33.25F;
+
+        protected override void DoJob()
+        {
+            HoneyVault.CollectNectar(NECTAR_COLLECTED_PER_SHIFT);
+        }
+    }
+
+    class HoneyManufacturerBee : Bee
+    {
+        public HoneyManufacturerBee() : base("Honey Manufacturer")
+        {
+            CostPerShift = 1.7F;
+        }
+
+        public const float NECTAR_PROCESSED_PER_SHIFT = 33.15F;
+
+        protected override void DoJob()
+        {
+            HoneyVault.ConvertNectarToHoney(NECTAR_PROCESSED_PER_SHIFT);
+        }
     }
 
     class EggCareBee : Bee
     {
-        public EggCareBee() : base("Egg Care")
+        public EggCareBee(QueenBee queen) : base("Egg Care")
         {
             CostPerShift = 1.53F;
+            this.queen = queen;
+        }
+
+        public const float CARE_PROGRESS_PER_SHIFT = 0.15F;
+
+        private QueenBee queen;
+
+        protected override void DoJob()
+        {
+            queen.CareForEggs(CARE_PROGRESS_PER_SHIFT);
         }
     }
 
@@ -178,17 +207,19 @@ namespace BeehiveManagementSystem
         public MainWindow()
         {
             InitializeComponent();
-            QueenBee theQueen = new QueenBee();
+            theQueen = new QueenBee();
         }
+
+        private QueenBee theQueen;
 
         private void assignBee_Click(object sender, RoutedEventArgs e)
         {
-            
+            theQueen.AssignBee(jobSelector.Text);
         }
 
         private void workNextShift_Click(object sender, RoutedEventArgs e)
         {
-            // theQueen.WorkNextShift();
+            theQueen.WorkTheNextShift();
         }
     }
 }
