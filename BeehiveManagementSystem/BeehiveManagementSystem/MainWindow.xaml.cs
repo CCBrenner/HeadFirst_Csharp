@@ -33,7 +33,7 @@ namespace BeehiveManagementSystem
         {
             get
             {
-                statusReport = $"Vaultreport:\n{honey} units of honey\n{nectar} units of nectar";
+                statusReport = $"\nVault report:\n{honey} units of honey\n{nectar} units of nectar";
                 if (honey < LOW_LEVEL_WARNING) statusReport += "\nLOW HONEY - ADD A HONEY MANUFACTURER";
                 if (nectar < LOW_LEVEL_WARNING) statusReport += "\nLOW NECTAR - ADD A NECTAR COLLECTOR";
                 return statusReport;
@@ -80,18 +80,26 @@ namespace BeehiveManagementSystem
     {
         public QueenBee() : base("Queen")
         {
+            AssignBee("Honey Manufacturer");
+            AssignBee("Nectar Collector");
+            AssignBee("Egg Care");
             CostPerShift = 2.15F;
+            UpdateStatusReport();
         }
 
         public float EGGS_PER_SHIFT = 0.45f;
+        public float HONEY_PER_UNASSIGNED_WORKER = 0.5F;
 
-        private Bee[] workers;
+        private Bee[] workers = {};
         private float eggs;
         private float unassignedWorkers = 3;
+
+        public string StatusReport {  get; private set; }
 
         private void AddWorker(Bee newWorker) {
             Array.Resize(ref workers, workers.Length + 1);
             workers[workers.Length - 1] = newWorker;
+            unassignedWorkers--;
         }
         public void AssignBee(string job)
         {
@@ -107,6 +115,7 @@ namespace BeehiveManagementSystem
                     AddWorker(new EggCareBee(this));
                     break;
             }
+            UpdateStatusReport();
         }
         public void CareForEggs(float eggsToConvert)
         {
@@ -114,6 +123,7 @@ namespace BeehiveManagementSystem
             {
                 eggs -= eggsToConvert;
                 unassignedWorkers += eggsToConvert;
+                UpdateStatusReport();
             }
         }
         private void UpdateStatusReport()
@@ -125,15 +135,18 @@ namespace BeehiveManagementSystem
             int eggCareCount = 0;
             foreach (Bee bee in workers)
             {
-                if (bee.GetType().ToString() == "HoneyManufacturerBee") honeyManufacturerCount += 1;
-                else if (bee.GetType().ToString() == "NectarCollectorBee") nectarCollectorCount += 1;
-                else if (bee.GetType().ToString() == "EggCareBee") eggCareCount += 1;
+                // Console.WriteLine(bee.ToString());
+                if (bee.ToString() == "BeehiveManagementSystem.HoneyManufacturerBee") honeyManufacturerCount += 1;
+                else if (bee.ToString() == "BeehiveManagementSystem.NectarCollectorBee") nectarCollectorCount += 1;
+                else if (bee.ToString() == "BeehiveManagementSystem.EggCareBee") eggCareCount += 1;
             }
             string pluralH = honeyManufacturerCount == 1 ? "" : "s";
             string pluralN = nectarCollectorCount == 1 ? "" : "s";
             string pluralE = eggCareCount == 1 ? "" : "s";
 
-            status += $"Egg count: {eggs}\nUnassigned workers: {unassignedWorkers}\n{nectarCollectorCount} Nector Collector bee{pluralN}\n{honeyManufacturerCount} Honey Manufacturer bee{pluralH}\n{eggCareCount} Egg Care bee{pluralE}\nTOTAL WORKERS: {workers.Length}";
+            status += $"\n\nQueen's report:\nEgg count: {eggs}\nUnassigned workers: {unassignedWorkers}\n{nectarCollectorCount} Nectar Collector bee{pluralN}\n{honeyManufacturerCount} Honey Manufacturer bee{pluralH}\n{eggCareCount} Egg Care bee{pluralE}\nTOTAL WORKERS: {workers.Length}";
+
+            StatusReport = status;
         }
         protected override void DoJob()
         {
@@ -145,6 +158,9 @@ namespace BeehiveManagementSystem
             {
                 bee.WorkTheNextShift();
             }
+
+            // Feed unassigned workers
+            HoneyVault.ConsumeHoney((float)Math.Floor(unassignedWorkers) * HONEY_PER_UNASSIGNED_WORKER);
 
             // Give status report
             UpdateStatusReport();
@@ -208,6 +224,7 @@ namespace BeehiveManagementSystem
         {
             InitializeComponent();
             theQueen = new QueenBee();
+            statusReport.Text = theQueen.StatusReport;
         }
 
         private QueenBee theQueen;
@@ -215,11 +232,13 @@ namespace BeehiveManagementSystem
         private void assignBee_Click(object sender, RoutedEventArgs e)
         {
             theQueen.AssignBee(jobSelector.Text);
+            statusReport.Text = theQueen.StatusReport;
         }
 
         private void workNextShift_Click(object sender, RoutedEventArgs e)
         {
             theQueen.WorkTheNextShift();
+            statusReport.Text = theQueen.StatusReport;
         }
     }
 }
