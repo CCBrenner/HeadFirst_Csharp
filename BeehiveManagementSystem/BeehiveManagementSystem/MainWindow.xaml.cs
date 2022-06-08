@@ -97,9 +97,12 @@ namespace BeehiveManagementSystem
         public string StatusReport {  get; private set; }
 
         private void AddWorker(Bee newWorker) {
-            Array.Resize(ref workers, workers.Length + 1);
-            workers[workers.Length - 1] = newWorker;
-            unassignedWorkers--;
+            if (unassignedWorkers >= 1)
+            {
+                unassignedWorkers--;
+                Array.Resize(ref workers, workers.Length + 1);
+                workers[workers.Length - 1] = newWorker;
+            }
         }
         public void AssignBee(string job)
         {
