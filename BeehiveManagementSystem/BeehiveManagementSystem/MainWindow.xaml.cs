@@ -130,29 +130,19 @@ namespace BeehiveManagementSystem
             }
         }
 
-        private string WorkerStatuses()
+        private string WorkerStatus(string job)
         {
-            int honeyManufacturerCount = 0;
-            int nectarCollectorCount = 0;
-            int eggCareCount = 0;
-            foreach (Bee bee in workers)
-            {
-                // Console.WriteLine(bee.ToString());
-                if (bee.ToString() == "BeehiveManagementSystem.HoneyManufacturerBee") honeyManufacturerCount += 1;
-                else if (bee.ToString() == "BeehiveManagementSystem.NectarCollectorBee") nectarCollectorCount += 1;
-                else if (bee.ToString() == "BeehiveManagementSystem.EggCareBee") eggCareCount += 1;
-            }
-            string pluralH = honeyManufacturerCount == 1 ? "" : "s";
-            string pluralN = nectarCollectorCount == 1 ? "" : "s";
-            string pluralE = eggCareCount == 1 ? "" : "s";
-
-            return $"{nectarCollectorCount} Nectar Collector bee{pluralN}\n{honeyManufacturerCount} Honey Manufacturer bee{pluralH}\n{eggCareCount} Egg Care bee{pluralE}\nTOTAL WORKERS: {workers.Length}";
+            int count = 0;
+            foreach (Bee bee in workers) if (bee.Job == job) count += 1;
+            string s = "s";
+            if (count == 1) s = "";
+            return $"{count} {job} bee{s}";
         }
         private void UpdateStatusReport()
         {
             string status = HoneyVault.StatusReport;
 
-            status += $"\n\nQueen's report:\nEgg count: {eggs}\nUnassigned workers: {unassignedWorkers}\n{WorkerStatuses()}";
+            status += $"\n\nQueen's report:\nEgg count: {eggs}\nUnassigned workers: {unassignedWorkers}\n{WorkerStatus("Nectar Collector")}\n{WorkerStatus("Honey Manufacturer")}\n{WorkerStatus("Egg Care")}\nTOTAL WORKERS: {workers.Length}";
 
             StatusReport = status;
         }
