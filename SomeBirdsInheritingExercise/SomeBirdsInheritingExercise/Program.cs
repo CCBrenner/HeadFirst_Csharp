@@ -24,14 +24,10 @@ class BrokenEgg : Egg
     }
 }
 
-class Bird
+abstract class Bird
 {
     public static Random Randomizer = new Random();
-    public virtual Egg[] LayEggs(int numberOfEggs)
-    {
-        Console.Error.WriteLine("Bird.LayEggs should never get called");
-        return new Egg[0];
-    }
+    public abstract Egg[] LayEggs(int numberOfEggs);  //abstract classes do not have bodies
 }
 
 class Pigeon : Bird
@@ -41,16 +37,14 @@ class Pigeon : Bird
         Egg[] eggs = new Egg[numberOfEggs];
         for (int i = 0; i < numberOfEggs; i++)
         {
-<<<<<<< HEAD
-            double size = Bird.Randomizer.NextDouble() * 2 + 1;
-            eggs[i] = new Egg(size, "white");
-=======
-            double size = Bird.Randomizer.Next(1, 4);
+            // double size = Bird.Randomizer.NextDouble() * 2 + 1;
+            // eggs[i] = new Egg(size, "white");
+
+            double size = Bird.Randomizer.Next(0, 4);
             if (Bird.Randomizer.Next(4) == 0)
                 eggs[i] = new BrokenEgg("white");
             else
                 eggs[i] = new Egg(size, "white");
->>>>>>> 8f99ca99ba5db27f4373dc9b662c1c49642fa299
         }
         return eggs;
     }
