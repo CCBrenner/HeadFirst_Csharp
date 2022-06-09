@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace SwordAndArrows
 {
-    class WeaponDamage
+    abstract class WeaponDamage
     {
         public WeaponDamage(int roll, bool magic, bool flaming, int damage)
         {
@@ -49,7 +49,7 @@ namespace SwordAndArrows
         public decimal FlameDamage { get; protected set; }
         public int Damage { get; protected set; }
 
-        protected virtual void CalculateDamage() { /* The subclass overrites this. */ }
+        protected abstract void CalculateDamage();
     }
     class SwordDamage : WeaponDamage
     {
