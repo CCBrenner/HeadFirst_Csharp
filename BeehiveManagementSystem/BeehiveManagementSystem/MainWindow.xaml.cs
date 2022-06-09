@@ -59,7 +59,7 @@ namespace BeehiveManagementSystem
         }
     }
 
-    class Bee
+    abstract class Bee
     {
         public Bee(string title)
         {
@@ -67,14 +67,14 @@ namespace BeehiveManagementSystem
         }
 
         public string Job { get; set; }
-        public virtual float CostPerShift { get; protected set; }
+        public abstract float CostPerShift { get; protected set; }
 
         public void WorkTheNextShift()
         {
             // This doesn't quite make snes but it's what the book wants; no subtraction of honey from vault as if actually eating, just whether there is enough in there or not per 1 bee (makes this logic pretty useless bc it will always return true if CostPerShift is less than 3 for each bee which is the starting amount and the amount only ever goes up)
             if (HoneyVault.ConsumeHoney(CostPerShift)) DoJob();
         }
-        protected virtual void DoJob() { /* to be overridden */ }
+        protected abstract void DoJob();
     }
 
     class QueenBee : Bee
@@ -96,6 +96,7 @@ namespace BeehiveManagementSystem
         private float unassignedWorkers = 3;
 
         public string StatusReport {  get; private set; }
+        public override float CostPerShift { get; protected set; }
 
         private void AddWorker(Bee newWorker) {
             if (unassignedWorkers >= 1)
@@ -175,6 +176,8 @@ namespace BeehiveManagementSystem
 
         public const float NECTAR_COLLECTED_PER_SHIFT = 33.25F;
 
+        public override float CostPerShift { get; protected set; }
+
         protected override void DoJob()
         {
             HoneyVault.CollectNectar(NECTAR_COLLECTED_PER_SHIFT);
@@ -189,6 +192,8 @@ namespace BeehiveManagementSystem
         }
 
         public const float NECTAR_PROCESSED_PER_SHIFT = 33.15F;
+
+        public override float CostPerShift { get; protected set; }
 
         protected override void DoJob()
         {
@@ -205,6 +210,8 @@ namespace BeehiveManagementSystem
         }
 
         public const float CARE_PROGRESS_PER_SHIFT = 0.15F;
+
+        public override float CostPerShift { get; protected set; }
 
         private QueenBee queen;
 
