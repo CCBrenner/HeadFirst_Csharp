@@ -87,7 +87,7 @@ namespace BeehiveManagementSystem
             UpdateStatusReport();
         }
 
-        public float EGGS_PER_SHIFT = 0.45f;
+        public float EGGS_PER_SHIFT = 0.45F;
         public float HONEY_PER_UNASSIGNED_WORKER = 0.5F;
 
         private Bee[] workers = {};
@@ -129,10 +129,9 @@ namespace BeehiveManagementSystem
                 UpdateStatusReport();
             }
         }
-        private void UpdateStatusReport()
-        {
-            string status = HoneyVault.StatusReport;
 
+        private string WorkerStatuses()
+        {
             int honeyManufacturerCount = 0;
             int nectarCollectorCount = 0;
             int eggCareCount = 0;
@@ -147,7 +146,13 @@ namespace BeehiveManagementSystem
             string pluralN = nectarCollectorCount == 1 ? "" : "s";
             string pluralE = eggCareCount == 1 ? "" : "s";
 
-            status += $"\n\nQueen's report:\nEgg count: {eggs}\nUnassigned workers: {unassignedWorkers}\n{nectarCollectorCount} Nectar Collector bee{pluralN}\n{honeyManufacturerCount} Honey Manufacturer bee{pluralH}\n{eggCareCount} Egg Care bee{pluralE}\nTOTAL WORKERS: {workers.Length}";
+            return $"{nectarCollectorCount} Nectar Collector bee{pluralN}\n{honeyManufacturerCount} Honey Manufacturer bee{pluralH}\n{eggCareCount} Egg Care bee{pluralE}\nTOTAL WORKERS: {workers.Length}";
+        }
+        private void UpdateStatusReport()
+        {
+            string status = HoneyVault.StatusReport;
+
+            status += $"\n\nQueen's report:\nEgg count: {eggs}\nUnassigned workers: {unassignedWorkers}\n{WorkerStatuses()}";
 
             StatusReport = status;
         }
