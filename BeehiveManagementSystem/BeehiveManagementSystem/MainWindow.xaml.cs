@@ -59,7 +59,13 @@ namespace BeehiveManagementSystem
         }
     }
 
-    abstract class Bee
+    interface IWorker
+    {
+        string Job { get; set; }
+        void WorkTheNextShift();
+    }
+
+    abstract class Bee : IWorker
     {
         public Bee(string title)
         {
@@ -91,14 +97,14 @@ namespace BeehiveManagementSystem
         public float EGGS_PER_SHIFT = 0.45F;
         public float HONEY_PER_UNASSIGNED_WORKER = 0.5F;
 
-        private Bee[] workers = {};
+        private IWorker[] workers = {};  // another option: private IWorker[] workers = new Worker[0];
         private float eggs;
         private float unassignedWorkers = 3;
 
         public string StatusReport {  get; private set; }
         public override float CostPerShift { get; protected set; }
 
-        private void AddWorker(Bee newWorker) {
+        private void AddWorker(IWorker newWorker) {
             if (unassignedWorkers >= 1)
             {
                 unassignedWorkers--;
@@ -135,7 +141,7 @@ namespace BeehiveManagementSystem
         private string WorkerStatus(string job)
         {
             int count = 0;
-            foreach (Bee bee in workers) if (bee.Job == job) count += 1;
+            foreach (IWorker worker in workers) if (worker.Job == job) count += 1;
             string s = "s";
             if (count == 1) s = "";
             return $"{count} {job} bee{s}";
@@ -154,9 +160,9 @@ namespace BeehiveManagementSystem
             eggs += EGGS_PER_SHIFT;
 
             // Have bees do their jobs
-            foreach(Bee bee in workers)
+            foreach(IWorker worker in workers)
             {
-                bee.WorkTheNextShift();
+                worker.WorkTheNextShift();
             }
 
             // Feed unassigned workers
