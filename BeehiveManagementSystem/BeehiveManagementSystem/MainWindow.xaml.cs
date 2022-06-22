@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.ComponentModel;
 
 namespace BeehiveManagementSystem
 {
@@ -77,13 +78,13 @@ namespace BeehiveManagementSystem
 
         public void WorkTheNextShift()
         {
-            // This doesn't quite make snes but it's what the book wants; no subtraction of honey from vault as if actually eating, just whether there is enough in there or not per 1 bee (makes this logic pretty useless bc it will always return true if CostPerShift is less than 3 for each bee which is the starting amount and the amount only ever goes up)
-            if (HoneyVault.ConsumeHoney(CostPerShift)) DoJob();
+            if (HoneyVault.ConsumeHoney(CostPerShift)) 
+                DoJob();
         }
         protected abstract void DoJob();
     }
 
-    class QueenBee : Bee
+    class QueenBee : Bee, INotifyPropertyChanged
     {
         public QueenBee() : base("Queen")
         {
@@ -100,6 +101,8 @@ namespace BeehiveManagementSystem
         private IWorker[] workers = {};  // another option: private IWorker[] workers = new Worker[0];
         private float eggs;
         private float unassignedWorkers = 3;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public string StatusReport {  get; private set; }
         public override float CostPerShift { get; protected set; }
@@ -134,7 +137,6 @@ namespace BeehiveManagementSystem
             {
                 eggs -= eggsToConvert;
                 unassignedWorkers += eggsToConvert;
-                UpdateStatusReport();
             }
         }
 
@@ -147,12 +149,19 @@ namespace BeehiveManagementSystem
             return $"{count} {job} bee{s}";
         }
         private void UpdateStatusReport()
+        { 
+            StatusReport = $"{HoneyVault.StatusReport}" +
+                $"\n\nQueen's report:\nEgg count: {eggs}\nUnassigned workers: {unassignedWorkers}" +
+                $"\n{WorkerStatus("Nectar Collector")}\n{WorkerStatus("Honey Manufacturer")}" +
+                $"\n{WorkerStatus("Egg Care")}\nTOTAL WORKERS: {workers.Length}";
+            OnPropertyChanged("StatusReport");  // This is saying "invoke OnPropertyChanged()" and "the reference
+                                                // is the tag that has "StatusReport" as its Binding"
+        }
+        private void OnPropertyChanged(string name)
         {
-            string status = HoneyVault.StatusReport;
-
-            status += $"\n\nQueen's report:\nEgg count: {eggs}\nUnassigned workers: {unassignedWorkers}\n{WorkerStatus("Nectar Collector")}\n{WorkerStatus("Honey Manufacturer")}\n{WorkerStatus("Egg Care")}\nTOTAL WORKERS: {workers.Length}";
-
-            StatusReport = status;
+            // This says, "if any properties have changed, then update the object in the WPF Window.Resources
+            // to reflect the current properties listed here (event handling)
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
         protected override void DoJob()
         {
@@ -235,30 +244,33 @@ namespace BeehiveManagementSystem
         public MainWindow()
         {
             InitializeComponent();
-            statusReport.Text = theQueen.StatusReport;
+            // statusReport.Text = theQueen.StatusReport;
+            theQueen = Resources["queen"] as QueenBee;
+            /*
             timer.Tick += Timer_Tick;
             timer.Interval = TimeSpan.FromSeconds(1.5);
             timer.Start();
+            */
         }
-
+        /*
         private void Timer_Tick(object sender, EventArgs e)
         {
             workNextShift_Click(this, new RoutedEventArgs());
         }
-
-        private QueenBee theQueen = new QueenBee();
-        private DispatcherTimer timer = new DispatcherTimer();
+        */
+        private readonly QueenBee theQueen;
+        // private DispatcherTimer timer = new DispatcherTimer();
 
         private void assignBee_Click(object sender, RoutedEventArgs e)
         {
             theQueen.AssignBee(jobSelector.Text);
-            statusReport.Text = theQueen.StatusReport;
+            // statusReport.Text = theQueen.StatusReport;
         }
 
         private void workNextShift_Click(object sender, RoutedEventArgs e)
         {
             theQueen.WorkTheNextShift();
-            statusReport.Text = theQueen.StatusReport;
+            // statusReport.Text = theQueen.StatusReport;
         }
     }
 }
