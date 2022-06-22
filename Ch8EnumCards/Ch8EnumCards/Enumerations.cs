@@ -1,4 +1,4 @@
-﻿public enum Value
+﻿public enum Values
 {
     Two,
     Three,
@@ -14,10 +14,10 @@
     King,
     Ace,
 }
-public enum Suit
+public enum Suits
 {
-    Diamond,
-    Spade,
-    Heart,
-    Club,
+    Diamonds,
+    Spades,
+    Hearts,
+    Clubs,
 }
