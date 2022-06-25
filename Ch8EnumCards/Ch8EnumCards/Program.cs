@@ -2,15 +2,14 @@
 
 class Card
 {
-    public Card(Values value, Suits suit, string name)
+    public Card(Values value, Suits suit)
     {
-        Value = value;
-        Suit = suit;
-        Name = name;
+        this.Value = value;
+        this.Suit = suit;
     }
 
-    public Values Value { get; set; }
-    public Suits Suit { get; set; }
+    public Values Value { get; private set; }
+    public Suits Suit { get; private set; }
     public string Name
     {
         get { return $"{Value} of {Suit}."; }
@@ -19,7 +18,7 @@ class Card
 class Program
 {
     public static Random random = new Random();
-    public Card card = new Card(random.Next(2, 15), random) // <- left off here
+    public Card card = new Card((Values)random.Next(2, 15), (Suits)random.Next(4));
     public static void Main(string[] args)
     {
         
