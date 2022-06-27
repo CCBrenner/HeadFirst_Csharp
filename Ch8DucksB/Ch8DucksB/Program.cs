@@ -27,9 +27,12 @@ class Duck : IComparable<Duck>
             return 0;
         }
     }
-}
+    public override string ToString()
+    {
+        return $"A {Size} inch {Kind}.";
+    }
 
-enum SortCriteria
+    enum SortCriteria
 {
     SizeThenKind,
     KindThenSize,
@@ -140,6 +143,7 @@ class Program
         comparer.SortBy = SortCriteria.KindThenSize;
         ducks.Sort(comparer);
         PrintDucks(ducks);
+        Console.ReadLine();
     }
     public static void PrintDucks(List<Duck> ducks)
     {
@@ -148,4 +152,5 @@ class Program
             Console.WriteLine($"{duck.Size} inch {duck.Kind}");
         }
     }
+}
 }
