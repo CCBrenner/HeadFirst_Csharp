@@ -78,12 +78,14 @@ class Program
         PrintCards(cards);
 
         // Print ordered list of cards from same shuffled list
-        // VVV LEFT OFF HERE VVV
+        cards.Sort(new CardComparerByValue());
+        Console.WriteLine("\n... sorting the cards ...\n");
+
+        PrintCards(cards);
     }
     static Card RandomCard()
     {
-        Card card = new Card((Values)random.Next(13), (Suits)random.Next(4));
-        return card;
+        return new Card((Values)random.Next(13), (Suits)random.Next(4));
     }
     static void PrintCards(List<Card> cards)
     {
