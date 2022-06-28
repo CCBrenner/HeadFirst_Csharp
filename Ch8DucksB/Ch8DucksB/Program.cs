@@ -31,6 +31,7 @@ class Duck : IComparable<Duck>
     {
         return $"A {Size} inch {Kind}.";
     }
+}
 
     enum SortCriteria
 {
@@ -149,8 +150,7 @@ class Program
     {
         foreach (Duck duck in ducks)
         {
-            Console.WriteLine($"{duck.Size} inch {duck.Kind}");
+            Console.WriteLine(duck);
         }
     }
-}
 }

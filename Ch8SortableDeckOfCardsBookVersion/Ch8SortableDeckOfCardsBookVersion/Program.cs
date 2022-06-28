@@ -39,6 +39,10 @@ class Card
     {
         get { return $"{Value} of {Suit}."; }
     }
+    public override string ToString()
+    {
+        return Name;
+    }
 }
 
 class CardComparerByValue : IComparer<Card>
