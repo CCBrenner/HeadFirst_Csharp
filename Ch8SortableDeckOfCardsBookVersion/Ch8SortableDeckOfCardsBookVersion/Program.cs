@@ -10,7 +10,7 @@ enum Values
     Six,
     Seven,
     Eight,
-    NIne,
+    Nine,
     Ten,
     Jack,
     Queen,
