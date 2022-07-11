@@ -47,7 +47,6 @@ class Program
         string name;
         while (true)
         {
-            // Valid data:
             if ((name = Console.ReadLine()).Length >= 2)
             {
                 firstJack = new Lumberjack(name);
@@ -69,14 +68,20 @@ class Program
                 Console.Write("\nNext Lumberjack's name (blank to continue): ");
                 continue;
             }
-            // Atleast one lumberjack entered and user chooses to move on
-            else if (lumberjacks.Count > 0 && name == "")
-                break;
-            // No lumberjacks and user gives a blank entry, so retry for first lumberjack
-            else if (lumberjacks.Count > 0 && name.Length < 2)
-                Console.Write("Next Lumberjack's name (blank to continue): ");
+            else if (name.Length == 1)
+            {
+                if (lumberjacks.Count > 0)
+                    Console.Write("Next Lumberjack's name (blank to continue): ");
+                else
+                    Console.Write("First Lumberjack's name: ");
+            }
             else
-                Console.Write("First Lumberjack's name: ");
+            {
+                if (lumberjacks.Count > 0)
+                    break;
+                else
+                    Console.Write("First Lumberjack's name: ");
+            }
         }
 
         // State which lumberjacks is eating and then print which flapjacks they ate off the stack, then move on to next lumberjack
