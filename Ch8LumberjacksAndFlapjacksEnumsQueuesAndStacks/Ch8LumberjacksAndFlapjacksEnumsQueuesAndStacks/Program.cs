@@ -19,14 +19,13 @@ class Lumberjack
     public string Name { get; private set; }
     private Stack<Flapjack> flapjackStack = new Stack<Flapjack>();
 
-    public void TakeFlapjack(int randomFlapjack)
+    public void TakeFlapjack(Flapjack randomFlapjack)
     {
-        Flapjack aFlap = (Flapjack)randomFlapjack;
-        flapjackStack.Push(aFlap);
+        flapjackStack.Push(randomFlapjack);
     }
     public void EatFlapjacks()
     {
-        for (int i = 0; flapjackStack.Count() != 0; i++)
+        while (flapjackStack.Count > 0)
         {
             Flapjack currentFlapjack = flapjackStack.Pop();
             Console.WriteLine($"{Name} ate a {currentFlapjack} flapjack.");
@@ -42,75 +41,49 @@ class Program
         Queue<Lumberjack> lumberjacks = new Queue<Lumberjack>();
         Random random = new Random();
 
+        // Begin program by asking which Lumberjacks are eating in the cafeteria
+        Console.Write("First Lumberjack's name: ");
+        Lumberjack firstJack;
+        string name;
         while (true)
         {
-            // Begin program by asking which Lumberjacks are eating in the cafeteria
-            Console.Write("First Lumberjack's name: ");
-            string firstJackName = Console.ReadLine();
-            Lumberjack firstJack;
-            if (firstJackName.Length >= 2)
+            // Valid data:
+            if ((name = Console.ReadLine()).Length >= 2)
             {
-                firstJack = new Lumberjack(firstJackName);
+                firstJack = new Lumberjack(name);
+
+                // For each lumberjack, ask how many flapjacks they are taking and add to their count
                 while (true)
                 {
-                    // For each lumberjack, ask how many flapjacks they are taking and add to their count
                     Console.Write("Number of flapjacks: ");
                     if (int.TryParse(Console.ReadLine(), out int numFirstJackFlapjacks))
                     {
                         for (int i = 0; i < numFirstJackFlapjacks; i++)
                         {
-                            firstJack.TakeFlapjack(random.Next(4));
+                            firstJack.TakeFlapjack((Flapjack)random.Next(4));
                         }
                         break;
                     }
                 }
                 lumberjacks.Enqueue(firstJack);
-                break;
+                Console.Write("\nNext Lumberjack's name (blank to continue): ");
+                continue;
             }
+            // Atleast one lumberjack entered and user chooses to move on
+            else if (lumberjacks.Count > 0 && name == "")
+                break;
+            // No lumberjacks and user gives a blank entry, so retry for first lumberjack
+            else if (lumberjacks.Count > 0 && name.Length < 2)
+                Console.Write("Next Lumberjack's name (blank to continue): ");
             else
-                Console.WriteLine("Please enter a name that is atleast 2 characters long.");
+                Console.Write("First Lumberjack's name: ");
         }
 
-        while (true)
-        {
-            // Begin program by asking which Lumberjacks are eating in the cafeteria
-            Console.Write("\nNext Lumberjack's name (blank to end): ");
-            string nextJackName = Console.ReadLine();
-            Lumberjack nextJack;
-            if (nextJackName.Length >= 2)
-            {
-                nextJack = new Lumberjack(nextJackName);
-                while (true)
-                {
-                    // For each lumberjack, ask how many flapjacks they are taking and add to their count
-                    Console.Write("Number of flapjacks: ");
-                    if (int.TryParse(Console.ReadLine(), out int numNextJackFlapjacks))
-                    {
-                        for (int i = 0; i < numNextJackFlapjacks; i++)
-                        {
-                            nextJack.TakeFlapjack(random.Next(4));
-                        }
-                        break;
-                    }
-                }
-                // Add lumberjack to the queue
-                lumberjacks.Enqueue(nextJack);
-            }
-            else if (nextJackName.Length == 0)
-                break;
-            else
-                Console.WriteLine("Please enter a name that is atleast 2 characters long.");
-        }
-
-        // State which lumberjacks is eating and then print which flapjacks they ate off the stack
+        // State which lumberjacks is eating and then print which flapjacks they ate off the stack, then move on to next lumberjack
         while (lumberjacks.Count() != 0)
         {
-            Lumberjack currentJack = lumberjacks.Dequeue();
-            Console.WriteLine($"\n{currentJack.Name} is eating flapjacks.");
-            currentJack.EatFlapjacks();
-
-            // When one is done, move on to the next lumberjack
+            Console.WriteLine($"\n{lumberjacks.Peek().Name} is eating flapjacks.");
+            lumberjacks.Dequeue().EatFlapjacks();
         }
-
     }
 }
