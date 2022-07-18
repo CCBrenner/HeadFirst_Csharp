@@ -21,7 +21,7 @@ class Lumberjack
 
     public void TakeFlapjack(Flapjack randomFlapjack)
     {
-        flapjackStack.Push(randomFlapjack);
+        flapjackStack.Push(randomFlapjack);  // Add Flapjack to stack
     }
     public void EatFlapjacks()
     {
@@ -43,13 +43,13 @@ class Program
 
         // Begin program by asking which Lumberjacks are eating in the cafeteria
         Console.Write("First Lumberjack's name: ");
-        Lumberjack firstJack;
+        Lumberjack aJack;
         string name;
         while (true)
         {
             if ((name = Console.ReadLine()).Length >= 2)
             {
-                firstJack = new Lumberjack(name);
+                aJack = new Lumberjack(name);
 
                 // For each lumberjack, ask how many flapjacks they are taking and add to their count
                 while (true)
@@ -59,12 +59,12 @@ class Program
                     {
                         for (int i = 0; i < numFirstJackFlapjacks; i++)
                         {
-                            firstJack.TakeFlapjack((Flapjack)random.Next(4));
+                            aJack.TakeFlapjack((Flapjack)random.Next(4));  // Generate Flapjack
                         }
                         break;
                     }
                 }
-                lumberjacks.Enqueue(firstJack);
+                lumberjacks.Enqueue(aJack);
                 Console.Write("\nNext Lumberjack's name (blank to continue): ");
                 continue;
             }

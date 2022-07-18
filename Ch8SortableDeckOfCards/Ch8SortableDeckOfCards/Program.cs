@@ -23,7 +23,7 @@ enum CardNumber
     Three,
     Four,
     Five,
-    Size,
+    Six,
     Seven,
     Eight,
     Nine,
@@ -92,21 +92,18 @@ class Deck
     }
     public void ShuffleCards(int shuffles)
     {
-        for (int i = 0; i < shuffles; i++)
+        for (int j = shuffles; j > 0; j--)
         {
             Random random = new Random();
-            Card[] tempCards = new Card[52];
-            foreach (Card card in Cards)
+            List<Card> cards = Cards.ToList();
+            List<Card> tempCards = new List<Card>();
+            for (int i = cards.Count; i > 0; i--)
             {
-                while (true)
-                {
-                    int newIndex = random.Next(52);
-                    if (tempCards[newIndex] != null) continue;
-                    tempCards[newIndex] = card;
-                    break;
-                }
+                int movingCard = random.Next(i);
+                tempCards.Add(cards[movingCard]);
+                cards.RemoveAt(movingCard);
             }
-            Cards = tempCards;
+            Cards = tempCards.ToArray();
         }
     }
     public void SortCards()
