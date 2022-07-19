@@ -48,7 +48,7 @@ namespace Ch8TwoDecksWPF
         }
         public CardSuit Suit { get; private set; }
         public CardNumber Number { get; private set; }
-        public string ToString()
+        public override string ToString()
         {
             return $"{Number} of {Suit}";
         }
@@ -128,6 +128,11 @@ namespace Ch8TwoDecksWPF
         public MainWindow()
         {
             InitializeComponent();
+            Deck leftDeck = new Deck();
+            Deck rightDeck = new Deck();
+            {
+
+            };
         }
     }
 }
