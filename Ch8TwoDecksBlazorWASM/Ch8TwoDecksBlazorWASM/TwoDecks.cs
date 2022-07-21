@@ -1,5 +1,4 @@
-﻿using Ch8TwoDecksBlazorWASM;
-namespace Ch8TwoDecksBlazorWASM
+﻿namespace Ch8TwoDecksBlazorWASM
 {
     public class TwoDecks
     {

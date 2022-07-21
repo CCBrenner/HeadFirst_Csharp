@@ -1,6 +1,6 @@
 ﻿namespace Ch8TwoDecksBlazorWASM
 {
-    enum Values
+    public enum Value
     {
         Ace,
         Two,

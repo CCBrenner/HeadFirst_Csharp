@@ -2,14 +2,14 @@
 {
     public class Card
     {
-        public Card(Values value, Suits suit)
+        public Card(Value value, Suit suit)
         {
             this.Value = value;
             this.Suit = suit;
         }
 
-        public Values Value { get; private set; }
-        public Suits Suit { get; private set; }
+        public Value Value { get; private set; }
+        public Suit Suit { get; private set; }
         public string Name
         {
             get { return $"{Value} of {Suit}."; }

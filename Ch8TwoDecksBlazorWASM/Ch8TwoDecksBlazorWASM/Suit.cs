@@ -1,6 +1,6 @@
 ﻿namespace Ch8TwoDecksBlazorWASM
 {
-    enum Suits
+    public enum Suit
     {
         Spades,
         Clubs,
