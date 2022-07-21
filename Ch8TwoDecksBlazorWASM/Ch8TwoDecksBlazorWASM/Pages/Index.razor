@@ -9,7 +9,7 @@
                 <label for="deck1" accesskey="o">
                     <strong>Deck <span style="text-decoration:underline">O</span>ne</strong>
                 </label>
-                <select @bind="Ch8TwoDecksBlazorWASM.LeftCardSelected" class="custom-select" size="10" id="deck1">
+                <select @bind="twoDecks.LeftCardSelected" class="custom-select" size="10" id="deck1">
                     @for (int i = 0; i < twoDecks.LeftDeckCount; i++)
                     {
                         <option value="@i">@twoDecks.LeftDeckCardName(i)</option>
@@ -34,5 +34,7 @@
 </div>
 
 @code {
+    using Ch8TwoDecksBlazorWASM;
+
     TwoDecks twoDecks = new TwoDecks();
 }

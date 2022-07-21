@@ -1,5 +1,5 @@
 ﻿using System;
-
+/*
 enum Values
 {
     Ace,
@@ -24,7 +24,7 @@ enum Suits
     Hearts,
     Diamonds,
 }
-
+*/
 namespace Ch8TwoDecksBlazorWASM
 {
     class Card
