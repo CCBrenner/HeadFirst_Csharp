@@ -25,42 +25,47 @@ enum Suits
     Diamonds,
 }
 
-class Card
+namespace Ch8TwoDecksBlazorWASM
 {
-    public Card(Values value, Suits suit)
+    class Card
     {
-        this.Value = value;
-        this.Suit = suit;
+        public Card(Values value, Suits suit)
+        {
+            this.Value = value;
+            this.Suit = suit;
+        }
+
+        public Values Value { get; private set; }
+        public Suits Suit { get; private set; }
+        public string Name
+        {
+            get { return $"{Value} of {Suit}."; }
+        }
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
-    public Values Value { get; private set; }
-    public Suits Suit { get; private set; }
-    public string Name
+    class CardComparerByValue : IComparer<Card>
     {
-        get { return $"{Value} of {Suit}."; }
-    }
-    public override string ToString()
-    {
-        return Name;
+        public int Compare(Card x, Card y)
+        {
+            if (x.Suit > y.Suit)
+                return 1;
+            else if (x.Suit < y.Suit)
+                return -1;
+            else if (x.Value > y.Value)
+                return 1;
+            else if (x.Value < y.Value)
+                return -1;
+            else
+                return 0;
+        }
     }
 }
 
-class CardComparerByValue : IComparer<Card>
-{
-    public int Compare(Card x, Card y)
-    {
-        if (x.Suit > y.Suit)
-            return 1;
-        else if (x.Suit < y.Suit)
-            return -1;
-        else if (x.Value > y.Value)
-            return 1;
-        else if (x.Value < y.Value)
-            return -1;
-        else
-            return 0;
-    }
-}
+/*
 class Program
 {
     public static Random random = new Random();
@@ -99,3 +104,4 @@ class Program
         }
     }
 }
+*/

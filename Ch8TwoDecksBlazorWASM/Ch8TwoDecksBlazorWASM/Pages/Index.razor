@@ -1,0 +1,38 @@
+﻿@page "/"
+
+<PageTitle>Two Decks</PageTitle>
+
+<div class="container">
+    <div class="row">
+        <div class="col-5">
+            <div class="row">
+                <label for="deck1" accesskey="o">
+                    <strong>Deck <span style="text-decoration:underline">O</span>ne</strong>
+                </label>
+                <select @bind="Ch8TwoDecksBlazorWASM.LeftCardSelected" class="custom-select" size="10" id="deck1">
+                    @for (int i = 0; i < twoDecks.LeftDeckCount; i++)
+                    {
+                        <option value="@i">@twoDecks.LeftDeckCardName(i)</option>
+                    }
+                </select>
+            </div>
+            <div class="row">
+                <button class="btn btn-primary col mt-2" accesskey="s" @onclick="twoDecks.Shuffle()">
+                    <span style="text-decoration:underline">S</span>huffle
+                </button>
+            </div>
+            <div class="row">
+                <button class="btn btn-primary col mt-2" accesskey="r" @onclick="twoDecks.Reset()">
+                    <span style="text-decoration:underline">R</span>eset
+                </button>
+            </div>
+            <div class="row">
+                <h2>@twoDecks.LeftDeckCardName(twoDecks.LeftCardSelected)</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    TwoDecks twoDecks = new TwoDecks();
+}
