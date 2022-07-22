@@ -12,7 +12,7 @@
         public Suit Suit { get; private set; }
         public string Name
         {
-            get { return $"{Value} of {Suit}."; }
+            get { return $"{Value} of {Suit}"; }
         }
         public override string ToString()
         {

@@ -17,12 +17,12 @@
                 </select>
             </div>
             <div class="row">
-                <button class="btn btn-primary col mt-2" accesskey="s" @onclick="twoDecks.Shuffle()">
+                <button class="btn btn-primary col mt-2" accesskey="s" @onclick="Shuffle">
                     <span style="text-decoration:underline">S</span>huffle
                 </button>
             </div>
             <div class="row">
-                <button class="btn btn-primary col mt-2" accesskey="r" @onclick="twoDecks.Reset()">
+                <button class="btn btn-primary col mt-2" accesskey="i" @onclick="Reset">
                     <span style="text-decoration:underline">R</span>eset
                 </button>
             </div>
@@ -30,11 +30,43 @@
                 <h2>@twoDecks.LeftDeckCardName(twoDecks.LeftCardSelected)</h2>
             </div>
         </div>
+        <div class="col-1">
+
+        </div>
+        <div class="col-5">
+            <div class="row">
+                <label for="deck1" accesskey="o">
+                    <strong>Deck <span style="text-decoration:underline">O</span>ne</strong>
+                </label>
+                <select @bind="twoDecks.RightCardSelected" class="custom-select" size="10" id="deck1">
+                    @for (int i = 0; i < twoDecks.RightDeckCount; i++)
+                    {
+                        <option value="@i">@twoDecks.RightDeckCardName(i)</option>
+                    }
+                </select>
+            </div>
+            <div class="row">
+                <button class="btn btn-primary col mt-2" accesskey="s" @onclick="Clear">
+                    <span style="text-decoration:underline">C</span>lear
+                </button>
+            </div>
+            <div class="row">
+                <button class="btn btn-primary col mt-2" accesskey="i" @onclick="Sort">
+                    Sor<span style="text-decoration:underline">t</span>
+                </button>
+            </div>
+            <div class="row">
+                <h2>@twoDecks.RightDeckCardName(twoDecks.RightCardSelected)</h2>
+            </div>
+        </div>
     </div>
 </div>
 
 @code {
-    using Ch8TwoDecksBlazorWASM;
-
     TwoDecks twoDecks = new TwoDecks();
+
+    private void Shuffle() { twoDecks.Shuffle(); }
+    private void Reset() { twoDecks.Reset(); }
+    private void Clear() { twoDecks.Clear(); }
+    private void Sort() { twoDecks.Sort(); }
 }

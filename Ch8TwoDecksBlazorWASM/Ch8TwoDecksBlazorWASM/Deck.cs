@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace Ch8TwoDecksBlazorWASM
+﻿namespace Ch8TwoDecksBlazorWASM
 {
+    using System.Collections.Generic;
     public class Deck : List<Card>
     {
         public Deck()
@@ -24,17 +23,19 @@ namespace Ch8TwoDecksBlazorWASM
         public void Shuffle()
         {
             List<Card> copy = new List<Card>(this);
+            Clear();
             while (copy.Count > 0)
             {
-                Clear();
                 int movingCard = random.Next(copy.Count);
                 Add(copy[movingCard]);
                 copy.RemoveAt(movingCard);
             }
         }
-        public void Deal(int index)
+        public Card Deal(int index)
         {
-            // stoped here
+            Card cardToDeal = base[index];  // Here base is refering to the Deck object just like 'this' would
+            RemoveAt(index);
+            return cardToDeal;
         }
     }
 }
