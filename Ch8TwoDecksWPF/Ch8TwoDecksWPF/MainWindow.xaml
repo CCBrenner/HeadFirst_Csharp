@@ -8,7 +8,7 @@
         Title="Two Decks" Height="450" Width="400" >
 
     <Window.Resources>
-        <local:Deck x:Key="leftDeck"/>
+        <local:Deck x:Key="leftdeck"/>
         <local:Deck x:Key="rightDeck"/>
     </Window.Resources>
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ using System.Windows.Shapes;
 namespace Ch8TwoDecksWPF
 {
     // ObservableCollection<T>, from System.Collections.ObjectModel, is a collection class that automatically notifies your WPF app any time its items have changed
-    class Deck : ObservableCollection<Card>
+    class Deck : ObservableCollection<Card>  //, INotifyPropertyChanged
     {
         public Deck()
         {
@@ -33,6 +34,7 @@ namespace Ch8TwoDecksWPF
             }
         }
         public Card[] Cards = new Card[52];
+
         public string PrintDeckOrder()
         {
             string deckOrder = "";
