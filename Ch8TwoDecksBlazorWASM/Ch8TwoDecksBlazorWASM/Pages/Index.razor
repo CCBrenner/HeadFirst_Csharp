@@ -9,7 +9,7 @@
                 <label for="deck1" accesskey="o">
                     <strong>Deck <span style="text-decoration:underline">O</span>ne</strong>
                 </label>
-                <select @bind="twoDecks.LeftCardSelected" class="custom-select" size="10" id="deck1">
+                <select @bind="twoDecks.LeftCardSelected" @onkeypress="LeftKeyHandler" @ondblclick="LeftDblClickHandler" class="custom-select" size="10" id="deck1">
                     @for (int i = 0; i < twoDecks.LeftDeckCount; i++)
                     {
                         <option value="@i">@twoDecks.LeftDeckCardName(i)</option>
@@ -35,10 +35,10 @@
         </div>
         <div class="col-5">
             <div class="row">
-                <label for="deck1" accesskey="o">
-                    <strong>Deck <span style="text-decoration:underline">O</span>ne</strong>
+                <label for="deck2" accesskey="w">
+                    <strong>Deck T<span style="text-decoration:underline">w</span>o</strong>
                 </label>
-                <select @bind="twoDecks.RightCardSelected" class="custom-select" size="10" id="deck1">
+                <select @bind="twoDecks.RightCardSelected" @onkeypress="RightKeyHandler" @ondblclick="RightDblClickHandler" class="custom-select" size="10" id="deck2">
                     @for (int i = 0; i < twoDecks.RightDeckCount; i++)
                     {
                         <option value="@i">@twoDecks.RightDeckCardName(i)</option>
@@ -46,17 +46,14 @@
                 </select>
             </div>
             <div class="row">
-                <button class="btn btn-primary col mt-2" accesskey="s" @onclick="Clear">
+                <button class="btn btn-primary col mt-2" accesskey="c" @onclick="Clear">
                     <span style="text-decoration:underline">C</span>lear
                 </button>
             </div>
             <div class="row">
-                <button class="btn btn-primary col mt-2" accesskey="i" @onclick="Sort">
+                <button class="btn btn-primary col mt-2" accesskey="t" @onclick="Sort">
                     Sor<span style="text-decoration:underline">t</span>
                 </button>
-            </div>
-            <div class="row">
-                <h2>@twoDecks.RightDeckCardName(twoDecks.RightCardSelected)</h2>
             </div>
         </div>
     </div>
@@ -65,8 +62,30 @@
 @code {
     TwoDecks twoDecks = new TwoDecks();
 
+    // TwoDecks.RightDeck.Clear();
+
     private void Shuffle() { twoDecks.Shuffle(); }
     private void Reset() { twoDecks.Reset(); }
     private void Clear() { twoDecks.Clear(); }
     private void Sort() { twoDecks.Sort(); }
+
+    public void LeftDblClickHandler(MouseEventArgs e)
+    {
+        twoDecks.MoveCard(Direction.LeftToRight);
+    }
+    public void LeftKeyHandler(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+            twoDecks.MoveCard(Direction.LeftToRight);
+    }
+
+    public void RightDblClickHandler(MouseEventArgs e)
+    {
+        twoDecks.MoveCard(Direction.RightToLeft);
+    }
+    public void RightKeyHandler(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+            twoDecks.MoveCard(Direction.RightToLeft);
+    }
 }

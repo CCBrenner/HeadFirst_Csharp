@@ -1,4 +1,10 @@
-﻿namespace Ch8TwoDecksBlazorWASM
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Ch9GroupByLinqClauses
 {
     public class Card : IComparable<Card>
     {

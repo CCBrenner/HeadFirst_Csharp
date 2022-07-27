@@ -5,11 +5,6 @@ VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ch8TwoDecksBlazorWASM", "Ch8TwoDecksBlazorWASM\Ch8TwoDecksBlazorWASM.csproj", "{F66D3F2A-44FE-4ECB-AAAD-9EC2F3590AC7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D07B0C5F-14C2-4E18-8863-8CC36685E6A0}"
-	ProjectSection(SolutionItems) = preProject
-		..\Ch8SortableDeckOfCardsBookVersion\Ch8SortableDeckOfCardsBookVersion\ProgramFromCh8SortableDeckOfCardsBookVersion.cs = ..\Ch8SortableDeckOfCardsBookVersion\Ch8SortableDeckOfCardsBookVersion\ProgramFromCh8SortableDeckOfCardsBookVersion.cs
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

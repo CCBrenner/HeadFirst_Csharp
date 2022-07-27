@@ -7,7 +7,8 @@ class Program
     public static void Main(string[] args)
     {
         // This used to be a sequence of Comics. Now it is a sequence of strings.
-        IEnumerable<string> mostExpensive =
+        // IEnumerable<string> mostExpensive =
+        var mostExpensive =  // example of using 'var' for implicit typing
             from comic in Comic.Catelog
             where Comic.Prices[comic.Issue] > 500
             // orderby -Comic.Prices[comic.Issue]

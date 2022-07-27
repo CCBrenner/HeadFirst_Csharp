@@ -25,11 +25,13 @@ class Program
 
         Console.WriteLine("Set up the query:");
         var result =
-            from o in listOfObjects
-            select o.InstanceNumber;
+            from something in listOfObjects
+            select something.InstanceNumber;
+
+        var immediate = result.ToList();  // remove this and change foreach from 'immediate' to 'result' to demonstrate deferred evaluation of LINQ queries
 
         Console.WriteLine("Run the foreach");
-        foreach (var number in listOfObjects)
+        foreach (var number in immediate)
             Console.WriteLine($"Writing #{number}");
     }
 }
