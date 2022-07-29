@@ -3,12 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch9JimmyLinq", "Ch9JimmyLinq\Ch9JimmyLinq.csproj", "{DD4525CE-EC71-4BA5-87C3-FD229FD6EBF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ch9JimmyLinq", "Ch9JimmyLinq\Ch9JimmyLinq.csproj", "{DD4525CE-EC71-4BA5-87C3-FD229FD6EBF6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BD9369AB-AC03-4E7D-9DF0-8B5547A89A6D}"
 	ProjectSection(SolutionItems) = preProject
 		..\Ch9ComicsCollectionLinq\Ch9ComicsCollectionLinq\Comic.cs = ..\Ch9ComicsCollectionLinq\Ch9ComicsCollectionLinq\Comic.cs
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch9LinqJImmyMSTest", "Ch9LinqJImmyMSTest\Ch9LinqJImmyMSTest.csproj", "{3A3E84C0-4A97-4B4B-9256-CB59571AC598}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +22,10 @@ Global
 		{DD4525CE-EC71-4BA5-87C3-FD229FD6EBF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD4525CE-EC71-4BA5-87C3-FD229FD6EBF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD4525CE-EC71-4BA5-87C3-FD229FD6EBF6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A3E84C0-4A97-4B4B-9256-CB59571AC598}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A3E84C0-4A97-4B4B-9256-CB59571AC598}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A3E84C0-4A97-4B4B-9256-CB59571AC598}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A3E84C0-4A97-4B4B-9256-CB59571AC598}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
