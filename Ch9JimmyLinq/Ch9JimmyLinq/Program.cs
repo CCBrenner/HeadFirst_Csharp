@@ -17,7 +17,6 @@ class Review
     public int Issue { get; set; }
     public Critics Critic { get; set; }
     public double Score { get; set; }
-
 }
 
 class Comic
@@ -38,6 +37,7 @@ class Comic
     };
     public static readonly IReadOnlyDictionary<int, decimal> Prices = new Dictionary<int, decimal>
     {
+        // Issue# (for Linq join) and Price
         { 6, 3600M },
         { 19, 500M },
         { 36, 650M },
@@ -54,8 +54,38 @@ class Comic
         new Review() { Issue = 74, Critic = Critics.RottenTornadoes, Score = 22.8 },
         new Review() { Issue = 74, Critic = Critics.MuddyCritic, Score = 84.2 },
         new Review() { Issue = 83, Critic = Critics.RottenTornadoes, Score = 89.4 },
-        new Review() { Issue = 96, Critic = Critics.MuddyCritic, Score = 98.1 },
+        new Review() { Issue = 97, Critic = Critics.MuddyCritic, Score = 98.1 },
     };
+}
+
+static class ComicAnalyzer
+{
+    private static PriceRange CalculatePriceRange(Comic comic)
+    {
+        if (Comic.Prices[comic.Issue] > 100)
+            return PriceRange.Expensive;
+        else
+            return PriceRange.Cheap;
+    }
+    public static IEnumerable<IGrouping<PriceRange, Comic>>? GroupComicsByPrice(IEnumerable<Comic> catelog, IReadOnlyDictionary<int, decimal> prices)
+    {
+        IEnumerable<IGrouping<PriceRange, Comic>>? groupedComics =
+            from comic in catelog
+            orderby prices[comic.Issue]
+            group comic by CalculatePriceRange(comic)
+            into comicGroup
+            select comicGroup;
+        return groupedComics;
+    }
+    public static IEnumerable<string> GetReviews(IEnumerable<Comic> catelog, IEnumerable<Review> reviews)
+    {
+        var joined =
+            from review in reviews
+            join issue in catelog
+            on review.Issue equals issue.Issue
+            select $"{review.Critic} rate issue #{issue.Issue} \'{issue.Name}\' {review.Score}";
+        return joined;
+    }
 }
 
 class Program
@@ -63,21 +93,41 @@ class Program
     public static void Main(string[] args)
     {
         var done = false;
-        Console.WriteLine("\nPress G to group comics by price, R to get reviews, and any other key quit.");
+        Console.WriteLine("Press G to group comics by price, R to get reviews, and any other key quit.\n");
         while (!done)
         {
             switch (Console.ReadKey(true).KeyChar.ToString().ToUpper())
             {
-                case 'G':
+                case "G":
                     done = GroupComicsByPrice();
                     break;
-                case 'R':
+                case "R":
                     done = GetReviews();
                     break;
                 default:
                     done = true;
+                    break;
             }
         }
     }
-    private bool 
+    private static bool GroupComicsByPrice()
+    {
+        var groups = ComicAnalyzer.GroupComicsByPrice(Comic.Catelog, Comic.Prices);
+        foreach (var group in groups)
+        {
+            Console.WriteLine($"{group.Key} comics:");
+            foreach (var comic in group)
+                Console.WriteLine($"#{comic.Issue} {comic.Name}: {Comic.Prices[comic.Issue]}");
+            Console.WriteLine();
+        }
+        return false;
+    }
+    private static bool GetReviews()
+    {
+        var reviews = ComicAnalyzer.GetReviews(Comic.Catelog, Comic.Reviews);
+        foreach (var review in reviews)
+            Console.WriteLine(review);
+        Console.WriteLine();
+        return false;
+    }
 }
