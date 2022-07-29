@@ -10,7 +10,7 @@ class Program
             .Shuffle()
             .Take(16);
 
-        var grouped =
+        IOrderedEnumerable<IGrouping<Suit, Card>>? grouped =
             from card in deck
             group card by card.Suit into suitGroup
             orderby suitGroup.Key descending
