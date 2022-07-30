@@ -3,7 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Ch9LinqJimmyMSTest
 {
     using System;
-    using System.Collections.Generic;
+    using System.Collections;
+    // using System.Collections.Generic;  // Not needed due to using System.Collections;
     using System.Linq;
     using Ch9JimmyLinq;
 
@@ -55,6 +56,37 @@ namespace Ch9LinqJimmyMSTest
             };
 
             var actualResults = ComicAnalyzer.GetReviews(testComics, testReviews).ToList();
+            CollectionAssert.AreEqual(expectedResults, actualResults);
+        }
+
+        [TestMethod]
+        public void ComicAnalyzer_Should_Handle_Weird_Review_Scores()
+        {
+            var testReviews = new[]
+            {
+                // negative scores
+                new Review() { Issue = 1, Critic = Critics.MuddyCritic, Score = -12.1212 },
+                // Really big numbers (it was found that the method cuts off the score at 7 decimal places; test has been adjusted to fit expected limit)
+                new Review() { Issue = 1, Critic = Critics.RottenTornadoes, Score = 1234123567.1234567 },
+                // Zero
+                new Review() { Issue = 2, Critic = Critics.MuddyCritic, Score = 0 },
+                // Multiple of the same score for the same issue
+                new Review() { Issue = 2, Critic = Critics.RottenTornadoes, Score = 95.11 },
+                new Review() { Issue = 2, Critic = Critics.RottenTornadoes, Score = 95.11 },
+                new Review() { Issue = 2, Critic = Critics.RottenTornadoes, Score = 95.11 },
+                new Review() { Issue = 2, Critic = Critics.RottenTornadoes, Score = 95.11 },
+            };
+            var expectedResults = new[]
+            {
+                "MuddyCritic rated issue #1 'Issue 1' -12.1212",
+                "RottenTornadoes rated issue #1 'Issue 1' 1234123567.1234567",
+                "MuddyCritic rated issue #2 'Issue 2' 0",
+                "RottenTornadoes rated issue #2 'Issue 2' 95.11",
+                "RottenTornadoes rated issue #2 'Issue 2' 95.11",
+                "RottenTornadoes rated issue #2 'Issue 2' 95.11",
+                "RottenTornadoes rated issue #2 'Issue 2' 95.11",
+            };
+            List<string> actualResults = ComicAnalyzer.GetReviews(testComics, testReviews).ToList();
             CollectionAssert.AreEqual(expectedResults, actualResults);
         }
     }
