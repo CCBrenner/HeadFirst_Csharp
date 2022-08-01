@@ -71,6 +71,7 @@ namespace Ch9JimmyLinq
         }
         public static IEnumerable<IGrouping<PriceRange, Comic>>? GroupComicsByPrice(IEnumerable<Comic> catelog, IReadOnlyDictionary<int, decimal> prices)
         {
+            /*
             IEnumerable<IGrouping<PriceRange, Comic>>? groupedComics =
                 from comic in catelog
                 orderby prices[comic.Issue]
@@ -78,15 +79,30 @@ namespace Ch9JimmyLinq
                 into comicGroup
                 select comicGroup;
             return groupedComics;
+            */
+            // With Linq methods instead:
+            return 
+                catelog
+                .OrderBy(comic => prices[comic.Issue])
+                .GroupBy(comic => CalculatePriceRange(comic, prices));
         }
         public static IEnumerable<string> GetReviews(IEnumerable<Comic> catelog, IEnumerable<Review> reviews)
         {
+            /* 
             var joined =
                 from review in reviews
                 join issue in catelog
                 on review.Issue equals issue.Issue
                 select $"{review.Critic} rated issue #{issue.Issue} \'{issue.Name}\' {review.Score}";
-            return joined;
+            return joined; 
+            */
+            // With Linq methods instead:
+            return reviews.Join(
+                    catelog, 
+                    review => review.Issue, 
+                    issue => issue.Issue, 
+                    (review, issue) => $"{review.Critic} rated issue #{issue.Issue} \'{issue.Name}\' {review.Score}"
+                );
         }
     }
 
@@ -98,6 +114,7 @@ namespace Ch9JimmyLinq
             Console.WriteLine("Press G to group comics by price, R to get reviews, and any other key quit.\n");
             while (!done)
             {
+                /*
                 switch (Console.ReadKey(true).KeyChar.ToString().ToUpper())
                 {
                     case "G":
@@ -110,6 +127,14 @@ namespace Ch9JimmyLinq
                         done = true;
                         break;
                 }
+                */
+                // With Linq Switch instead:
+                done = Console.ReadKey(true).KeyChar.ToString().ToUpper() switch
+                {
+                    "G" => GroupComicsByPrice(),
+                    "R" => GetReviews(),
+                    _ => true,
+                };
             }
         }
         private static bool GroupComicsByPrice()
