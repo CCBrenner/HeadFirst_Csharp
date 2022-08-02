@@ -2,20 +2,25 @@
 
 enum Sport
 {
-    Football, 
+    Football,
     Basketball,
-    Baseball, 
-    Hockey, 
-    Boxing, 
-    Rugby, 
+    Baseball,
+    Hockey,
+    Boxing,
+    Rugby,
     Fencing,
 }
 
-class ManualSportSequence : IEnumerable<Sport>
+// Improved on ManulaSportSequence by utilizing yield return statement
+class BetterSportSequence : IEnumerable<Sport>
 {
     public IEnumerator<Sport> GetEnumerator()
     {
-        return new ManualSportEnumerator();
+        int maxEnumValue = Enum.GetValues(typeof(Sport)).Length - 1;
+        for (int i = 0; i <= maxEnumValue; i++)
+        {
+            yield return (Sport)i;
+        }
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -43,13 +48,13 @@ class ManualSportEnumerator : IEnumerator<Sport>
     public void Reset() { current = 0; }
 
     public void Dispose() { return; }
-} 
+}
 
 class Program
 {
     public static void Main(string[] args)
     {
-        var sports = new ManualSportSequence();
+        var sports = new BetterSportSequence();
         foreach (var sport in sports)
             Console.WriteLine(sport);
     }
