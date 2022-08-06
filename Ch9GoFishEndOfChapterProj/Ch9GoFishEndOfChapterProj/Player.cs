@@ -34,7 +34,7 @@ namespace Ch9GoFishEndOfChapterProj
             while(hand.Count < 5)
             {
                 if (stock.Count() == 0) break;
-                hand.Add(stock.Deal(1));
+                DrawCard(stock);
             }
         }
         public IEnumerable<Card> DoYouHaveAny(Value value, Deck deck)
@@ -72,9 +72,9 @@ namespace Ch9GoFishEndOfChapterProj
         }
         public void DrawCard(Deck stock)
         {
-            throw new NotImplementedException();
+            hand.Add(stock.Deal(1));
         }
-        public Value RandomValueFromHand() => throw new NotImplementedException();
+        public Value RandomValueFromHand() => hand[Random.Next(hand.Count)].Value;
         public override string ToString() => Name;
     }
 }
