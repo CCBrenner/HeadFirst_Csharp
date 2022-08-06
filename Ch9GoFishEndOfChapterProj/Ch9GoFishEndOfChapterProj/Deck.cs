@@ -8,8 +8,8 @@
             Reset();
         }
 
-        private Random random = new Random();
-        public void Reset()
+        private Random random = Player.Random;
+        public Deck Reset()
         {
             Clear();
             for (int i = 0; i < 13; i++)
@@ -19,8 +19,9 @@
                     Add(new Card((Value)i, (Suit)j));
                 }
             }
+            return this;
         }
-        public void Shuffle()
+        public Deck Shuffle()
         {
             List<Card> copy = new List<Card>(this);
             Clear();
@@ -30,6 +31,7 @@
                 Add(copy[movingCard]);
                 copy.RemoveAt(movingCard);
             }
+            return this;
         }
         public Card Deal(int index)
         {
