@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ch9GoFishEndOfChapterProj
 {
-    internal class Player
+    public class Player
     {
         public Player(string name) => Name = name;
 
@@ -20,8 +20,8 @@ namespace Ch9GoFishEndOfChapterProj
         private List<Card> hand = new List<Card>();
         private List<Value> books = new List<Value>();
 
-        IEnumerable<Card> Hand => hand;
-        IEnumerable<Value> Books => books;
+        public IEnumerable<Card> Hand => hand;
+        public IEnumerable<Value> Books => books;
 
         public readonly string Name;
 
