@@ -56,7 +56,7 @@ namespace Ch9GoFishEndOfChapterProj
         }
         public void AddCardsAndPullOutBooks(IEnumerable<Card> cards)
         {
-            hand.Concat(cards);
+            hand = hand.Concat(cards).ToList();
             var potentialBooks = 
                 from card in hand
                 orderby card.Value
@@ -68,13 +68,20 @@ namespace Ch9GoFishEndOfChapterProj
                 if (potentialBook.Count() == 4)
                 {
                     books.Add(potentialBook.Key);
-                    foreach(Card card in Hand)
+                    /*foreach(Card card in hand)
                     {
                         if(card.Value == potentialBook.Key)
                             hand.Remove(card);  // Destruction of card happens here because book was created by adding the value to player's books
-                    }
+                    }*/
                 }
             }
+            foreach(Value value in books)
+            {
+                hand = hand
+                    .Where(card => card.Value != value)
+                    .ToList();
+            }
+            
         }
         public void DrawCard(Deck stock)
         {

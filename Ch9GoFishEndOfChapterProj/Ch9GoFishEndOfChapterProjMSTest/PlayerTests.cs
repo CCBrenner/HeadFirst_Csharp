@@ -55,14 +55,43 @@ public class PlayerTests
             "Jack of Clubs",
         }, jacks);
 
-        // Test player's Status property plus use of plural when quantity is 1
+        // Test player's Status property plus use of plural when quantity is 1 (for cards and books)
         Assert.AreEqual("Owen has 1 card and 0 books.", player.Status);
 
     }
     [TestMethod]
     public void TestAddCardsAndPullOutBooks()
     {
+        // Configure and test for starting with no books
+        IEnumerable<Card> cards = new List<Card>()
+        {
+            new Card(Value.Jack, Suit.Spades),
+            new Card(Value.Three, Suit.Clubs),
+            new Card(Value.Jack, Suit.Hearts),
+            new Card(Value.Three, Suit.Hearts),
+            new Card(Value.Four, Suit.Diamonds),
+            new Card(Value.Jack, Suit.Diamonds),
+            new Card(Value.Jack, Suit.Clubs),
+        };
+        Player player = new Player("Owen", cards);
+        Assert.AreEqual(0, player.Books.Count());
 
+        // Test adding cards and pulling out the two books that exist in player's hand
+        var cardsToAdd = new List<Card>()
+        {
+            new Card(Value.Three, Suit.Spades),
+            new Card(Value.Three, Suit.Diamonds),
+        };
+        player.AddCardsAndPullOutBooks(cardsToAdd);
+        var books = player.Books.ToList();
+        CollectionAssert.AreEqual(new List<Value>() { Value.Three, Value.Jack }, books);
+
+        // Test state of hand after adding cards and pulling books from hand
+        var hand = player.Hand.Select(card => card.ToString()).ToList();
+        CollectionAssert.AreEqual(new List<string>() { "Four of Diamonds" }, hand);
+
+        // Test player.Status for player's state after all of these actions have taken place
+        Assert.AreEqual("Owen has 1 card and 2 books.", player.Status);
     }
     [TestMethod]
     public void TestDrawCard()
