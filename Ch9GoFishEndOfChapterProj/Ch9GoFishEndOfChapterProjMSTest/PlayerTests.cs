@@ -96,7 +96,13 @@ public class PlayerTests
     [TestMethod]
     public void TestDrawCard()
     {
+        // Test drawing only one card
+        Player player = new Player("Owen", new List<Card>());
+        player.DrawCard(new Deck());
+        Assert.AreEqual(player.Hand.Count(), 1);
 
+        // Test to check if first card pulled is correct based on deck order
+        Assert.AreEqual("Ace of Spades", player.Hand.First().ToString());
     }
     [TestMethod]
     public void TestRandomValueFromHand()
