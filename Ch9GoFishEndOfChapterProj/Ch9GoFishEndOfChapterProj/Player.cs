@@ -72,7 +72,7 @@ namespace Ch9GoFishEndOfChapterProj
         }
         public void DrawCard(Deck stock)
         {
-            hand.Add(stock.Deal(1));
+            hand.Add(stock.Deal(0));
         }
         public Value RandomValueFromHand() => hand[Random.Next(hand.Count)].Value;
         public override string ToString() => Name;

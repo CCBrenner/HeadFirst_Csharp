@@ -13,10 +13,9 @@ public class PlayerTests
     {
         var player = new Player("Owen", new List<Card>());
         player.GetNextHand(new Deck());
-        CollectionAssert.AreEqual(
-            new Deck().Take(5).Select(card => card.ToString()).ToList(),
-            player.Hand.Select(card => card.ToString()).ToList()
-            );
+        var expected = new Deck().Take(5).Select(card => card.ToString()).ToList();
+        var actual = player.Hand.Select(card => card.ToString()).ToList();
+        CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
     public void TestDoYouHaveAny()
