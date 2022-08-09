@@ -27,7 +27,7 @@ namespace Ch9GoFishEndOfChapterProj
 
         public static string S(int s) => s == 1 ? "" : "s";
 
-        public string Status => $"{Name} has {hand.Count} cards in hand and {books.Count} books won.";
+        public string Status => $"{Name} has {hand.Count} card{S(hand.Count)} and {books.Count} book{S(books.Count)}.";
 
         public void GetNextHand(Deck stock)
         {
