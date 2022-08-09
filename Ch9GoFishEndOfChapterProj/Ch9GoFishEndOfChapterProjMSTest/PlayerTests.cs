@@ -20,7 +20,27 @@ public class PlayerTests
     [TestMethod]
     public void TestDoYouHaveAny()
     {
+        IEnumerable<Card> cards = new List<Card>()
+        {
+            new Card(Value.Jack, Suit.Spades),
+            new Card(Value.Three, Suit.Clubs),
+            new Card(Value.Three, Suit.Hearts),
+            new Card(Value.Four, Suit.Diamonds),
+            new Card(Value.Three, Suit.Diamonds),
+            new Card(Value.Jack, Suit.Clubs),
+        };
+        Player player = new Player("Owen", cards);
+        var threes = player.DoYouHaveAny(Value.Three, new Deck())
+            .Select(card => card.ToString())
+            .ToList();
+        CollectionAssert.AreEqual(new List<string>()
+        {
+            "Three of Clubs",
+            "Three of Hearts",
+            "Three of Diamonds",
+        }, threes);
 
+        Assert.AreEqual(3, player.Hand.Count());
     }
     [TestMethod]
     public void TestAddCardsAndPullOutBooks()

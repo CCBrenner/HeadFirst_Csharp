@@ -39,13 +39,19 @@ namespace Ch9GoFishEndOfChapterProj
         }
         public IEnumerable<Card> DoYouHaveAny(Value value, Deck deck)
         {
-            List<Card> matchingCards = new List<Card>();
-            foreach(Card card in hand)
-            {
-                if (card.Value == value)
-                    matchingCards.Add(card);
-            }
-            GetNextHand(deck);
+            // Pull and assign to temp var for return
+            var matchingCards = hand
+                .Where(card => card.Value == value)
+                .OrderBy(card => card.Suit);
+
+            // Delete pulled and assigned matching cards
+            hand = hand
+                .Where(card => card.Value != value)
+                .ToList();
+
+            // If no cards, draw a new hand
+            if (hand.Count() == 0) GetNextHand(deck);
+
             return matchingCards;
         }
         public void AddCardsAndPullOutBooks(IEnumerable<Card> cards)
