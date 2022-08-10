@@ -12,10 +12,11 @@ public class PlayerTests
     public void TestGetNextHand()
     {
         // Test for correct number of cards and correct cards added to hand when starting with an empty hand
-        var player = new Player("Owen", new List<Card>());
+        Player player = new Player("Owen", new List<Card>());
         player.GetNextHand(new Deck());
-        var expected = new Deck().Take(5).Select(card => card.ToString()).ToList();
-        var actual = player.Hand.Select(card => card.ToString()).ToList();
+        List<string> expected = new Deck().Take(5).Select(card => card.ToString()).ToList();
+        List<string> actual = player.Hand.Select(card => card.ToString()).ToList();
+        Console.WriteLine(actual.Count());
         CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]
@@ -148,6 +149,4 @@ public class MockRandom : System.Random
     public override int Next() => ValueToReturn;
     public override int Next(int maxValue) => ValueToReturn;
     public override int Next(int minValue, int maxValue) => ValueToReturn;
-
-
 }

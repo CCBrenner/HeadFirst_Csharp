@@ -59,11 +59,8 @@ namespace Ch9GoFishEndOfChapterProj
 
         public void GetNextHand(Deck stock)
         {
-            while (hand.Count < 5)
-            {
-                if (stock.Count() == 0) break;
+            while ((hand.Count < 5) && (stock.Count() == 0))
                 DrawCard(stock);
-            }
         }
 
         /// <summary>
