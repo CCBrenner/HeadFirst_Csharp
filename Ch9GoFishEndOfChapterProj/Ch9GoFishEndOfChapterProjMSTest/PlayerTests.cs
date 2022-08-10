@@ -107,7 +107,18 @@ public class PlayerTests
     [TestMethod]
     public void TestRandomValueFromHand()
     {
+        // Test "Ace"
+        var player = new Player("Owen", new Deck());
+        Player.Random = new MockRandom() { ValueToReturn = 0 };
+        Assert.AreEqual("Ace", player.RandomValueFromHand().ToString());
 
+        // Test "Two"
+        Player.Random = new MockRandom() { ValueToReturn = 4 };
+        Assert.AreEqual("Two", player.RandomValueFromHand().ToString());
+
+        // Test "Three"
+        Player.Random = new MockRandom() { ValueToReturn = 8 };
+        Assert.AreEqual("Three", player.RandomValueFromHand().ToString());
     }
 }
 

@@ -37,6 +37,12 @@ namespace Ch9GoFishEndOfChapterProj
                 DrawCard(stock);
             }
         }
+        /// <summary>
+        /// If this player has any cards that match the value, return them. If this player runs out of cards, get the next hand from the deck.
+        /// </summary>
+        /// <param name="value">Value I'm asked for.</param>
+        /// <param name="deck">Deck to draw my next hand from.</param>
+        /// <returns>The cards that were pulled out my hand (as this player object) that will be given to the asking player.</returns>
         public IEnumerable<Card> DoYouHaveAny(Value value, Deck deck)
         {
             // Pull and assign to temp var for return
