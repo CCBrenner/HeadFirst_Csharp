@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ch9GoFishEndOfChapterProj",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ch9GoFishEndOfChapterProjMSTest", "Ch9GoFishEndOfChapterProjMSTest\Ch9GoFishEndOfChapterProjMSTest.csproj", "{F05E372D-29C8-411C-85D9-85E4208F74B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch9JimmyLinq", "..\Ch9JimmyLinq\Ch9JimmyLinq\Ch9JimmyLinq.csproj", "{C4B10B0A-395E-42DD-82EE-4644F356444F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F05E372D-29C8-411C-85D9-85E4208F74B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F05E372D-29C8-411C-85D9-85E4208F74B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F05E372D-29C8-411C-85D9-85E4208F74B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4B10B0A-395E-42DD-82EE-4644F356444F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4B10B0A-395E-42DD-82EE-4644F356444F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4B10B0A-395E-42DD-82EE-4644F356444F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4B10B0A-395E-42DD-82EE-4644F356444F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -103,6 +103,26 @@ public class PlayerTests
 
         // Test to check if first card pulled is correct based on deck order
         Assert.AreEqual("Ace of Spades", player.Hand.First().ToString());
+
+        // Test to check if method pulls books after a player receives a 4th card of the same Value (check books and check player's hand)
+        Deck fourthCardDeck = new Deck();
+        fourthCardDeck.Clear();
+        fourthCardDeck.AddRange(new List<Card>() {
+            new Card(Value.Ace, Suit.Clubs),
+            new Card(Value.Ace, Suit.Hearts),
+            new Card(Value.Ace, Suit.Diamonds)
+        });
+        for(int i = 0; i < 3; i++) player.DrawCard(fourthCardDeck);
+        List<Value> expectedBooks = new List<Value>() { Value.Ace };
+
+        CollectionAssert.AreEqual(expectedBooks, player.Books.ToList());
+        Assert.AreEqual(0, player.Hand.Count());
+
+        // Test to check if method handles a deck with no cards left in it correctly (does not draw a card and does not check for books)
+        // Benching this for now, come back to it when I knonw how to assert for absence of a thrown expection
+        /*Deck noCardDeck = new Deck();
+        noCardDeck.Clear();
+        player.DrawCard(noCardDeck);*/
     }
     [TestMethod]
     public void TestRandomValueFromHand()
