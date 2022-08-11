@@ -8,7 +8,26 @@ namespace Ch9GoFishEndOfChapterProj
     {
         public GameState(string humanPlayerName, IEnumerable<string> opponentNames, Deck stock)
         {
-            throw new NotImplementedException();
+            HumanPlayer = new Player(humanPlayerName);
+            List<Player> tempOpponentsList = new List<Player>();
+
+            foreach(String opponentName in opponentNames)
+                tempOpponentsList.Add(new Player(opponentName));
+
+            Opponents = tempOpponentsList;
+
+            List<Player> tempPlayersList = new List<Player>();
+            tempPlayersList.Add(HumanPlayer);
+            tempPlayersList.AddRange(tempOpponentsList);
+
+            foreach(Player player in tempPlayersList)
+                player.GetNextHand(stock);
+
+            Players = tempPlayersList;
+
+            HumanPlayer.GetNextHand(stock);
+
+            Stock = stock;
         }
         public readonly IEnumerable<Player> Players;
         public readonly IEnumerable<Player> Opponents;
