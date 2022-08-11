@@ -45,11 +45,11 @@ public class GameStateTests
         };
         var gameState = new GameState("Human", computerPlayerNames, new Deck());
         Player.Random = new MockRandom() { ValueToReturn = 1 };
-        Assert.AreEqual("Computer 2", gameState.RandomPlayer(gameState.Players.ToList()[0]).Name);
+        Assert.AreEqual("Computer2", gameState.RandomPlayer(gameState.Players.ToList()[0]).Name);
 
         Player.Random = new MockRandom() { ValueToReturn = 0 };
         Assert.AreEqual("Human", gameState.RandomPlayer(gameState.Players.ToList()[1]).Name);
-        Assert.AreEqual("Computer 1", gameState.RandomPlayer(gameState.Players.ToList()[0]).Name);
+        Assert.AreEqual("Computer1", gameState.RandomPlayer(gameState.Players.ToList()[0]).Name);
     }
 
     [TestMethod]

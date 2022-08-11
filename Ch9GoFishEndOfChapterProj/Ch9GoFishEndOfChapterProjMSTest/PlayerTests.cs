@@ -144,6 +144,9 @@ public class PlayerTests
 
 public class MockRandom : System.Random
 {
+    // Purposeof MockRandom: Override the three methods overloads used with Random
+    // so that they all return the desired int when called by a method in a class
+    // that is being tested
     public int ValueToReturn { get; set; } = 0;
     public override int Next() => ValueToReturn;
     public override int Next(int maxValue) => ValueToReturn;
