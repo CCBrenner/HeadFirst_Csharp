@@ -8,26 +8,34 @@ namespace Ch9GoFishEndOfChapterProj
     {
         public GameState(string humanPlayerName, IEnumerable<string> opponentNames, Deck stock)
         {
-            HumanPlayer = new Player(humanPlayerName);
-            List<Player> tempOpponentsList = new List<Player>();
-
-            foreach(String opponentName in opponentNames)
-                tempOpponentsList.Add(new Player(opponentName));
-
-            Opponents = tempOpponentsList;
-
             List<Player> tempPlayersList = new List<Player>();
-            tempPlayersList.Add(HumanPlayer);
-            tempPlayersList.AddRange(tempOpponentsList);
+            List<Player> tempOpponentsList = new List<Player>();
+            Player human = new Player(humanPlayerName);
 
-            foreach(Player player in tempPlayersList)
+            foreach (String opponentName in opponentNames)
+                tempOpponentsList.Add(new Player(opponentName));
+            Console.WriteLine(tempOpponentsList.Count());
+            tempPlayersList.Add(human);
+            tempPlayersList.AddRange(tempOpponentsList);
+            Console.WriteLine(tempPlayersList.Count());
+
+
+            foreach (Player player in tempPlayersList)
+            {
                 player.GetNextHand(stock);
+                Console.WriteLine(player.Hand.Count());
+            }
 
             Players = tempPlayersList;
 
-            HumanPlayer.GetNextHand(stock);
+            Opponents = tempOpponentsList;
+
+            HumanPlayer = human;
+
+            GameOver = false;
 
             Stock = stock;
+            Console.WriteLine(Stock.Count);
         }
         public readonly IEnumerable<Player> Players;
         public readonly IEnumerable<Player> Opponents;

@@ -16,7 +16,6 @@ public class PlayerTests
         player.GetNextHand(new Deck());
         List<string> expected = new Deck().Take(5).Select(card => card.ToString()).ToList();
         List<string> actual = player.Hand.Select(card => card.ToString()).ToList();
-        Console.WriteLine(actual.Count());
         CollectionAssert.AreEqual(expected, actual);
     }
     [TestMethod]

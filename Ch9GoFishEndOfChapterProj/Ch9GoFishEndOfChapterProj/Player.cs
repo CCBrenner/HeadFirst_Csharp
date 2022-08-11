@@ -59,8 +59,8 @@ namespace Ch9GoFishEndOfChapterProj
 
         public void GetNextHand(Deck stock)
         {
-            while ((hand.Count < 5) && (stock.Count() == 0))
-                DrawCard(stock);
+            while ((hand.Count < 5) && (stock.Count() != 0))
+                hand.Add(stock.Deal(0));
         }
 
         /// <summary>
@@ -69,7 +69,8 @@ namespace Ch9GoFishEndOfChapterProj
         /// <param name="stock">Deck to pull a card from.</param>
         public void DrawCard(Deck stock)
         {
-            AddCardsAndPullOutBooks(new List<Card>() { stock.Deal(0) });
+            if(stock.Count() > 0)
+                AddCardsAndPullOutBooks(new List<Card>() { stock.Deal(0) });
         }
 
         /// <summary>
