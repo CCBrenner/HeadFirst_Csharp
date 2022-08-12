@@ -44,27 +44,28 @@ namespace Ch9GoFishEndOfChapterProj
 
             var matchingCards = playerToAsk.DoYouHaveAny(valuesToAskFor, stock);
             string numOfMatchingCards = matchingCards.Count().ToString();
-
-            if(player.Hand.Count() == 0)
                 
-
             if (matchingCards.Count() > 0)
             {
                 player.AddCardsAndPullOutBooks(matchingCards);
-                statusMessage = $"{statusMessage}{playerToAsk} has {numOfMatchingCards} {valuesToAskFor} card{Player.S(matchingCards.Count())}";
+                statusMessage += $"{playerToAsk} has {numOfMatchingCards} {valuesToAskFor} card{Player.S(matchingCards.Count())}";
             }
-            else if (stock.Count() == 0)
-                statusMessage = $"{statusMessage}The stock is out of cards";  
+            else if (stock.Count == 0)
+                statusMessage += $"The stock is out of cards";  
             else
             {
                 player.DrawCard(stock);
-                statusMessage = $"{statusMessage}{player} drew a card";  
+                statusMessage += $"{player} drew a card";  
             }
                 
             if(player.Hand.Count() == 0)
             {
                 player.GetNextHand(stock);
-                statusMessage = $"{statusMessage}{player} ran out of cards, drew {player.Hand.Count()} card{Player.S(player.Hand.Count())} from the stock";
+                statusMessage += $"{Environment.NewLine}{player} ran out of cards" +
+                    $"{Environment.NewLine}{player} drew {player.Hand.Count()} " +
+                    $"card{Player.S(player.Hand.Count())} from the stock";
+                if (stock.Count == 0)
+                    statusMessage += $"{Environment.NewLine}The stock is out of cards";
             }
 
             return statusMessage; 
