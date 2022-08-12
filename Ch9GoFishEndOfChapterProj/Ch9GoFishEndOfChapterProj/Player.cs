@@ -81,6 +81,8 @@ namespace Ch9GoFishEndOfChapterProj
         {
             // Add cards to hand (if any)
             // hand = hand.Concat(cards).ToList();  // The implicit upcasting of hand here to IEnumerable<Card> requires the result of Concat() to be converted to a List<Card> again before assigning to hand
+            // Other note: I really don't like how they kept this code which violates the principle of Separation of Concerns;
+            // It would be much easier to use if they were two methods instead of one
             hand.AddRange(cards);  // Does the same thing as the line above this one
 
             // Puts the cards in a state that can be checked by grouping them by value and counting the number of cards in each group

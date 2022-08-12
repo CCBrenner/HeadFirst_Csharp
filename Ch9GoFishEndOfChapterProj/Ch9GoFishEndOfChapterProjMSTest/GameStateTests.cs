@@ -30,6 +30,7 @@ public class GameStateTests
         CollectionAssert.AreEqual(expectedGameState, actualGameState);
 
         // Test that HumanPlayer's hand was dealt 5 cards
+        Console.WriteLine(gameState.HumanPlayer.Books.Count());
         Assert.AreEqual(5, gameState.HumanPlayer.Hand.Count());
     }
 
@@ -119,6 +120,44 @@ public class GameStateTests
         emptyDeck.Clear();
         GameState gameState = new GameState("Human", computerPlayerNames, new Deck());
         Assert.AreEqual("The winners are Human and Computer1 and Computer2 and Computer3", gameState.CheckForWinner());
+
+        Deck computerTwoWinsDeck = new Deck();
+        computerTwoWinsDeck.Clear();
+        List<Card> cardsToAdd = new List<Card>()
+        {
+            // Cards that game will deal to Owen
+            new Card(Value.Nine, Suit.Spades),
+            new Card(Value.Jack, Suit.Hearts),
+            new Card(Value.Nine, Suit.Spades),
+            new Card(Value.Eight, Suit.Diamonds),
+            new Card(Value.Six, Suit.Hearts),
+
+            // Cards that game will deal to Brittney
+            new Card(Value.Eight, Suit.Diamonds),
+            new Card(Value.Nine, Suit.Clubs),
+            new Card(Value.Seven, Suit.Spades),
+            new Card(Value.Jack, Suit.Clubs),
+            new Card(Value.Six, Suit.Spades),
+
+            // Cards that game will deal to Owen
+            new Card(Value.Jack, Suit.Spades),
+            new Card(Value.Jack, Suit.Hearts),
+            new Card(Value.Nine, Suit.Spades),
+            new Card(Value.Jack, Suit.Diamonds),
+            new Card(Value.Jack, Suit.Clubs),
+
+            // Cards that game will deal to Brittney
+            new Card(Value.Nine, Suit.Diamonds),
+            new Card(Value.Six, Suit.Clubs),
+            new Card(Value.Seven, Suit.Spades),
+            new Card(Value.Jack, Suit.Clubs),
+            new Card(Value.Eight, Suit.Spades),
+        };
+        computerTwoWinsDeck.AddRange(cardsToAdd);
+
+        gameState = new GameState("Owen", computerPlayerNames, computerTwoWinsDeck);
+        foreach(Player player in gameState.Players) player.AddCardsAndPullOutBooks(new List<Card>());
+        Assert.AreEqual("The winner is Computer2", gameState.CheckForWinner());
     }
 }
 

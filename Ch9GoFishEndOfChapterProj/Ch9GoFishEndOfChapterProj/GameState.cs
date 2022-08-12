@@ -60,7 +60,27 @@ namespace Ch9GoFishEndOfChapterProj
         }
         public string CheckForWinner()
         {
-            throw new NotImplementedException();
+            int topScore = 0;
+            List<Player> winnerPlayers = new List<Player>();
+            foreach(Player player in Players)
+            {
+                if (player.Books.Count() > topScore)
+                {
+                    topScore = player.Books.Count();
+                    winnerPlayers.Clear();
+                    winnerPlayers.Add(player);
+                }
+                else if (player.Books.Count() == topScore)
+                    winnerPlayers.Add(player);
+            }
+            if (winnerPlayers.Count() == 1) return $"The winner is {winnerPlayers.First()}";
+            else
+            {
+                string winners = $"The winners are {winnerPlayers.First()}";
+                for (int i = 1; i < winnerPlayers.Count(); i++)
+                    winners += $" and {winnerPlayers[i]}";
+                return winners;
+            }
         }
     }
 }
