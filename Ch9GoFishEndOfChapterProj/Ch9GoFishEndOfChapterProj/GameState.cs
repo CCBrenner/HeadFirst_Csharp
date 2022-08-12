@@ -41,22 +41,31 @@ namespace Ch9GoFishEndOfChapterProj
         {
             // Initialize
             string pluralAndIfSix = valuesToAskFor == Value.Six ? "es" : "s";
-            string beginningStatement = $"{player} asked {playerToAsk} for {valuesToAskFor}{pluralAndIfSix}";
+            string statusMessage = $"{player} asked {playerToAsk} for {valuesToAskFor}{pluralAndIfSix}{Environment.NewLine}";  // We use Environment.NewLIne instead of \n because of its added support on Macs
 
             var matchingCards = playerToAsk.DoYouHaveAny(valuesToAskFor, stock);
-            if(matchingCards.Count() == 0)
-                player.DrawCard(stock);
-            else
-                player.AddCardsAndPullOutBooks(matchingCards);
-
-            // If no matches and Deck is empty
-            if ((matchingCards.Count() == 0) || (matchingCards.Count() == 0) && (stock.Count() == 0))
-                return $"{beginningStatement}" + Environment.NewLine + $"The stock is out of cards";
-
-            string s = matchingCards.Count() == 1 ? "" : "s";
             string numOfMatchingCards = matchingCards.Count().ToString();
 
-            return $"{beginningStatement}" + Environment.NewLine + $"{playerToAsk} has {numOfMatchingCards} {valuesToAskFor} card{s}"; 
+            if (matchingCards.Count() > 0)
+            {
+                player.AddCardsAndPullOutBooks(matchingCards);
+                statusMessage = $"{statusMessage}{playerToAsk} has {numOfMatchingCards} {valuesToAskFor} card{Player.S(matchingCards.Count())}";
+            }
+            else if (stock.Count() == 0)
+                statusMessage = $"{statusMessage}The stock is out of cards";  
+            else
+            {
+                player.DrawCard(stock);
+                statusMessage = $"{statusMessage}{player} drew a card";  
+            }
+                
+            if(player.Hand.Count() == 0)
+            {
+                player.GetNextHand(stock);
+                statusMessage = $"{statusMessage}{player} ran out of cards, drew {player.Hand.Count()} card{Player.S(player.Hand.Count())} from the stock";
+            }
+
+            return statusMessage; 
         }
         public string CheckForWinner()
         {

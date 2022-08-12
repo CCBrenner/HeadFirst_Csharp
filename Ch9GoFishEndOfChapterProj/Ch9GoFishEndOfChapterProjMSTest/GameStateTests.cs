@@ -85,26 +85,47 @@ public class GameStateTests
         Player owen = gameState.HumanPlayer;
         Player brittney = gameState.Opponents.First();
 
+        // Asks for value, opponent has it, card is transfered and books are pulled
         string message = gameState.PlayRound(owen, brittney, Value.Jack, deck);
-        Assert.AreEqual("Owen asked Brittney for Jacks" + Environment.NewLine + "Brittney has 1 Jack card", message);
+        Assert.AreEqual($"Owen asked Brittney for Jacks{Environment.NewLine}Brittney has 1 Jack card", message);
         Assert.AreEqual(1, owen.Books.Count());
         Assert.AreEqual(2, owen.Hand.Count());
         Assert.AreEqual(0, brittney.Books.Count());
         Assert.AreEqual(4, brittney.Hand.Count());
 
+        // Asks for value, opponent doesn't have it, and deck has no cards but Human player does have cards left
         message = gameState.PlayRound(brittney, owen, Value.Six, deck);
-        Assert.AreEqual("Brittney asked Owen for Sixes" + Environment.NewLine + "Owen has 1 Six card", message);
+        Assert.AreEqual($"Brittney asked Owen for Sixes{Environment.NewLine}Owen has 1 Six card", message);
         Assert.AreEqual(1, owen.Books.Count());
         Assert.AreEqual(1, owen.Hand.Count());
         Assert.AreEqual(1, brittney.Books.Count());
         Assert.AreEqual(1, brittney.Hand.Count());
 
-        gameState.PlayRound(owen, brittney, Value.Nine, deck);
+        // Asks for value, opponent doesn't have it, and player is able to draw card from deck
+        message = gameState.PlayRound(owen, brittney, Value.Nine, deck);
+        Console.WriteLine(deck.Count());
+        Assert.AreEqual($"Owen asked Brittney for Nines{Environment.NewLine}Owen drew a card", message);
+        Assert.AreEqual(1, owen.Books.Count());
+        Assert.AreEqual(2, owen.Hand.Count());
+        Assert.AreEqual(1, brittney.Books.Count());
+        Assert.AreEqual(1, brittney.Hand.Count());
+        /*
+        // Asks for value, opponent has it, player gets a book and is left with no cards causing them to have to draw a full hand or as many as is left in the deck
+
+
+        // Player has no cards to start their turn
         gameState.PlayRound(owen, brittney, Value.Queen, deck);
         message = gameState.PlayRound(owen, brittney, Value.King, deck);
-        Assert.AreEqual("Owen asked Brittney for Kings" + Environment.NewLine + "The stock is out of cards", message);
+        Assert.AreEqual($"Owen asked Brittney for Kings{Environment.NewLine}The stock is out of cards", message);
         Assert.AreEqual(1, owen.Books.Count());
         Assert.AreEqual(3, owen.Hand.Count());
+
+        // Asks for value, opponnent doesn't have it, deck has one card and HumanPlayer gets a book and doesn't have any cards
+        deck.Clear();
+        gameState.PlayRound(brittney, owen, Value.Queen, deck);
+        gameState.PlayRound(brittney, owen, Value.Nine, deck);
+        gameState.PlayRound(brittney, owen, Value.King, deck);
+        gameState.PlayRound(owen, brittney, Value.Two, deck);*/
     }
 
     [TestMethod]
