@@ -159,7 +159,7 @@ public class GameStateTests
         };
         gameState.Stock.Clear();
         gameState.Stock.AddRange(cardsToAdd);
-        gameState.PlayRound(owen, brittney, Value.Five, deck);  // Clearing her hand for three lines
+        gameState.PlayRound(owen, brittney, Value.Five, deck);  // Clearing Brittney's hand for three lines
         gameState.PlayRound(owen, brittney, Value.Three, deck);
         gameState.PlayRound(owen, brittney, Value.Seven, deck);
         message = gameState.PlayRound(brittney, owen, Value.Six, deck);
@@ -169,7 +169,6 @@ public class GameStateTests
             $"{Environment.NewLine}Brittney ran out of cards" +
             $"{Environment.NewLine}Brittney drew 0 cards from the stock" +
             $"{Environment.NewLine}The stock is out of cards", message);
-
     }
 
     [TestMethod]
