@@ -11,16 +11,12 @@ namespace Ch9GoFishEndOfChapterProj
             List<Player> tempPlayersList = new List<Player>();
             List<Player> tempOpponentsList = new List<Player>();
             Player human = new Player(humanPlayerName);
-            foreach (String opponentName in opponentNames)
-                tempOpponentsList.Add(new Player(opponentName));
+            foreach (String opponentName in opponentNames) tempOpponentsList.Add(new Player(opponentName));
 
             tempPlayersList.Add(human);
             tempPlayersList.AddRange(tempOpponentsList);
 
-            foreach (Player player in tempPlayersList)
-            {
-                player.GetNextHand(stock);
-            }
+            foreach (Player player in tempPlayersList) player.GetNextHand(stock);
 
             Players = tempPlayersList;
             Opponents = tempOpponentsList;
@@ -43,9 +39,25 @@ namespace Ch9GoFishEndOfChapterProj
 
         public string PlayRound(Player player, Player playerToAsk, Value valuesToAskFor, Deck stock)
         {
-            throw new NotImplementedException();
-        }
+            // Initialize
+            string pluralAndIfSix = valuesToAskFor == Value.Six ? "es" : "s";
+            string beginningStatement = $"{player} asked {playerToAsk} for {valuesToAskFor}{pluralAndIfSix}";
 
+            var matchingCards = playerToAsk.DoYouHaveAny(valuesToAskFor, stock);
+            if(matchingCards.Count() == 0)
+                player.DrawCard(stock);
+            else
+                player.AddCardsAndPullOutBooks(matchingCards);
+
+            // If no matches and Deck is empty
+            if ((matchingCards.Count() == 0) || (matchingCards.Count() == 0) && (stock.Count() == 0))
+                return $"{beginningStatement}" + Environment.NewLine + $"The stock is out of cards";
+
+            string s = matchingCards.Count() == 1 ? "" : "s";
+            string numOfMatchingCards = matchingCards.Count().ToString();
+
+            return $"{beginningStatement}" + Environment.NewLine + $"{playerToAsk} has {numOfMatchingCards} {valuesToAskFor} card{s}"; 
+        }
         public string CheckForWinner()
         {
             throw new NotImplementedException();
