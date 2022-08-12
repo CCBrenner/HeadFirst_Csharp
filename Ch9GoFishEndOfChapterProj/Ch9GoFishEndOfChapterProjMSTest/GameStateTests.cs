@@ -109,23 +109,74 @@ public class GameStateTests
         Assert.AreEqual(2, owen.Hand.Count());
         Assert.AreEqual(1, brittney.Books.Count());
         Assert.AreEqual(1, brittney.Hand.Count());
-        /*
-        // Asks for value, opponent has it, player gets a book and is left with no cards causing them to have to draw a full hand or as many as is left in the deck
 
+        // Note: Since this is a method with many possible status outcomes, it good to reset the data for the remaining status tests
+
+        deck.Clear();
+        cardsToAdd = new List<Card>()
+        {
+            new Card(Value.Jack, Suit.Spades),
+            new Card(Value.Jack, Suit.Hearts),
+            new Card(Value.Jack, Suit.Clubs),
+            new Card(Value.Jack, Suit.Diamonds),
+            new Card(Value.Three, Suit.Spades),
+
+            new Card(Value.Six, Suit.Diamonds),
+            new Card(Value.Six, Suit.Clubs),
+            new Card(Value.Seven, Suit.Spades),
+            new Card(Value.King, Suit.Clubs),
+            new Card(Value.Six, Suit.Spades),
+        };
+        deck.AddRange(cardsToAdd);
+
+        gameState = new GameState("Owen", new List<string>() { "Brittney" }, deck);
+
+        owen = gameState.HumanPlayer;
+        brittney = gameState.Opponents.First();
 
         // Player has no cards to start their turn
+        gameState.PlayRound(brittney, owen, Value.Jack, deck);  // These are to drain Owen's hand so that he has to GetNextHand() on the next line
+        message = gameState.PlayRound(brittney, owen, Value.Three, deck);
+        Assert.AreEqual($"{player} asked {playerToAsk} for {valuesToAskFor}{pluralAndIfSix}{Environment.NewLine}", message);
+        Assert.AreEqual(0, owen.Books.Count());
+        Assert.AreEqual(0, owen.Hand.Count());
+        Assert.AreEqual(1, brittney.Books.Count());
+        Assert.AreEqual(6, brittney.Hand.Count());
+
+
+        cardsToAdd = new List<Card>()
+        {
+            new Card(Value.Jack, Suit.Spades),
+            new Card(Value.Jack, Suit.Hearts),
+            new Card(Value.Jack, Suit.Clubs),
+            new Card(Value.Jack, Suit.Diamonds),
+            new Card(Value.Three, Suit.Spades),
+
+            new Card(Value.Six, Suit.Diamonds),
+            new Card(Value.Six, Suit.Clubs),
+            new Card(Value.Seven, Suit.Spades),
+            new Card(Value.King, Suit.Clubs),
+            new Card(Value.Six, Suit.Spades),
+        };
+        deck.Clear();
+        deck.AddRange(cardsToAdd);
+        gameState.Stock.Clear();
+        gameState.Stock.AddRange(deck);
+
         gameState.PlayRound(owen, brittney, Value.Queen, deck);
         message = gameState.PlayRound(owen, brittney, Value.King, deck);
         Assert.AreEqual($"Owen asked Brittney for Kings{Environment.NewLine}The stock is out of cards", message);
         Assert.AreEqual(1, owen.Books.Count());
         Assert.AreEqual(3, owen.Hand.Count());
 
+        // Asks for value, opponent has it, player gets a book and is left with no cards causing them to have to draw a full hand or as many as is left in the deck
+
         // Asks for value, opponnent doesn't have it, deck has one card and HumanPlayer gets a book and doesn't have any cards
         deck.Clear();
         gameState.PlayRound(brittney, owen, Value.Queen, deck);
         gameState.PlayRound(brittney, owen, Value.Nine, deck);
         gameState.PlayRound(brittney, owen, Value.King, deck);
-        gameState.PlayRound(owen, brittney, Value.Two, deck);*/
+        gameState.PlayRound(owen, brittney, Value.Two, deck);
     }
 
     [TestMethod]

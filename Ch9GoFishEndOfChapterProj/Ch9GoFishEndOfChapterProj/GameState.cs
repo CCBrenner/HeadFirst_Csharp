@@ -39,12 +39,14 @@ namespace Ch9GoFishEndOfChapterProj
 
         public string PlayRound(Player player, Player playerToAsk, Value valuesToAskFor, Deck stock)
         {
-            // Initialize
             string pluralAndIfSix = valuesToAskFor == Value.Six ? "es" : "s";
             string statusMessage = $"{player} asked {playerToAsk} for {valuesToAskFor}{pluralAndIfSix}{Environment.NewLine}";  // We use Environment.NewLIne instead of \n because of its added support on Macs
 
             var matchingCards = playerToAsk.DoYouHaveAny(valuesToAskFor, stock);
             string numOfMatchingCards = matchingCards.Count().ToString();
+
+            if(player.Hand.Count() == 0)
+                
 
             if (matchingCards.Count() > 0)
             {
