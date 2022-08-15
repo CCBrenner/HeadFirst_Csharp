@@ -5,6 +5,15 @@ namespace Ch9GoFishEndOfChapterProj
 {
     public class GameController
     {
+        public GameController(string humanPlayerName, IEnumerable<string> computerPlayerNames)
+        {
+            Deck shuffledDeck = new Deck();
+            gameState = new GameState(humanPlayerName, computerPlayerNames, shuffledDeck.Shuffle());
+
+            string tempStatus = $"Starting a new game with players {gameState.HumanPlayer}";
+            foreach (Player opponent in gameState.Opponents) tempStatus += $", {opponent}";
+            Status = tempStatus;
+        }
         public static Random Random = new Random();
 
         public GameState gameState;
@@ -13,10 +22,6 @@ namespace Ch9GoFishEndOfChapterProj
         public IEnumerable<Player> Opponents { get { return gameState.Opponents; } }
 
         public string Status { get; private set; }
-        public GameController(string humanPlayerName, IEnumerable<string> computerPLayerNames)
-        {
-            throw new NotImplementedException();
-        }
         public void NextRound(Player playerToAsk, Value valueToAskFor)
         {
             throw new NotImplementedException();

@@ -18,14 +18,19 @@ public class GameControllerTests
     public void TestConstructor()
     {
         GameController gameController = new GameController("Human", new List<string>() { "Player1", "Player2", "Player3" });
-        Assert.AreEqual("Stating a new game with players HUman, PLayer1, PLayer2, PLayer3", gameController.Status);
+        Assert.AreEqual("Starting a new game with players Human, Player1, Player2, Player3", gameController.Status);
     }
 
     [TestMethod]
     public void TestNextRound()
     {
         GameController gameController = new GameController("Owen", new List<string>() { "Brittney" });
-
+        // gameController.gameState.Stock.Sort();
+        foreach(Player player in gameController.gameState.Players)
+        {
+            foreach (Card card in player.Hand) Console.WriteLine($"{card}");
+            Console.WriteLine();
+        }
         gameController.NextRound(gameController.Opponents.First(), Value.Six);
         Assert.AreEqual($"Owen asked Brittney for Sixes" +
             $"{Environment.NewLine}Brittney has 1 Six card" +
