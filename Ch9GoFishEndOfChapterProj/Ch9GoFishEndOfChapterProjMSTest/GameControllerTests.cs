@@ -24,6 +24,8 @@ public class GameControllerTests
     [TestMethod]
     public void TestNextRound()
     {
+        // *** This test covers both NextRound() and ComputerPlayersPlayNextRound() ***
+
         GameController gameController = new GameController("Owen", new List<string>() { "Brittney" });
         // gameController.gameState.Stock.Sort();
         foreach(Player player in gameController.gameState.Players)
@@ -31,6 +33,8 @@ public class GameControllerTests
             foreach (Card card in player.Hand) Console.WriteLine($"{card}");
             Console.WriteLine();
         }
+
+        // This status return will let us konw that everything in the method is working correctly
         gameController.NextRound(gameController.Opponents.First(), Value.Six);
         Assert.AreEqual($"Owen asked Brittney for Sixes" +
             $"{Environment.NewLine}Brittney has 1 Six card" +
