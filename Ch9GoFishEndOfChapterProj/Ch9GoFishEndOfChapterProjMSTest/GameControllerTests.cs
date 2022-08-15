@@ -18,7 +18,7 @@ public class GameControllerTests
     public void TestConstructor()
     {
         GameController gameController = new GameController("Human", new List<string>() { "Player1", "Player2", "Player3" });
-        Assert.AreEqual("Stating a new game with players HUman, PLayer1, PLayer2, PLayer3", gameController.Status);
+        Assert.AreEqual("Starting a new game with players Human, Player1, Player2, Player3", gameController.Status);
     }
 
     [TestMethod]
