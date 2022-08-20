@@ -152,7 +152,7 @@ public class GameStateTests
         Assert.AreEqual(0, brittney.Books.Count());
         Assert.AreEqual(6, brittney.Hand.Count());
 
-        // Asks for value, opponnent doesn't have it, HUmanPLayer draws last card and gets a book and doesn't have any cards
+        // Asks for value, opponnent doesn't have it, HumanPLayer draws last card and gets a book and doesn't have any cards
         cardsToAdd = new List<Card>()
         {
             new Card(Value.Six, Suit.Hearts),

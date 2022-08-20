@@ -10,11 +10,10 @@ namespace Ch9GoFishEndOfChapterProj
             Deck shuffledDeck = new Deck();
             gameState = new GameState(humanPlayerName, computerPlayerNames, shuffledDeck.Shuffle());
 
-            string tempStatus = $"Starting a new game with players {gameState.HumanPlayer}";
+            string tempStatus = $"Starting a new game with players {HumanPlayer}";
             foreach (Player opponent in gameState.Opponents) tempStatus += $", {opponent}";
             Status = tempStatus;
         }
-        
         public static Random Random = new Random();
 
         public GameState gameState;
@@ -23,19 +22,32 @@ namespace Ch9GoFishEndOfChapterProj
         public IEnumerable<Player> Opponents { get { return gameState.Opponents; } }
 
         public string Status { get; private set; }
-        
         public void NextRound(Player playerToAsk, Value valueToAskFor)
         {
-            throw new NotImplementedException();
+            Status = "";
+
+            Status = gameState.PlayRound(HumanPlayer, playerToAsk, valueToAskFor, gameState.Stock);
+
+            ComputerPlayersPlayNextRound();
+
+            foreach (Player player in gameState.Players)
+            {
+                Status += $"{Environment.NewLine}{player.Name} has {player.Hand.Count()} card{Player.S(player.Hand.Count())} and {player.Books.Count()} book{Player.S(player.Books.Count())}";
+            }
+
+            Status += $"{Environment.NewLine}The stock has {gameState.Stock.Count()} card{Player.S(gameState.Stock.Count())}";
         }
         public void ComputerPlayersPlayNextRound()
         {
-            throw new NotImplementedException();
+            foreach (Player opponent in gameState.Opponents)
+            {
+                string statusAddition = gameState.PlayRound(opponent, gameState.RandomPlayer(opponent), opponent.RandomValueFromHand(), gameState.Stock);
+                Status += $"{Environment.NewLine}{statusAddition}";
+            }
         }
         public void NewGame()
         {
-            throw new NotImplementedException();
+            Status = "Starting a new game";
         }
-
     }
 }

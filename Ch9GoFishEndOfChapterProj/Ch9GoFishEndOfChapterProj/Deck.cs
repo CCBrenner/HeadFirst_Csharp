@@ -16,7 +16,7 @@
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    Add(new Card((Value)i, (Suit)j));
+                    Add(new Card((Value)j, (Suit)i));
                 }
             }
             return this;

@@ -133,11 +133,11 @@ public class PlayerTests
         Assert.AreEqual("Ace", player.RandomValueFromHand().ToString());
 
         // Test "Two"
-        Player.Random = new MockRandom() { ValueToReturn = 4 };
+        Player.Random = new MockRandom() { ValueToReturn = 1 };
         Assert.AreEqual("Two", player.RandomValueFromHand().ToString());
 
         // Test "Three"
-        Player.Random = new MockRandom() { ValueToReturn = 8 };
+        Player.Random = new MockRandom() { ValueToReturn = 2 };
         Assert.AreEqual("Three", player.RandomValueFromHand().ToString());
     }
 }
