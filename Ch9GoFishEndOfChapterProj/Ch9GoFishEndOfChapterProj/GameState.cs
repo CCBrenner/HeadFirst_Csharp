@@ -42,13 +42,14 @@ namespace Ch9GoFishEndOfChapterProj
             string pluralAndIfSix = valuesToAskFor == Value.Six ? "es" : "s";
             string statusMessage = $"{player} asked {playerToAsk} for {valuesToAskFor}{pluralAndIfSix}{Environment.NewLine}";  // We use Environment.NewLIne instead of \n because of its added support on Macs
 
+            foreach (Card card in playerToAsk.Hand) Console.WriteLine($"Counting playerToAsk cards: {card.Value} {valuesToAskFor} {playerToAsk}");
             var matchingCards = playerToAsk.DoYouHaveAny(valuesToAskFor, stock);
-            string numOfMatchingCards = matchingCards.Count().ToString();
+            Console.WriteLine();
                 
             if (matchingCards.Count() > 0)
             {
                 player.AddCardsAndPullOutBooks(matchingCards);
-                statusMessage += $"{playerToAsk} has {numOfMatchingCards} {valuesToAskFor} card{Player.S(matchingCards.Count())}";
+                statusMessage += $"{playerToAsk} has {matchingCards.Count()} {valuesToAskFor} card{Player.S(matchingCards.Count())}";
             }
             else if (stock.Count == 0)
                 statusMessage += $"The stock is out of cards";  

@@ -20,7 +20,7 @@ namespace Ch9GoFishEndOfChapterProj
         private List<Card> hand = new List<Card>();
         private List<Value> books = new List<Value>();
 
-        public IEnumerable<Card> Hand => hand;
+        public IEnumerable<Card> Hand { get { return hand; } }
         public IEnumerable<Value> Books => books;
 
         public readonly string Name;
