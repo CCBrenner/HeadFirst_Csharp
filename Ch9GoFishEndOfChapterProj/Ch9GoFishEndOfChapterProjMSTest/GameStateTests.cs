@@ -36,7 +36,7 @@ public class GameStateTests
     [TestMethod]
     public void TestRandomPlayer()
     {
-        // Test that a rnadom player is returned and the current player is also not chosen as the returned player
+        // Test that a random player is returned and the current player is also not chosen as the returned player
         List<string> computerPlayerNames = new List<string>()
         {
             "Computer1",

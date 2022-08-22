@@ -31,7 +31,7 @@ namespace Ch9GoFishEndOfChapterProj
 
         public override string ToString() => Name;
 
-        public Value RandomValueFromHand() => hand[Random.Next(hand.Count)].Value;
+        public Value RandomValueFromHand() => hand.Count > 0 ? hand[Random.Next(hand.Count)].Value : null;  // Left off here with handling a hand and deck with no cards each
 
         /// <summary>
         /// If this player has any cards that match the value, return them. If this player runs out of cards, get the next hand from the deck.

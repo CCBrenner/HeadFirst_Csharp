@@ -5,6 +5,7 @@ class Program
 {
 
     static GameController? gameController;
+
     public static void Main(string[] args)
     {
         Console.Write("Enter your name: ");
@@ -35,9 +36,11 @@ class Program
 
             Player playerBeingAsked = PromptForOpponent();
 
+            Console.WriteLine();
+
             gameController.NextRound(playerBeingAsked, askValue);
 
-            Console.WriteLine($"{gameController.Status}\n");
+            Console.WriteLine($"{gameController.Status}");
 
             numBooksWon = 0;
             foreach(Player player in gameController.gameState.Players)
@@ -47,19 +50,20 @@ class Program
 
     static Value PromptForValue()
     {
-        string presentCards = "\nYour hand:";
+        string presentCards = $"{Environment.NewLine}Your hand:";
         foreach(Card card in gameController.HumanPlayer.Hand)
-            presentCards += $"\n{card}";
+            presentCards += $"{Environment.NewLine}{card}";
         Console.WriteLine(presentCards.ToString());
+
         while (true)
         {
             Console.Write("What card value do you want to ask for? ");
             string? askValue = Console.ReadLine();
-            var cardPresent = gameController.HumanPlayer.Hand.Where(card => askValue == card.Value.ToString());
+            var cardPresent = gameController.HumanPlayer.Hand.Where(card => askValue.ToLower() == card.Value.ToString().ToLower());
             if (cardPresent.Count() > 0)
                 return cardPresent.First().Value;
             else
-                Console.WriteLine("You have no cards in your hand matching that value");
+                Console.WriteLine($"You have no cards in your hand matching that value. Please type the name of the value for the card you wish to ask for.{Environment.NewLine}");
         }
     }
 
@@ -67,23 +71,19 @@ class Program
     {
         string playersThatCanBeAsked = "";
         int i;
-        for(i = 1; i < gameController.gameState.Players.Count(); i++)
+        for(i = 1; i <= gameController.Opponents.Count(); i++)
         {
-            playersThatCanBeAsked += $"\n{i}. {gameController.gameState.Players.Skip(i - 1).First().Name}";
+            playersThatCanBeAsked += $"{Environment.NewLine}{i}. {gameController.Opponents.Skip(i - 1).First().Name}";
         }
         i--;
+        Console.WriteLine(playersThatCanBeAsked);
 
-        Console.Write($"{playersThatCanBeAsked}\nWho do you want to ask for a card? ");
         while (true)
         {
-            if(int.TryParse(Console.ReadLine(), out int playerChosen))
-            {
-                if(playerChosen > i && playerChosen <= 0)
-                {
-                    return gameController.gameState.Players.Skip(playerChosen - 1).First();  // This might be wrong skip amt
-                }
-            }
-            Console.WriteLine("\nNot a player option. Please enter a number for a player listed.");
+            Console.Write($"Who do you want to ask for a card? ");
+            if (int.TryParse(Console.ReadLine(), out int playerChosen) && 0 < playerChosen && playerChosen <= i)
+                return gameController.Opponents.Skip(playerChosen - 1).First();
+            Console.WriteLine($"{Environment.NewLine}Not a player option. Please enter a number for a player listed.");
         }
     }
 }

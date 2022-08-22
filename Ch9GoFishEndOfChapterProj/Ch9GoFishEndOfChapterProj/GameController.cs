@@ -24,11 +24,11 @@ namespace Ch9GoFishEndOfChapterProj
         public string Status { get; private set; }
         public void NextRound(Player playerToAsk, Value valueToAskFor)
         {
-            Status = "";
-
-            Status = gameState.PlayRound(HumanPlayer, playerToAsk, valueToAskFor, gameState.Stock);
+            Status = $"{gameState.PlayRound(HumanPlayer, playerToAsk, valueToAskFor, gameState.Stock)}";
 
             ComputerPlayersPlayNextRound();
+
+            Status += $"{Environment.NewLine}";
 
             foreach (Player player in gameState.Players)
             {
@@ -48,6 +48,13 @@ namespace Ch9GoFishEndOfChapterProj
         public void NewGame()
         {
             Status = "Starting a new game";
+
+            List<string> tempOpponents = new List<string>();
+            foreach(Player opponent in gameState.Opponents)
+            {
+                tempOpponents.Add(opponent.Name);
+            }
+            gameState = new GameState(gameState.HumanPlayer.Name, tempOpponents, new Deck());
         }
     }
 }

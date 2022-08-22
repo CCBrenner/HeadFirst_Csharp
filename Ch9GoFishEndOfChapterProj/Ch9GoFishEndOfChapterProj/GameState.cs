@@ -42,9 +42,7 @@ namespace Ch9GoFishEndOfChapterProj
             string pluralAndIfSix = valuesToAskFor == Value.Six ? "es" : "s";
             string statusMessage = $"{player} asked {playerToAsk} for {valuesToAskFor}{pluralAndIfSix}{Environment.NewLine}";  // We use Environment.NewLIne instead of \n because of its added support on Macs
 
-            foreach (Card card in playerToAsk.Hand) Console.WriteLine($"Counting playerToAsk cards: {card.Value} {valuesToAskFor} {playerToAsk}");
             var matchingCards = playerToAsk.DoYouHaveAny(valuesToAskFor, stock);
-            Console.WriteLine();
                 
             if (matchingCards.Count() > 0)
             {

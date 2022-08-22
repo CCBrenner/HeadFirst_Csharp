@@ -28,25 +28,6 @@ public class GameControllerTests
 
         GameController gameController = new GameController("Owen", new List<string>() { "Brittney" });
         // gameController.gameState.Stock.Sort();
-        /*
-        gameController.gameState.HumanPlayer.Hand = new List<Card>()
-        {
-            new Card(Value.Ace, Suit.Spades),
-            new Card(Value.Two, Suit.Spades),
-            new Card(Value.Three, Suit.Spades),
-            new Card(Value.Four, Suit.Spades),
-            new Card(Value.Five, Suit.Spades),
-        };
-        gameController.gameState.Opponents.First().Hand = new List<Card>()
-        {
-            new Card(Value.Six, Suit.Spades),
-            new Card(Value.Seven, Suit.Spades),
-            new Card(Value.Eight, Suit.Spades),
-            new Card(Value.Nine, Suit.Spades),
-            new Card(Value.Ten, Suit.Spades),
-        };*/
-
-
         foreach (Player player in gameController.gameState.Players)
         {
             Console.WriteLine($"\n{player}");
