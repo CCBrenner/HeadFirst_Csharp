@@ -47,8 +47,7 @@ namespace Ch9GoFishEndOfChapterProj
         }
         public void NewGame()
         {
-            throw new NotImplementedException();
+            Status = "Starting a new game";
         }
-
     }
 }
