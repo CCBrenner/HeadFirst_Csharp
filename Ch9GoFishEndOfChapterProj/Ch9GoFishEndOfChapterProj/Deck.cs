@@ -39,5 +39,9 @@
             RemoveAt(index);
             return cardToDeal;
         }
+        public Card GenerateNullCard()
+        {
+            return new Card(Value.Null, Suit.Clubs);
+        }
     }
 }

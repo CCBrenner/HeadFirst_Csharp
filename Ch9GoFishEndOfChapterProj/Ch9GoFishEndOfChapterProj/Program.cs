@@ -32,9 +32,20 @@ class Program
 
         while(numBooksWon != totalValues)
         {
-            Value askValue = PromptForValue();
+            
+            Value askValue;
+            Player playerBeingAsked;
 
-            Player playerBeingAsked = PromptForOpponent();
+            if (gameController.HumanPlayer.Hand.Count() > 0 || gameController.gameState.Stock.Count() > 0)
+            {
+                askValue = PromptForValue();
+                playerBeingAsked = PromptForOpponent();
+            }
+            else
+            {
+                askValue = Value.Null;
+                playerBeingAsked = gameController.HumanPlayer;
+            }
 
             Console.WriteLine();
 
@@ -46,6 +57,8 @@ class Program
             foreach(Player player in gameController.gameState.Players)
                 numBooksWon += player.Books.Count();
         }
+
+        FinalResults();
     }
 
     static Value PromptForValue()
@@ -85,5 +98,26 @@ class Program
                 return gameController.Opponents.Skip(playerChosen - 1).First();
             Console.WriteLine($"{Environment.NewLine}Not a player option. Please enter a number for a player listed.");
         }
+    }
+
+    static void FinalResults()
+    {
+        string finalTally = $"{Environment.NewLine}Final Results:";
+        int j = 1;
+        int k = 0;
+        for (int i = 13; i >= 0; i--)
+        {
+            foreach(Player player in gameController.gameState.Players)
+            {
+                if(player.Books.Count() == i)
+                {
+                    finalTally += $"{Environment.NewLine}#{j} - {player.Name} ({i} book{Player.S(i)})";
+                    k++;
+                }
+            }
+            j += k;
+            k = 0;
+        }
+        Console.WriteLine(finalTally);
     }
 }

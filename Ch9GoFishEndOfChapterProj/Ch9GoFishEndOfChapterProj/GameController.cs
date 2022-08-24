@@ -24,7 +24,10 @@ namespace Ch9GoFishEndOfChapterProj
         public string Status { get; private set; }
         public void NextRound(Player playerToAsk, Value valueToAskFor)
         {
-            Status = $"{gameState.PlayRound(HumanPlayer, playerToAsk, valueToAskFor, gameState.Stock)}";
+            if(playerToAsk == HumanPlayer && valueToAskFor == Value.Null)
+                Status = $"{HumanPlayer.Name} has no cards and the stock is empty.";
+            else
+                Status = $"{gameState.PlayRound(HumanPlayer, playerToAsk, valueToAskFor, gameState.Stock)}";
 
             ComputerPlayersPlayNextRound();
 
@@ -41,8 +44,13 @@ namespace Ch9GoFishEndOfChapterProj
         {
             foreach (Player opponent in gameState.Opponents)
             {
-                string statusAddition = gameState.PlayRound(opponent, gameState.RandomPlayer(opponent), opponent.RandomValueFromHand(), gameState.Stock);
-                Status += $"{Environment.NewLine}{statusAddition}";
+                if(opponent.Hand.Count() == 0 && gameState.Stock.Count() == 0)
+                    Status += $"{Environment.NewLine}{opponent.Name} has no cards and the stock is empty.";
+                else
+                {
+                    string statusAddition = gameState.PlayRound(opponent, gameState.RandomPlayer(opponent), opponent.RandomValueFromHand(), gameState.Stock);
+                    Status += $"{Environment.NewLine}{statusAddition}";
+                }
             }
         }
         public void NewGame()

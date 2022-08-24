@@ -43,21 +43,21 @@ namespace Ch9GoFishEndOfChapterProj
             string statusMessage = $"{player} asked {playerToAsk} for {valuesToAskFor}{pluralAndIfSix}{Environment.NewLine}";  // We use Environment.NewLIne instead of \n because of its added support on Macs
 
             var matchingCards = playerToAsk.DoYouHaveAny(valuesToAskFor, stock);
-                
+
             if (matchingCards.Count() > 0)
             {
                 player.AddCardsAndPullOutBooks(matchingCards);
                 statusMessage += $"{playerToAsk} has {matchingCards.Count()} {valuesToAskFor} card{Player.S(matchingCards.Count())}";
             }
             else if (stock.Count == 0)
-                statusMessage += $"The stock is out of cards";  
+                statusMessage += $"The stock is out of cards";
             else
             {
                 player.DrawCard(stock);
-                statusMessage += $"{player} drew a card";  
+                statusMessage += $"{player} drew a card";
             }
-                
-            if(player.Hand.Count() == 0)
+
+            if (player.Hand.Count() == 0)
             {
                 player.GetNextHand(stock);
                 statusMessage += $"{Environment.NewLine}{player} ran out of cards" +
@@ -66,8 +66,7 @@ namespace Ch9GoFishEndOfChapterProj
                 if (stock.Count == 0)
                     statusMessage += $"{Environment.NewLine}The stock is out of cards";
             }
-
-            return statusMessage; 
+            return statusMessage;
         }
         public string CheckForWinner()
         {
