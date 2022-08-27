@@ -1,54 +1,64 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>GoFish</PageTitle>
 
 
 <div class="container">
     <div class="row">
         <div class="col-5">
             <div class="row">
-                <textbox>@gameController.Status</textbox>
-                <textbox></textbox>
+                <textarea>@gameController.GameStatus</textarea>
+                <textarea>@gameController.CurrentStandings</textarea>
             </div>
         </div>
-        <div class="col-3">
+        <div class="col-1"></div>
+        <div class="col-2">
             <div class="row">
-                <label>@gameController.HumanPlayer.Name's Cards</label>
-                <!--
-                <select @bind="gameController.SelectedCard">
-                    @for (int i = 0; i < gameController.HumanPlayer.Hand.Count(); i++)
-                    {
-                        <option value="@i">@gameController.HumanPlayer.Hand.Skip(@i).First()</option>
-                    }
-                </select>
-                -->
+                <label>Select a Card to Ask For
+                    <br/>
+                    <select @bind="gameController.SelectedCard" size="16">
+                        @for (int i = 0; i < gameController.HumanPlayer.Hand.Count(); i++)
+                        {
+                            <option value="@i" class="w-100">@gameController.HumanPlayer.Hand.Skip(i).First().ToString()</option>
+                        }
+                    </select>
+                </label>
             </div>
         </div>
-        <div class="col-3">
+        <div class="col-1"></div>
+        <div class="col-2">
             <div class="row">
-                <label>Opponents</label>
-                <select @bind="gameController.SelectedOpponent">  <!-- <=Stopped here, issue with the binding is disabling rendering for this page -->
-                <!--
-                    @for (int i = 0; i < gameController.Opponents.Count(); i++)
-                    {
-                        <option value="@i">@gameController.Opponents.Skip(@i).First().Name</option>
-                    }
-                -->
-                </select>
+                <label>Choose Opponent to Ask
+                    <br/>
+                    <select @bind="gameController.SelectedOpponent" size="16">
+                        @for (int i = 0; i < gameController.Opponents.Count(); i++)
+                        {
+                            <option value="@i" class="w-100">@gameController.Opponents.Skip(i).First().Name</option>
+                        }
+                    </select>
+                </label>
                 <button class="btn btn-primary" @onclick="NextRound">
                     Ask Player for Cards
                 </button>
+                <p>@gameController.Opponents.Skip(gameController.SelectedOpponent).First().Name</p>
             </div>
         </div>
-
+        <div class="col-1"></div>
     </div>
 </div>
+
 @code
 {
     GameController gameController = new GameController("Player 1", 4);
 
+    string? Music { get; set; }
+    string? Music2 { get; set; }
+
     public void NextRound()
     {
-        gameController.NextRound(gameController.SelectedOpponent, gameController.SelectedCard.Value);
+        gameController.NextRound(
+            gameController.Opponents.Skip(gameController.SelectedOpponent).First(), 
+            gameController.HumanPlayer.Hand.Skip(gameController.SelectedCard).First().Value
+        );
     }
 }

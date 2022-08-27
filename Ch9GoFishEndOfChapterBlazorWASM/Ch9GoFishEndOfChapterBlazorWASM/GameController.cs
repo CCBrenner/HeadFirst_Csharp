@@ -10,9 +10,8 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
             Deck shuffledDeck = new Deck();
             gameState = new GameState(humanPlayerName, numberOfOpponents, shuffledDeck.Shuffle());
 
-            string tempStatus = $"Starting a new game with players {HumanPlayer}";
-            foreach (Player opponent in gameState.Opponents) tempStatus += $", {opponent}";
-            Status = tempStatus;
+            GameStatus = $"Starting a new game with players {string.Join(", ", gameState.Players)}";
+            UpdateCurrentStandings();
         }
         public static Random Random = new Random();
 
@@ -21,43 +20,50 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
         public Player HumanPlayer { get { return gameState.HumanPlayer; } }
         public IEnumerable<Player> Opponents { get { return gameState.Opponents; } }
 
-        public string Status { get; private set; }
-        public Card SelectedCard { get; set; }
-        public Player SelectedOpponent { get; set; }
+        public string GameStatus { get; private set; }
+        public string CurrentStandings { get; private set; }
+        public int SelectedCard { get; set; }
+        public int SelectedOpponent { get; set; }
         public void NextRound(Player playerToAsk, Value valueToAskFor)
         {
             if(playerToAsk == HumanPlayer && valueToAskFor == Value.Null)
-                Status = $"{HumanPlayer.Name} has no cards and the stock is empty.";
+                GameStatus = $"{HumanPlayer.Name} has no cards and the stock is empty.";
             else
-                Status = $"{gameState.PlayRound(HumanPlayer, playerToAsk, valueToAskFor, gameState.Stock)}";
+                GameStatus = $"{gameState.PlayRound(HumanPlayer, playerToAsk, valueToAskFor, gameState.Stock)}";
 
             ComputerPlayersPlayNextRound();
 
-            Status += $"{Environment.NewLine}";
+            Console.WriteLine($"{Environment.NewLine}");
 
             foreach (Player player in gameState.Players)
-            {
-                Status += $"{Environment.NewLine}{player.Name} has {player.Hand.Count()} card{Player.S(player.Hand.Count())} and {player.Books.Count()} book{Player.S(player.Books.Count())}";
-            }
+                GameStatus += $"{Environment.NewLine}{player.Name} has {player.Hand.Count()} card{Player.S(player.Hand.Count())}";
 
-            Status += $"{Environment.NewLine}The stock has {gameState.Stock.Count()} card{Player.S(gameState.Stock.Count())}";
+            GameStatus += $"{Environment.NewLine}The stock has {gameState.Stock.Count()} card{Player.S(gameState.Stock.Count())}";
+
+            UpdateCurrentStandings();
         }
         public void ComputerPlayersPlayNextRound()
         {
             foreach (Player opponent in gameState.Opponents)
             {
                 if(opponent.Hand.Count() == 0 && gameState.Stock.Count() == 0)
-                    Status += $"{Environment.NewLine}{opponent.Name} has no cards and the stock is empty.";
+                    GameStatus += $"{Environment.NewLine}{opponent.Name} has no cards and the stock is empty.";
                 else
                 {
                     string statusAddition = gameState.PlayRound(opponent, gameState.RandomPlayer(opponent), opponent.RandomValueFromHand(), gameState.Stock);
-                    Status += $"{Environment.NewLine}{statusAddition}";
+                    GameStatus += $"{Environment.NewLine}{statusAddition}";
                 }
             }
         }
+        public void UpdateCurrentStandings()
+        {
+            CurrentStandings = "";
+            foreach(Player player in gameState.Players)
+                CurrentStandings += $"{player.Name} has {player.Books.Count()} Book{Player.S(player.Books.Count())}{Environment.NewLine}";
+        }
         public void NewGame()
         {
-            Status = "Starting a new game";
+            GameStatus = "Starting a new game";
             gameState = new GameState(gameState.HumanPlayer.Name, Opponents.Count(), new Deck());
         }
     }
