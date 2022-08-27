@@ -23,22 +23,29 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
         public string GameStatus { get; private set; }
         public string CurrentStandings { get; private set; }
         public int SelectedCard { get; set; }
+        public Card ReturnSelectedCard(int i) => HumanPlayer.Hand.Skip(i).First();
         public int SelectedOpponent { get; set; }
+        public Player ReturnSelectedOpponent(int i) => Opponents.Skip(i).First();
+        public string WhatPlayerIsAskingFor()
+        {
+            string pluralAndIfSix = ReturnSelectedCard(SelectedCard).Value == Value.Six ? "es" : "s";
+            return $"Ask for {ReturnSelectedCard(SelectedCard).Value}{pluralAndIfSix} from {ReturnSelectedOpponent(SelectedOpponent).Name}";
+        }
         public void NextRound(Player playerToAsk, Value valueToAskFor)
         {
-            if(playerToAsk == HumanPlayer && valueToAskFor == Value.Null)
+            if(valueToAskFor == Value.Null)
                 GameStatus = $"{HumanPlayer.Name} has no cards and the stock is empty.";
             else
                 GameStatus = $"{gameState.PlayRound(HumanPlayer, playerToAsk, valueToAskFor, gameState.Stock)}";
 
             ComputerPlayersPlayNextRound();
 
-            Console.WriteLine($"{Environment.NewLine}");
+            GameStatus += $"{Environment.NewLine}";
 
             foreach (Player player in gameState.Players)
                 GameStatus += $"{Environment.NewLine}{player.Name} has {player.Hand.Count()} card{Player.S(player.Hand.Count())}";
 
-            GameStatus += $"{Environment.NewLine}The stock has {gameState.Stock.Count()} card{Player.S(gameState.Stock.Count())}";
+            GameStatus += $"{Environment.NewLine}{Environment.NewLine}The stock has {gameState.Stock.Count()} card{Player.S(gameState.Stock.Count())}";
 
             UpdateCurrentStandings();
         }

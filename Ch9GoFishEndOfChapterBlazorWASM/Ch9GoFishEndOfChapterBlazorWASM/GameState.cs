@@ -41,7 +41,7 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
         public string PlayRound(Player player, Player playerToAsk, Value valuesToAskFor, Deck stock)
         {
             string pluralAndIfSix = valuesToAskFor == Value.Six ? "es" : "s";
-            string statusMessage = $"{player} asked {playerToAsk} for {valuesToAskFor}{pluralAndIfSix}{Environment.NewLine}";  // We use Environment.NewLIne instead of \n because of its added support on Macs
+            string statusMessage = $"{player} asked {playerToAsk} for {valuesToAskFor}{pluralAndIfSix}{Environment.NewLine}";
 
             var matchingCards = playerToAsk.DoYouHaveAny(valuesToAskFor, stock);
 
