@@ -5,10 +5,10 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
 {
     public class GameController
     {
-        public GameController(string humanPlayerName, IEnumerable<string> computerPlayerNames)
+        public GameController(string humanPlayerName, int numberOfOpponents)
         {
             Deck shuffledDeck = new Deck();
-            gameState = new GameState(humanPlayerName, computerPlayerNames, shuffledDeck.Shuffle());
+            gameState = new GameState(humanPlayerName, numberOfOpponents, shuffledDeck.Shuffle());
 
             string tempStatus = $"Starting a new game with players {HumanPlayer}";
             foreach (Player opponent in gameState.Opponents) tempStatus += $", {opponent}";
@@ -22,6 +22,8 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
         public IEnumerable<Player> Opponents { get { return gameState.Opponents; } }
 
         public string Status { get; private set; }
+        public Card SelectedCard { get; set; }
+        public Player SelectedOpponent { get; set; }
         public void NextRound(Player playerToAsk, Value valueToAskFor)
         {
             if(playerToAsk == HumanPlayer && valueToAskFor == Value.Null)
@@ -56,13 +58,7 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
         public void NewGame()
         {
             Status = "Starting a new game";
-
-            List<string> tempOpponents = new List<string>();
-            foreach(Player opponent in gameState.Opponents)
-            {
-                tempOpponents.Add(opponent.Name);
-            }
-            gameState = new GameState(gameState.HumanPlayer.Name, tempOpponents, new Deck());
+            gameState = new GameState(gameState.HumanPlayer.Name, Opponents.Count(), new Deck());
         }
     }
 }

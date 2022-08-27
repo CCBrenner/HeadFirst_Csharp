@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ch9GoFishEndOfChapterBlazorWASM;
 
-namespace Ch9GoFishEndOfChapterProjMSTest;
+namespace Ch9GoFishEndOfChapterBlazorWASMTest;
 
 [TestClass]
 public class PlayerTests

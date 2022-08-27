@@ -6,12 +6,13 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
 {
     public class GameState
     {
-        public GameState(string humanPlayerName, IEnumerable<string> opponentNames, Deck stock)
+        public GameState(string humanPlayerName, int numberOfOpponents, Deck stock)
         {
             List<Player> tempPlayersList = new List<Player>();
             List<Player> tempOpponentsList = new List<Player>();
             Player human = new Player(humanPlayerName);
-            foreach (String opponentName in opponentNames) tempOpponentsList.Add(new Player(opponentName));
+            for(int i = 0; i < numberOfOpponents; i++)
+                tempOpponentsList.Add(new Player($"Computer {i+1}"));
 
             tempPlayersList.Add(human);
             tempPlayersList.AddRange(tempOpponentsList);

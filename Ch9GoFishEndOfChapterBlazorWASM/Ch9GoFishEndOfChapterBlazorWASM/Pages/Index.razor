@@ -2,43 +2,53 @@
 
 <PageTitle>Index</PageTitle>
 
+
 <div class="container">
     <div class="row">
         <div class="col-5">
             <div class="row">
+                <textbox>@gameController.Status</textbox>
                 <textbox></textbox>
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-3">
             <div class="row">
-                <label></label>
-                <select>
+                <label>@gameController.HumanPlayer.Name's Cards</label>
+                <!--
+                <select @bind="gameController.SelectedCard">
                     @for (int i = 0; i < gameController.HumanPlayer.Hand.Count(); i++)
                     {
-                        <option></option>
+                        <option value="@i">@gameController.HumanPlayer.Hand.Skip(@i).First()</option>
                     }
                 </select>
+                -->
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-3">
             <div class="row">
-                <label></label>
-                <select>
+                <label>Opponents</label>
+                <select @bind="gameController.SelectedOpponent">  <!-- <=Stopped here, issue with the binding is disabling rendering for this page -->
+                <!--
                     @for (int i = 0; i < gameController.Opponents.Count(); i++)
                     {
-                        <option>{ganeController.Opponent.Skip(i).First().Name}</option>
+                        <option value="@i">@gameController.Opponents.Skip(@i).First().Name</option>
                     }
+                -->
                 </select>
+                <button class="btn btn-primary" @onclick="NextRound">
+                    Ask Player for Cards
+                </button>
             </div>
         </div>
+
     </div>
 </div>
-
-<SurveyPrompt Title="How is Blazor working for you?" />
-
-
 @code
 {
-    List<string> computerPlayerNames;
-    GameController gameController = new GameController("Player 1", computerPlayerNames);
+    GameController gameController = new GameController("Player 1", 4);
+
+    public void NextRound()
+    {
+        gameController.NextRound(gameController.SelectedOpponent, gameController.SelectedCard.Value);
+    }
 }
