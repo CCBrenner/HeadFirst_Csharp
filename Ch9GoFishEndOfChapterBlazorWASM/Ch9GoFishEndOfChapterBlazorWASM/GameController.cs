@@ -42,15 +42,46 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
 
             if (ReturnSelectedCard(SelectedCard).Value == Value.Null && HumanPlayer.Hand.Count() == 0)
             {
-                buttonText = "Next Round";
-                return "You have no more cards and the deck is empty.";
+                if (GameOver)
+                {
+                    buttonText = "See Game Status";
+                    return "See Game Status";
+                }
+                else
+                {
+                    buttonText = "Next Round";
+                    return "You have no more cards and the deck is empty";
+                }
             }
             else if (ReturnSelectedCard(SelectedCard).Value == Value.Null)
             {
-                return "";
+                buttonText = "";
+                return "Choose a card from your hand";
             }
             else
+            { 
+                buttonText = "Ask Player for Cards";
                 return $"Ask for {ReturnSelectedCard(SelectedCard).Value}{pluralAndIfSix} from {ReturnSelectedOpponent(SelectedOpponent).Name}";
+            }
+        }
+        public void AskPlayerForCards()
+        {
+            Player nextRoundPlayer;
+            Value nextRoundValue;
+
+            if (HumanPlayer.Hand.Count() > 0 || gameState.Stock.Count() > 0)
+            {
+                nextRoundPlayer = Opponents.Skip(SelectedOpponent).First();
+                nextRoundValue = HumanPlayer.Hand.Skip(SelectedCard).First().Value;
+            }
+            else
+            {
+                nextRoundPlayer = HumanPlayer;
+                nextRoundValue = Value.Null;
+            }
+
+            if (ReturnSelectedCard(SelectedCard).Value != Value.Null || HumanPlayer.Hand.Count() == 0)
+                NextRound(nextRoundPlayer, nextRoundValue);
         }
         public void NextRound(Player playerToAsk, Value valueToAskFor)
         {

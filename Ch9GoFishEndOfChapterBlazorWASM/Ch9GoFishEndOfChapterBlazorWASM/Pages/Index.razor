@@ -46,8 +46,8 @@
                     <br/>
                     <div class="w-100">@gameController.WhatPlayerIsAskingFor()&nbsp;</div>
                     <br/>
-                    <button class="btn btn-primary w-100" @onclick="NextRound">
-                        @gameController.ButtonText()
+                    <button class="btn btn-primary w-100" @onclick="AskPlayerForCards">
+                        @gameController.ButtonText()&nbsp;
                     </button>
                 </div>
             </div>
@@ -60,23 +60,8 @@
 {
     GameController gameController = new GameController("Player 1", 4);
 
-    public void NextRound()
+    public void AskPlayerForCards()
     {
-        Player nextRoundPlayer;
-        Value nextRoundValue;
-
-        if (gameController.HumanPlayer.Hand.Count() > 0 || gameController.gameState.Stock.Count() > 0)
-        {
-            nextRoundPlayer = gameController.Opponents.Skip(gameController.SelectedOpponent).First();
-            nextRoundValue = gameController.HumanPlayer.Hand.Skip(gameController.SelectedCard).First().Value;
-        }
-        else
-        {
-            nextRoundPlayer = gameController.HumanPlayer;
-            nextRoundValue = Value.Null;
-        }
-
-        if (gameController.ReturnSelectedCard(gameController.SelectedCard).Value != Value.Null || gameController.HumanPlayer.Hand.Count() == 0)
-            gameController.NextRound(nextRoundPlayer, nextRoundValue);
+        gameController.AskPlayerForCards();
     }
 }
