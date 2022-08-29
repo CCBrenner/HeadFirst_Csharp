@@ -18,7 +18,7 @@
         {
             return Name;
         }
-
+        public static string PluralAndIfSix(Value value) => value == Value.Six ? "es" : "s";
         public int CompareTo(Card other)
         {
             return new CardComparerByValue().Compare(this, other);

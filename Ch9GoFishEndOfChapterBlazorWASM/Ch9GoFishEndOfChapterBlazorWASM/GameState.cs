@@ -19,18 +19,40 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
 
             foreach (Player player in tempPlayersList) player.GetNextHand(stock);
 
+            Stock = stock;
+            HumanPlayer = human;
             Players = tempPlayersList;
             Opponents = tempOpponentsList;
-            HumanPlayer = human;
             GameOver = false;
-            Stock = stock;
+            GameStatus = $"Starting a new game with players {string.Join(", ", Players)}";
+            SelectedCardIndex = -1;
         }
 
+        public readonly Deck Stock;
+        public readonly Player HumanPlayer;
         public readonly IEnumerable<Player> Players;
         public readonly IEnumerable<Player> Opponents;
-        public readonly Player HumanPlayer;
+
         public bool GameOver { get; set; }
-        public readonly Deck Stock;
+
+        public string GameStatus { get; set; }
+        public string CurrentStandings { get; set; }
+        public string AskStatus { get; set; }
+        public string ButtonText { get; set; }
+
+        private int selectedCardIndex;
+        public int SelectedCardIndex
+        {
+            get { return selectedCardIndex; }
+            set
+            {
+                selectedCardIndex = value;
+                UpdateGameState();
+            }
+        }
+        public Card SelectedCard { get { return SelectedCardIndex == -1 ? new Card(Value.Null, Suit.Spades) : HumanPlayer.Hand.Skip(SelectedCardIndex).First(); } }
+        public int SelectedOpponentIndex { get; set; }
+        public Player SelectedOpponent { get { return Opponents.Skip(SelectedOpponentIndex).First(); } }
 
         public Player RandomPlayer(Player currentPlayer) =>
             Players
@@ -38,59 +60,83 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
                 .Skip(Player.Random.Next(Players.Count() - 1))
                 .First();
 
-        public string PlayRound(Player player, Player playerToAsk, Value valuesToAskFor, Deck stock)
+        public void PlayRound(Player player, Player playerToAsk, Value valuesToAskFor, Deck stock)
         {
-            string pluralAndIfSix = valuesToAskFor == Value.Six ? "es" : "s";
-            string statusMessage = $"{player} asked {playerToAsk} for {valuesToAskFor}{pluralAndIfSix}{Environment.NewLine}";
-
-            var matchingCards = playerToAsk.DoYouHaveAny(valuesToAskFor, stock);
-
-            if (matchingCards.Count() > 0)
-            {
-                player.AddCardsAndPullOutBooks(matchingCards);
-                statusMessage += $"{playerToAsk} has {matchingCards.Count()} {valuesToAskFor} card{Player.S(matchingCards.Count())}";
-            }
-            else if (stock.Count == 0)
-                statusMessage += $"The stock is out of cards";
+            string statusMessage = "";
+            if (playerToAsk == HumanPlayer && valuesToAskFor == Value.Null)
+                statusMessage += $"{HumanPlayer.Name} has no cards and the stock is empty.";
             else
             {
-                player.DrawCard(stock);
-                statusMessage += $"{player} drew a card";
-            }
+                statusMessage = $"{player} asked {playerToAsk} for {valuesToAskFor}{Card.PluralAndIfSix(valuesToAskFor)}{Environment.NewLine}";
 
-            if (player.Hand.Count() == 0)
-            {
-                player.GetNextHand(stock);
-                statusMessage += $"{Environment.NewLine}{player} ran out of cards" +
-                    $"{Environment.NewLine}{player} drew {player.Hand.Count()} " +
-                    $"card{Player.S(player.Hand.Count())} from the stock";
-                if (stock.Count == 0)
-                    statusMessage += $"{Environment.NewLine}The stock is out of cards";
-            }
-            return statusMessage;
-        }
-        public string CheckForWinner()
-        {
-            int topScore = 0;
-            List<Player> winnerPlayers = new List<Player>();
-            foreach(Player player in Players)
-            {
-                if (player.Books.Count() > topScore)
+                var matchingCards = playerToAsk.DoYouHaveAny(valuesToAskFor, stock);
+
+                if (matchingCards.Count() > 0)
                 {
-                    topScore = player.Books.Count();
-                    winnerPlayers.Clear();
-                    winnerPlayers.Add(player);
+                    player.AddCardsAndPullOutBooks(matchingCards);
+                    statusMessage += $"{playerToAsk} has {matchingCards.Count()} {valuesToAskFor} card{Player.S(matchingCards.Count())}";
                 }
-                else if (player.Books.Count() == topScore)
-                    winnerPlayers.Add(player);
+                else if (stock.Count == 0)
+                    statusMessage += $"The stock is out of cards";
+                else
+                {
+                    player.DrawCard(stock);
+                    statusMessage += $"{player} drew a card";
+                }
+
+                if (player.Hand.Count() == 0)
+                {
+                    player.GetNextHand(stock);
+                    statusMessage += $"{Environment.NewLine}{player} ran out of cards" +
+                        $"{Environment.NewLine}{player} drew {player.Hand.Count()} " +
+                        $"card{Player.S(player.Hand.Count())} from the stock";
+                    if (stock.Count == 0)
+                        statusMessage += $"{Environment.NewLine}The stock is out of cards";
+                }
             }
-            if (winnerPlayers.Count() == 1) return $"The winner is {winnerPlayers.First()}";
+            GameStatus += statusMessage;
+        }
+        public void UpdateGameState()
+        {
+            UpdateGameOver();
+            UpdateCurrentStandings();
+            UpdateAskStatusAndButtontext();
+        }
+        private void UpdateGameOver()
+        {
+            int numCompletedBooks = 0;
+            int totalNumOfBooks = 13;
+            foreach (Player player in Players)
+                numCompletedBooks += player.Books.Count();
+            GameOver = numCompletedBooks == totalNumOfBooks;
+        }
+        private void UpdateCurrentStandings()
+        {
+            CurrentStandings = "";
+            foreach (Player player in Players)
+                CurrentStandings += $"{player.Name} has {player.Books.Count()} Book{Player.S(player.Books.Count())}{Environment.NewLine}";
+        }
+        private void UpdateAskStatusAndButtontext()
+        {
+            if (SelectedCard.Value == Value.Null && HumanPlayer.Hand.Count() == 0 && GameOver)
+            {
+                AskStatus = "See Game Status";
+                ButtonText = "Click to start a New Game";
+            }
+            else if (SelectedCard.Value == Value.Null && HumanPlayer.Hand.Count() == 0)
+            {
+                AskStatus = "You have no more cards and the deck is empty";
+                ButtonText = "Next Round";
+            }
+            else if (SelectedCard.Value == Value.Null)
+            {
+                AskStatus = "Choose a card from your hand";
+                ButtonText = "";
+            }
             else
             {
-                string winners = $"The winners are {winnerPlayers.First()}";
-                for (int i = 1; i < winnerPlayers.Count(); i++)
-                    winners += $" and {winnerPlayers[i]}";
-                return winners;
+                AskStatus = $"Ask for {SelectedCard.Value}{Card.PluralAndIfSix(SelectedCard.Value)} from {SelectedOpponent.Name}";
+                ButtonText = "Ask Player for Cards";
             }
         }
     }
