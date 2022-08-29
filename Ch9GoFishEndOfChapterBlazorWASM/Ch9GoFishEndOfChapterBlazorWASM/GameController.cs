@@ -13,75 +13,73 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
             GameStatus = $"Starting a new game with players {string.Join(", ", gameState.Players)}";
             UpdateCurrentStandings();
 
-            buttonText = "Ask Player for Cards";
+            ButtonText = "Ask Player for Cards";
         }
         public static Random Random = new Random();
 
         public GameState gameState;
-        public bool GameOver { get { return gameState.GameOver; } }
+        public bool GameOver { get { return gameState.GameOver; } private set { gameState.GameOver = value; } }
         public Player HumanPlayer { get { return gameState.HumanPlayer; } }
         public IEnumerable<Player> Opponents { get { return gameState.Opponents; } }
 
         public string GameStatus { get; private set; }
         public string CurrentStandings { get; private set; }
-        private string buttonText;
-        public string ButtonText() => buttonText;
-        public int SelectedCard { get; set; }
-        public Card ReturnSelectedCard(int i)
-        {
-            if (i == -1)
-                return new Card(Value.Null, Suit.Spades);
-            else 
-                return HumanPlayer.Hand.Skip(i).First();
-        }
-        public int SelectedOpponent { get; set; }
-        public Player ReturnSelectedOpponent(int i) => Opponents.Skip(i).First();
+        public string ButtonText { get; private set; }
+        public int SelectedCardIndex { get; set; }
+        public Card SelectedCard { get { return SelectedCardIndex == -1 ? new Card(Value.Null, Suit.Spades) : HumanPlayer.Hand.Skip(SelectedCardIndex).First(); } }
+        public int SelectedOpponentIndex { get; set; }
+        public Player SelectedOpponent { get { return Opponents.Skip(SelectedOpponentIndex).First(); } }
+
         public string WhatPlayerIsAskingFor()
         {
-            string pluralAndIfSix = ReturnSelectedCard(SelectedCard).Value == Value.Six ? "es" : "s";
+            string pluralAndIfSix = SelectedCard.Value == Value.Six ? "es" : "s";
 
-            if (ReturnSelectedCard(SelectedCard).Value == Value.Null && HumanPlayer.Hand.Count() == 0)
+            if (SelectedCard.Value == Value.Null && HumanPlayer.Hand.Count() == 0)
             {
                 if (GameOver)
                 {
-                    buttonText = "See Game Status";
+                    ButtonText = "Click to start a New Game";
                     return "See Game Status";
                 }
                 else
                 {
-                    buttonText = "Next Round";
+                    ButtonText = "Next Round";
                     return "You have no more cards and the deck is empty";
                 }
             }
-            else if (ReturnSelectedCard(SelectedCard).Value == Value.Null)
+            else if (SelectedCard.Value == Value.Null)
             {
-                buttonText = "";
+                ButtonText = "";
                 return "Choose a card from your hand";
             }
             else
-            { 
-                buttonText = "Ask Player for Cards";
-                return $"Ask for {ReturnSelectedCard(SelectedCard).Value}{pluralAndIfSix} from {ReturnSelectedOpponent(SelectedOpponent).Name}";
+            {
+                ButtonText = "Ask Player for Cards";
+                return $"Ask for {SelectedCard.Value}{pluralAndIfSix} from {SelectedOpponent.Name}";
             }
         }
-        public void AskPlayerForCards()
+        public void StartNextTurn()
         {
-            Player nextRoundPlayer;
-            Value nextRoundValue;
-
-            if (HumanPlayer.Hand.Count() > 0 || gameState.Stock.Count() > 0)
-            {
-                nextRoundPlayer = Opponents.Skip(SelectedOpponent).First();
-                nextRoundValue = HumanPlayer.Hand.Skip(SelectedCard).First().Value;
-            }
+            if (GameOver) NewGame();
             else
             {
-                nextRoundPlayer = HumanPlayer;
-                nextRoundValue = Value.Null;
-            }
+                Player nextRoundPlayer;
+                Value nextRoundValue;
 
-            if (ReturnSelectedCard(SelectedCard).Value != Value.Null || HumanPlayer.Hand.Count() == 0)
-                NextRound(nextRoundPlayer, nextRoundValue);
+                if (HumanPlayer.Hand.Count() > 0 || gameState.Stock.Count() > 0)
+                {
+                    nextRoundPlayer = SelectedOpponent;
+                    nextRoundValue = SelectedCard.Value;
+                }
+                else
+                {
+                    nextRoundPlayer = HumanPlayer;
+                    nextRoundValue = Value.Null;
+                }
+
+                if (SelectedCard.Value != Value.Null || HumanPlayer.Hand.Count() == 0)
+                    NextRound(nextRoundPlayer, nextRoundValue);
+            }
         }
         public void NextRound(Player playerToAsk, Value valueToAskFor)
         {
@@ -105,7 +103,7 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
 
             IfGameOver();
 
-            SelectedCard = -1;
+            SelectedCardIndex = -1;
         }
         public void ComputerPlayersPlayNextRound()
         {
@@ -132,11 +130,11 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
             int totalNumOfBooks = 13;
             foreach(Player player in gameState.Players)
                 numCompletedBooks += player.Books.Count();
-            gameState.GameOver = numCompletedBooks == totalNumOfBooks;
+            GameOver = numCompletedBooks == totalNumOfBooks;
         }
         public void IfGameOver()
         {
-            if (gameState.GameOver)
+            if (GameOver)
             {
                 GameStatus = $"Game Over.{Environment.NewLine}{Environment.NewLine}Final Standings:";
                 int position = 1;
@@ -159,8 +157,9 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
         }
         public void NewGame()
         {
-            GameStatus = "Starting a new game";
-            gameState = new GameState(gameState.HumanPlayer.Name, Opponents.Count(), new Deck());
+            GameStatus = $"Starting a new game with players {string.Join(", ", gameState.Players)}";
+            UpdateCurrentStandings();
+            gameState = new GameState(HumanPlayer.Name, Opponents.Count(), new Deck());
         }
     }
 }

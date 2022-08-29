@@ -22,7 +22,7 @@
             <div class="row">
                 <div class="col-6">
                     <label class="w-100">Your Hand
-                        <select @bind="gameController.SelectedCard" size="16" class="w-100 text-center">
+                        <select @bind="gameController.SelectedCardIndex" size="16" class="w-100 text-center">
                             @for (int i = 0; i < gameController.HumanPlayer.Hand.Count(); i++)
                             {
                                 <option value="@i">@gameController.HumanPlayer.Hand.Skip(i).First().ToString()</option>
@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-6">
                     <label class="w-100">Opponents to Ask
-                        <select @bind="gameController.SelectedOpponent" size="16" class="w-100 text-center">
+                        <select @bind="gameController.SelectedOpponentIndex" size="16" class="w-100 text-center">
                             @for (int i = 0; i < gameController.Opponents.Count(); i++)
                             {
                                 <option value="@i">@gameController.Opponents.Skip(i).First().Name</option>
@@ -46,8 +46,8 @@
                     <br/>
                     <div class="w-100">@gameController.WhatPlayerIsAskingFor()&nbsp;</div>
                     <br/>
-                    <button class="btn btn-primary w-100" @onclick="AskPlayerForCards">
-                        @gameController.ButtonText()&nbsp;
+                    <button class="btn btn-primary w-100" @onclick="StartNextTurn">
+                        @gameController.ButtonText&nbsp;
                     </button>
                 </div>
             </div>
@@ -60,8 +60,8 @@
 {
     GameController gameController = new GameController("Player 1", 4);
 
-    public void AskPlayerForCards()
+    public void StartNextTurn()
     {
-        gameController.AskPlayerForCards();
+        gameController.StartNextTurn();
     }
 }
