@@ -12,6 +12,8 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
 
             GameStatus = $"Starting a new game with players {string.Join(", ", gameState.Players)}";
             UpdateCurrentStandings();
+
+            buttonText = "Ask Player for Cards";
         }
         public static Random Random = new Random();
 
@@ -22,14 +24,33 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
 
         public string GameStatus { get; private set; }
         public string CurrentStandings { get; private set; }
+        private string buttonText;
+        public string ButtonText() => buttonText;
         public int SelectedCard { get; set; }
-        public Card ReturnSelectedCard(int i) => HumanPlayer.Hand.Skip(i).First();
+        public Card ReturnSelectedCard(int i)
+        {
+            if (i == -1)
+                return new Card(Value.Null, Suit.Spades);
+            else 
+                return HumanPlayer.Hand.Skip(i).First();
+        }
         public int SelectedOpponent { get; set; }
         public Player ReturnSelectedOpponent(int i) => Opponents.Skip(i).First();
         public string WhatPlayerIsAskingFor()
         {
             string pluralAndIfSix = ReturnSelectedCard(SelectedCard).Value == Value.Six ? "es" : "s";
-            return $"Ask for {ReturnSelectedCard(SelectedCard).Value}{pluralAndIfSix} from {ReturnSelectedOpponent(SelectedOpponent).Name}";
+
+            if (ReturnSelectedCard(SelectedCard).Value == Value.Null && HumanPlayer.Hand.Count() == 0)
+            {
+                buttonText = "Next Round";
+                return "You have no more cards and the deck is empty.";
+            }
+            else if (ReturnSelectedCard(SelectedCard).Value == Value.Null)
+            {
+                return "";
+            }
+            else
+                return $"Ask for {ReturnSelectedCard(SelectedCard).Value}{pluralAndIfSix} from {ReturnSelectedOpponent(SelectedOpponent).Name}";
         }
         public void NextRound(Player playerToAsk, Value valueToAskFor)
         {
@@ -51,25 +72,9 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
 
             CheckWinner();
 
-            if (gameState.GameOver)
-            {
-                GameStatus = $"Game Over.{Environment.NewLine}{Environment.NewLine}Final Standings:";
-                int position = 1;
-                int k = 0;
-                for(int booksWon = 13; booksWon < gameState.Players.Count(); booksWon--)
-                {
-                    foreach(Player player in gameState.Players)
-                    {
-                        if (player.Books.Count() == booksWon)
-                        {
-                            GameStatus += $"{Environment.NewLine}#{position} with {player.Books.Count()} Book{Player.S(player.Books.Count())}: {player.Name}";
-                            k++;
-                        }
-                    }
-                    position += k;
-                    k = 0;
-                }
-            }
+            IfGameOver();
+
+            SelectedCard = -1;
         }
         public void ComputerPlayersPlayNextRound()
         {
@@ -98,7 +103,29 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
                 numCompletedBooks += player.Books.Count();
             gameState.GameOver = numCompletedBooks == totalNumOfBooks;
         }
-
+        public void IfGameOver()
+        {
+            if (gameState.GameOver)
+            {
+                GameStatus = $"Game Over.{Environment.NewLine}{Environment.NewLine}Final Standings:";
+                int position = 1;
+                int k = 0;
+                for (int booksWon = 13; booksWon >= 0; booksWon--)
+                {
+                    foreach (Player player in gameState.Players)
+                    {
+                        if (player.Books.Count() == booksWon)
+                        {
+                            GameStatus += $"{Environment.NewLine}#{position} with {player.Books.Count()} Book{Player.S(player.Books.Count())}: {player.Name}";
+                            k++;
+                        }
+                    }
+                    position += k;
+                    k = 0;
+                }
+                CurrentStandings = "";
+            }
+        }
         public void NewGame()
         {
             GameStatus = "Starting a new game";
