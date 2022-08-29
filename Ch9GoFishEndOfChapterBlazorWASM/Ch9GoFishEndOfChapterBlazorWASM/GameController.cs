@@ -33,7 +33,7 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
         }
         public void NextRound(Player playerToAsk, Value valueToAskFor)
         {
-            if(valueToAskFor == Value.Null)
+            if(playerToAsk == HumanPlayer && valueToAskFor == Value.Null)
                 GameStatus = $"{HumanPlayer.Name} has no cards and the stock is empty.";
             else
                 GameStatus = $"{gameState.PlayRound(HumanPlayer, playerToAsk, valueToAskFor, gameState.Stock)}";
@@ -48,6 +48,28 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
             GameStatus += $"{Environment.NewLine}{Environment.NewLine}The stock has {gameState.Stock.Count()} card{Player.S(gameState.Stock.Count())}";
 
             UpdateCurrentStandings();
+
+            CheckWinner();
+
+            if (gameState.GameOver)
+            {
+                GameStatus = $"Game Over.{Environment.NewLine}{Environment.NewLine}Final Standings:";
+                int position = 1;
+                int k = 0;
+                for(int booksWon = 13; booksWon < gameState.Players.Count(); booksWon--)
+                {
+                    foreach(Player player in gameState.Players)
+                    {
+                        if (player.Books.Count() == booksWon)
+                        {
+                            GameStatus += $"{Environment.NewLine}#{position} with {player.Books.Count()} Book{Player.S(player.Books.Count())}: {player.Name}";
+                            k++;
+                        }
+                    }
+                    position += k;
+                    k = 0;
+                }
+            }
         }
         public void ComputerPlayersPlayNextRound()
         {
@@ -68,6 +90,15 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
             foreach(Player player in gameState.Players)
                 CurrentStandings += $"{player.Name} has {player.Books.Count()} Book{Player.S(player.Books.Count())}{Environment.NewLine}";
         }
+        public void CheckWinner()
+        {
+            int numCompletedBooks = 0;
+            int totalNumOfBooks = 13;
+            foreach(Player player in gameState.Players)
+                numCompletedBooks += player.Books.Count();
+            gameState.GameOver = numCompletedBooks == totalNumOfBooks;
+        }
+
         public void NewGame()
         {
             GameStatus = "Starting a new game";
