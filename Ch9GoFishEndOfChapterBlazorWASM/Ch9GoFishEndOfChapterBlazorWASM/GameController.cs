@@ -67,7 +67,13 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
                 else
                 {
                     gameState.GameStatus += $"{Environment.NewLine}";
-                    gameState.PlayRound(opponent, gameState.RandomPlayer(opponent), opponent.RandomValueFromHand(), gameState.Stock);
+                    Player randomPlayer;
+                    while (true)
+                    {
+                        randomPlayer = gameState.RandomPlayer(opponent);
+                        if (randomPlayer.Hand.Count() > 0) break;
+                    }
+                    gameState.PlayRound(opponent, randomPlayer, opponent.RandomValueFromHand(), gameState.Stock);
                 }
             }
         }
