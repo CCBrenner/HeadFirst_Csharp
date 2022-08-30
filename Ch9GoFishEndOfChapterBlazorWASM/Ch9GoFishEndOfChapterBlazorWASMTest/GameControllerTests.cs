@@ -18,8 +18,9 @@ public class GameControllerTests
     public void TestConstructor()
     {
         GameController gameController = new GameController("Human", 3);
-        Assert.AreEqual("Starting a new game with players Human, Computer 1, Computer 2, Computer 3", gameController.Status);
+        Assert.AreEqual("Starting a new game with players Human, Computer 1, Computer 2, Computer 3", gameController.gameState.GameStatus);
     }
+
     [TestMethod]
     public void TestNewGame()
     {
@@ -27,11 +28,11 @@ public class GameControllerTests
         // but this is already covered by another test. There is no sense in testing the same method twice.
         Player.Random = new MockRandom() { ValueToReturn = 0 };
         GameController gameController = new GameController("Owen", 1);
-        gameController.NextRound(gameController.Opponents.First(), Value.Six);
+        gameController.NextRound();
         gameController.NewGame();
-        Assert.AreEqual("Owen", gameController.HumanPlayer.Name);
-        Assert.AreEqual("Computer 1", gameController.Opponents.First().Name);
-        Assert.AreEqual("Starting a new game", gameController.Status);
+        Assert.AreEqual("Owen", gameController.gameState.HumanPlayer.Name);
+        Assert.AreEqual("Computer 1", gameController.gameState.Opponents.First().Name);
+        Assert.AreEqual("Starting a new game with players Owen, Computer 1", gameController.gameState.GameStatus);
     }
 }
 
