@@ -14,7 +14,28 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
         public static Random Random = new Random();
         public GameState gameState;
 
-        public void StartNextRound()
+        public void NextRound()
+        {
+            gameState.GameStatus = "";
+
+            HumanPlayerPlaysNextRound();
+
+            ComputerPlayersPlayNextRound();
+
+            gameState.GameStatus += $"{Environment.NewLine}";
+
+            foreach (Player player in gameState.Players)
+                gameState.GameStatus += $"{Environment.NewLine}{player.Name} has {player.Hand.Count()} card{Player.S(player.Hand.Count())}";
+
+            gameState.GameStatus += $"{Environment.NewLine}{Environment.NewLine}The stock has {gameState.Stock.Count()} card{Player.S(gameState.Stock.Count())}";
+
+            gameState.SelectedCardIndex = -1;
+
+            gameState.UpdateGameState();
+
+            if (gameState.GameOver) RenderFinalStandings();
+        }
+        public void HumanPlayerPlaysNextRound()
         {
             if (gameState.GameOver) NewGame();
             else
@@ -34,29 +55,8 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
                 }
 
                 if (gameState.SelectedCard.Value != Value.Null || gameState.HumanPlayer.Hand.Count() == 0)
-                    NextRound(nextRoundPlayer, nextRoundValue);
+                    PlayRound(gameState.HumanPlayer, nextRoundPlayer, nextRoundValue, gameState.Stock);
             }
-        }
-        public void NextRound(Player playerToAsk, Value valueToAskFor)
-        {
-            gameState.GameStatus = "";
-
-            gameState.PlayRound(gameState.HumanPlayer, playerToAsk, valueToAskFor, gameState.Stock);
-
-            ComputerPlayersPlayNextRound();
-
-            gameState.GameStatus += $"{Environment.NewLine}";
-
-            foreach (Player player in gameState.Players)
-                gameState.GameStatus += $"{Environment.NewLine}{player.Name} has {player.Hand.Count()} card{Player.S(player.Hand.Count())}";
-
-            gameState.GameStatus += $"{Environment.NewLine}{Environment.NewLine}The stock has {gameState.Stock.Count()} card{Player.S(gameState.Stock.Count())}";
-
-            gameState.SelectedCardIndex = -1;
-
-            gameState.UpdateGameState();
-
-            if (gameState.GameOver) RenderFinalStandings();
         }
         public void ComputerPlayersPlayNextRound()
         {
@@ -73,9 +73,45 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
                         randomPlayer = gameState.RandomPlayer(opponent);
                         if (randomPlayer.Hand.Count() > 0) break;
                     }
-                    gameState.PlayRound(opponent, randomPlayer, opponent.RandomValueFromHand(), gameState.Stock);
+                    PlayRound(opponent, randomPlayer, opponent.RandomValueFromHand(), gameState.Stock);
                 }
             }
+        }
+        public void PlayRound(Player player, Player playerToAsk, Value valuesToAskFor, Deck stock)
+        {
+            string statusMessage = "";
+            if (playerToAsk == gameState.HumanPlayer && valuesToAskFor == Value.Null)
+                statusMessage += $"{gameState.HumanPlayer.Name} has no cards and the stock is empty.";
+            else
+            {
+                statusMessage = $"{player} asked {playerToAsk} for {valuesToAskFor}{Card.PluralAndIfSix(valuesToAskFor)}{Environment.NewLine}";
+
+                var matchingCards = playerToAsk.DoYouHaveAny(valuesToAskFor, stock);
+
+                if (matchingCards.Count() > 0)
+                {
+                    player.AddCardsAndPullOutBooks(matchingCards);
+                    statusMessage += $"{playerToAsk} has {matchingCards.Count()} {valuesToAskFor} card{Player.S(matchingCards.Count())}";
+                }
+                else if (stock.Count == 0)
+                    statusMessage += $"The stock is out of cards";
+                else
+                {
+                    player.DrawCard(stock);
+                    statusMessage += $"{player} drew a card";
+                }
+
+                if (player.Hand.Count() == 0)
+                {
+                    player.GetNextHand(stock);
+                    statusMessage += $"{Environment.NewLine}{player} ran out of cards" +
+                        $"{Environment.NewLine}{player} drew {player.Hand.Count()} " +
+                        $"card{Player.S(player.Hand.Count())} from the stock";
+                    if (stock.Count == 0)
+                        statusMessage += $"{Environment.NewLine}The stock is out of cards";
+                }
+            }
+            gameState.GameStatus += statusMessage;
         }
         public void RenderFinalStandings()
         {

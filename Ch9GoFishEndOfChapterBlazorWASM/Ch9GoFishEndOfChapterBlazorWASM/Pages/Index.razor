@@ -47,7 +47,7 @@
                     <br/>
                     <div class="w-100">@gameController.gameState.AskStatus&nbsp;</div>
                     <br/>
-                    <button class="btn btn-primary w-100" @onclick="StartNextRound">
+                    <button class="btn btn-primary w-100" @onclick="NextRound">
                         @gameController.gameState.ButtonText&nbsp;
                     </button>
                 </div>
@@ -61,8 +61,8 @@
 {
     GameController gameController = new GameController("Player 1", 4);
 
-    public void StartNextRound()
+    public void NextRound()
     {
-        gameController.StartNextRound();
+        gameController.NextRound();
     }
 }

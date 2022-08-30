@@ -60,42 +60,6 @@ namespace Ch9GoFishEndOfChapterBlazorWASM
                 .Skip(Player.Random.Next(Players.Count() - 1))
                 .First();
 
-        public void PlayRound(Player player, Player playerToAsk, Value valuesToAskFor, Deck stock)
-        {
-            string statusMessage = "";
-            if (playerToAsk == HumanPlayer && valuesToAskFor == Value.Null)
-                statusMessage += $"{HumanPlayer.Name} has no cards and the stock is empty.";
-            else
-            {
-                statusMessage = $"{player} asked {playerToAsk} for {valuesToAskFor}{Card.PluralAndIfSix(valuesToAskFor)}{Environment.NewLine}";
-
-                var matchingCards = playerToAsk.DoYouHaveAny(valuesToAskFor, stock);
-
-                if (matchingCards.Count() > 0)
-                {
-                    player.AddCardsAndPullOutBooks(matchingCards);
-                    statusMessage += $"{playerToAsk} has {matchingCards.Count()} {valuesToAskFor} card{Player.S(matchingCards.Count())}";
-                }
-                else if (stock.Count == 0)
-                    statusMessage += $"The stock is out of cards";
-                else
-                {
-                    player.DrawCard(stock);
-                    statusMessage += $"{player} drew a card";
-                }
-
-                if (player.Hand.Count() == 0)
-                {
-                    player.GetNextHand(stock);
-                    statusMessage += $"{Environment.NewLine}{player} ran out of cards" +
-                        $"{Environment.NewLine}{player} drew {player.Hand.Count()} " +
-                        $"card{Player.S(player.Hand.Count())} from the stock";
-                    if (stock.Count == 0)
-                        statusMessage += $"{Environment.NewLine}The stock is out of cards";
-                }
-            }
-            GameStatus += statusMessage;
-        }
         public void UpdateGameState()
         {
             UpdateGameOver();
