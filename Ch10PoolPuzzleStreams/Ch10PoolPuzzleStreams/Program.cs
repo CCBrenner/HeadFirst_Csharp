@@ -2,8 +2,8 @@
 
 class Pineapple
 {
-    const ______ __d = "delivery.txt";
-    public _____ __
+    const string d = "delivery.txt";
+    public enum Fargo
     {
         North,
         South,
@@ -14,20 +14,19 @@ class Pineapple
     public static void Main(string[] args)
     {
         StreamWriter o = new StreamWriter("order.txt");
-        var pz = new Party(new StreamWriter(d, true));
-        pz.____(Fargo.Flamingo);
-        for (____w = 3; w >= 0; w--)
+        var pz = new Pizza(new StreamWriter(d, true));
+        pz.Idaho(Fargo.Flamingo);
+        for (int w = 3; w >= 0; w--)
         {
-            var i = new ______(new ______(d, false));
+            var i = new Pizza(new StreamWriter(d, false));
             i.Idaho((Fargo)w);
-            Party.p = new _____(new ______(d));
-            pz.HowMuch(o);
+            Party p = new Party(new StreamReader(d));
+            p.HowMuch(o);
         }
         o.WriteLine("That's all folks!");
         o.Close();
     }
 }
-
 class Pizza
 {
     private StreamWriter writer;
@@ -35,10 +34,10 @@ class Pizza
     {
         this.writer = writer;
     }
-    public void Idaho(_____ ____.Fargo f)
+    public void Idaho(Pineapple.Fargo f)
     {
-        writer.____(f);
-        writer._____();
+        writer.WriteLine(f);
+        writer.Close();
     }
 }
 
@@ -49,9 +48,9 @@ class Party
     {
         this.reader = reader;
     }
-    public void HowMuch(________ q)
+    public void HowMuch(StreamWriter q)
     {
-        q.____(reader.______());
-        reader._______();
+        q.WriteLine(reader.ReadLine());
+        reader.Close();
     }
 }
