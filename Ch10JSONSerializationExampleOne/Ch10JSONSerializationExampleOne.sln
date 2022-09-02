@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 25.0.1703.2
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch10JSONSerializationExampleOne", "Ch10JSONSerializationExampleOne\Ch10JSONSerializationExampleOne.csproj", "{359DA40F-DCA9-47BC-97EC-8E303F182C4E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{359DA40F-DCA9-47BC-97EC-8E303F182C4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{359DA40F-DCA9-47BC-97EC-8E303F182C4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{359DA40F-DCA9-47BC-97EC-8E303F182C4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{359DA40F-DCA9-47BC-97EC-8E303F182C4E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF270C7F-D645-4401-A158-370F5E7FFF5D}
+	EndGlobalSection
+EndGlobal
