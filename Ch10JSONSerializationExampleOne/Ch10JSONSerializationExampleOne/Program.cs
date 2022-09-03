@@ -56,11 +56,25 @@ class Program
                 Hair = new HairStyle(){ Color = HairColor.Gray, Length = 2.7f },
             }
         };
-        var jsonString = JsonSerializer.Serialize(guys);
+        var options = new JsonSerializerOptions() { WriteIndented = true };
+        var jsonString = JsonSerializer.Serialize(guys, options);
         Console.WriteLine(jsonString);
 
         var copyOfGuys = JsonSerializer.Deserialize<List<Guy>>(jsonString);
         foreach (var guy in copyOfGuys)
             Console.WriteLine("I deserialized this guy: {0}", guy);
+
+        var dudes = JsonSerializer.Deserialize<Stack<Dude>>(jsonString);
+        while(dudes.Count > 0)
+        {
+            var dude = dudes.Pop();
+            Console.WriteLine($"Next dude: {dude.Name} with {dude.Hair} hair");
+        }
     }
+}
+
+class Dude
+{
+    public string Name { get; set; }
+    public HairStyle Hair { get; set; }
 }
