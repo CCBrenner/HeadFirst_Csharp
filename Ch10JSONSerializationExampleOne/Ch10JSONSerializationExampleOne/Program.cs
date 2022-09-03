@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json;
 
 enum HairColor
 {
@@ -42,7 +43,24 @@ class Program
     {
         var guys = new List<Guy>()
         {
-            new Guy(){Name = "Bpb", Clothes = new Outfit(0)
-        }
+            new Guy()
+            {
+                Name = "Bob",
+                Clothes = new Outfit(){ Top = "t-shirt", Bottom = "jeans"},
+                Hair = new HairStyle() { Color = HairColor.Red, Length = 3.5f },
+            },
+            new Guy()
+            {
+                Name = "Joe",
+                Clothes = new Outfit(){ Top = "polo", Bottom = "slacks"},
+                Hair = new HairStyle(){ Color = HairColor.Gray, Length = 2.7f },
+            }
+        };
+        var jsonString = JsonSerializer.Serialize(guys);
+        Console.WriteLine(jsonString);
+
+        var copyOfGuys = JsonSerializer.Deserialize<List<Guy>>(jsonString);
+        foreach (var guy in copyOfGuys)
+            Console.WriteLine("I deserialized this guy: {0}", guy);
     }
 }
