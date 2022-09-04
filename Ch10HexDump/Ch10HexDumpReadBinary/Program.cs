@@ -6,14 +6,17 @@ class Program
 {
     public static void Main(string[] args)
     {
+        // This project reads a .dat file returns the correct hex characters based on 8-bit values instead of 7-bit
+        // and it replaced the '?' with periods instead (which is a convention with hex dumps)
+
         var position = 0;
-        using (var reader = new StreamReader("textdata.txt"))
+        using (FileStream input = File.OpenRead("binarydata.dat"))
         {
-            while (!reader.EndOfStream)
+            while (position < input.Length)
             {
                 // Read up to the next 16 bytes from the file into a byte array:
-                var buffer = new char[16];
-                var bytesRead = reader.ReadBlock(buffer, 0, 16);
+                var buffer = new byte[16];
+                var bytesRead = input.Read(buffer, 0, buffer.Length);
 
                 // Write the position (or offset) in hex, followed by a colon and space
                 Console.Write("{0:x4} : ", position);
@@ -27,10 +30,12 @@ class Program
                     else
                         Console.Write("   ");
                     if (i == 7) Console.Write("-- ");
+
+                    if (buffer[i] < 0x20 || buffer[i] > 0x7F) buffer[i] = (byte)'.';
                 }
 
                 // Write the actual characters in the byte array
-                var bufferContents = new string(buffer);
+                var bufferContents = Encoding.UTF8.GetString(buffer);
                 Console.WriteLine("   {0}", bufferContents.Substring(0, bytesRead));
             }
         }

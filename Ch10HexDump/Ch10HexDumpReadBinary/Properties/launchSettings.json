@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Ch10HexDumpReadBinary": {
+      "commandName": "Project",
+      "commandLineArgs": "binarydata.dat"
+    }
+  }
+}

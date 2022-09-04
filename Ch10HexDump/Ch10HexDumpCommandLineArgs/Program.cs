@@ -6,14 +6,19 @@ class Program
 {
     public static void Main(string[] args)
     {
+        // In a shell that can browse the file tree, cd to the project's location and enter this command:
+        // dotnet run bin/Debug/net6.0/binarydata.dat
+
         var position = 0;
-        using (var reader = new StreamReader("textdata.txt"))
+        using (FileStream input = File.OpenRead(args[0]))
         {
-            while (!reader.EndOfStream)
+            // Read up to the next 16 bytes from the file into a byte array:
+            var buffer = new byte[16];
+            int bytesRead;
+
+            while ((bytesRead = input.Read(buffer, 0, buffer.Length)) > 0)
             {
-                // Read up to the next 16 bytes from the file into a byte array:
-                var buffer = new char[16];
-                var bytesRead = reader.ReadBlock(buffer, 0, 16);
+                
 
                 // Write the position (or offset) in hex, followed by a colon and space
                 Console.Write("{0:x4} : ", position);
@@ -27,10 +32,12 @@ class Program
                     else
                         Console.Write("   ");
                     if (i == 7) Console.Write("-- ");
+
+                    if (buffer[i] < 0x20 || buffer[i] > 0x7F) buffer[i] = (byte)'.';
                 }
 
                 // Write the actual characters in the byte array
-                var bufferContents = new string(buffer);
+                var bufferContents = Encoding.UTF8.GetString(buffer);
                 Console.WriteLine("   {0}", bufferContents.Substring(0, bytesRead));
             }
         }
