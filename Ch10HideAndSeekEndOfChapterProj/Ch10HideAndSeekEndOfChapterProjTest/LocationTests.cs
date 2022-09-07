@@ -35,11 +35,25 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.AreEqual(hallway.Exits[Direction.North].ToString(), "Bathroom");
             Assert.AreEqual(hallway.Exits[(Direction)(-1)].ToString(), "Bathroom");
         }
-        /*
         [TestMethod]
         public void TestGetExit()
         {
+            hallway.AddExit(Direction.West, entry);
+            entry.AddExit(Direction.East, hallway);
+            hallway.AddExit(Direction.Northwest, kitchen);
+            kitchen.AddExit(Direction.Southeast, hallway);
+            hallway.AddExit(Direction.North, bathroom);
+            bathroom.AddExit(Direction.South, hallway);
+            hallway.AddExit(Direction.South, livingRoom);
+            livingRoom.AddExit(Direction.North, hallway);
+            hallway.AddExit(Direction.Up, landing);
+            landing.AddExit(Direction.Down, hallway);
+
+            Assert.AreEqual(hallway.GetExit(Direction.South).Name.ToString(), "Living Room");
+            Assert.AreEqual(livingRoom.GetExit(Direction.North).Name.ToString(), "Hallway");
+            Assert.AreEqual(kitchen.GetExit(Direction.Southeast).Name.ToString(), "Hallway");
         }
+        /*
         [TestMethod]
         public void TestExitList()
         {
