@@ -14,6 +14,6 @@ namespace Ch10HideAndSeekEndOfChapterProj
         public override string ToString() => Name;
         public IEnumerable<string> ExitList => throw new NotImplementedException();
         public void AddExit(Direction direction, Location currentLocation) => Exits.Add(direction, currentLocation);
-        public Location GetExit(Direction direction) => throw new NotImplementedException();
+        public Location GetExit(Direction direction) => Exits[direction];
     }
 }
