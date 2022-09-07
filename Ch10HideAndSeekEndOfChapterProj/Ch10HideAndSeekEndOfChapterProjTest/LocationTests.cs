@@ -9,15 +9,16 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
     [TestClass]
     public class LocationTests
     {
+        Location hallway = new Location("Hallway");
+        Location kitchen = new Location("Kitchen");
+        Location entry = new Location("Entry");
+        Location bathroom = new Location("Bathroom");
+        Location livingRoom = new Location("Living Room");
+        Location landing = new Location("Landing");
+
         [TestMethod]
         public void Initialize()
         {
-            Location hallway = new Location("Hallway");
-            Location kitchen = new Location("Kitchen");
-            Location entry = new Location("Entry");
-            Location bathroom = new Location("Bathroom");
-            Location livingRoom = new Location("Living Room");
-            Location landing = new Location("Landing");
             hallway.AddExit(Direction.West, entry);
             entry.AddExit(Direction.East, hallway);
             hallway.AddExit(Direction.Northwest, kitchen);
@@ -28,6 +29,7 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             livingRoom.AddExit(Direction.North, hallway);
             hallway.AddExit(Direction.Up, landing);
             landing.AddExit(Direction.Down, hallway);
+
             Assert.AreEqual(hallway.Name.ToString(), "Hallway");
             Assert.AreEqual(hallway.Exits.Count, 5);
             Assert.AreEqual(hallway.Exits[Direction.North].ToString(), "Bathroom");
@@ -37,7 +39,6 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
         [TestMethod]
         public void TestGetExit()
         {
-            
         }
         [TestMethod]
         public void TestExitList()
