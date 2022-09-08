@@ -30,10 +30,10 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             hallway.AddExit(Direction.Up, landing);
             landing.AddExit(Direction.Down, hallway);
 
-            Assert.AreEqual(hallway.Name.ToString(), "Hallway");
-            Assert.AreEqual(hallway.Exits.Count, 5);
-            Assert.AreEqual(hallway.Exits[Direction.North].ToString(), "Bathroom");
-            Assert.AreEqual(hallway.Exits[(Direction)(-1)].ToString(), "Bathroom");
+            Assert.AreEqual("Hallway", hallway.Name.ToString());
+            Assert.AreEqual(5, hallway.Exits.Count);
+            Assert.AreEqual("Bathroom", hallway.Exits[Direction.North].ToString());
+            Assert.AreEqual("Bathroom", hallway.Exits[(Direction)(-1)].ToString());
         }
         [TestMethod]
         public void TestGetExit()
@@ -49,9 +49,9 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             hallway.AddExit(Direction.Up, landing);
             landing.AddExit(Direction.Down, hallway);
 
-            Assert.AreEqual(hallway.GetExit(Direction.South).Name.ToString(), "Living Room");
-            Assert.AreEqual(livingRoom.GetExit(Direction.North).Name.ToString(), "Hallway");
-            Assert.AreEqual(kitchen.GetExit(Direction.Southeast).Name.ToString(), "Hallway");
+            Assert.AreEqual("Living Room", hallway.GetExit(Direction.South).Name.ToString());
+            Assert.AreEqual("Hallway", livingRoom.GetExit(Direction.North).Name.ToString());
+            Assert.AreEqual("Hallway", kitchen.GetExit(Direction.Southeast).Name.ToString());
         }
         [TestMethod]
         public void TestExitList()
@@ -67,11 +67,11 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             hallway.AddExit(Direction.Up, landing);
             landing.AddExit(Direction.Down, hallway);
 
-            Assert.AreEqual(hallway.ExitList.Count(), 5);
-            Assert.AreEqual(hallway.ExitList.ToList()[0], " - the Bathroom is to the North");
-            Assert.AreEqual(bathroom.ExitList.ToList()[0], " - the Hallway is to the South");
-            Assert.AreEqual(hallway.ExitList.ToList()[1], " - the Living Room is to the South");
-            Assert.AreEqual(livingRoom.ExitList.ToList()[0], " - the Hallway is to the North");
+            Assert.AreEqual(5, hallway.ExitList.Count());
+            Assert.AreEqual(" - the Bathroom is to the North", hallway.ExitList.ToList()[0]);
+            Assert.AreEqual(" - the Hallway is to the South", bathroom.ExitList.ToList()[0]);
+            Assert.AreEqual(" - the Living Room is to the South", hallway.ExitList.ToList()[1]);
+            Assert.AreEqual(" - the Hallway is to the North", livingRoom.ExitList.ToList()[0]);
         }
         /*
         [TestMethod]
