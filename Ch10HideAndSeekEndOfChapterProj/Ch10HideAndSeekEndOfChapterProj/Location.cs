@@ -15,38 +15,12 @@ namespace Ch10HideAndSeekEndOfChapterProj
         {
             get
             {
-                /*
-                if (Exits is Dictionary<Direction, Location> tempDictExits)
-                {
-                    int[] map = new[] { 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6, -6 };
-
-                    var sortedList = tempDictExits
-                        .OrderBy(x => map[(int)tempDictExits]);
-
-                    var tempDirectionList = tempDictExits
-                        .OrderBy(tempDictExits => tempDictExits.Key)
-                        .Select(x => x.Key)
-                        .ToList();
-
-                    foreach (Direction direction in tempDirectionList)
-                    {
-                        if (direction == Exits.Key)
-                        {
-
-                        }
-                    }
-                }
-                foreach(object direction in Exits.Keys)
-                {
-                    returnSequence.Add($" - the {item.Name}")
-                }
-                */
-
                 List<string> returnSequence = new List<string>();
-                foreach (KeyValuePair<Direction, Location> pair in Exits)
-                {
+                var tempExits = Exits
+                    .OrderBy(x => x.Key)  // have this take the negative values, abs() them, and subtract 0.5 from them, then sort the order
+                    .ToList();
+                foreach (KeyValuePair<Direction, Location> pair in tempExits)
                     returnSequence.Add($" - the {pair.Value} is to the {pair.Key}");
-                }
                 return returnSequence;
                 // goal: return IEnumerabe<string> with sorted options by direction
             }
