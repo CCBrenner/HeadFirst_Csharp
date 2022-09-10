@@ -2,23 +2,34 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Collections;
-using Ch10HideAndSeekEndOfChapterProj;
 
 namespace Ch10HideAndSeekEndOfChapterProjTest
 {
+    using Ch10HideAndSeekEndOfChapterProj;
+
     [TestClass]
     public class LocationTests
     {
-        Location hallway = new Location("Hallway");
-        Location kitchen = new Location("Kitchen");
-        Location entry = new Location("Entry");
-        Location bathroom = new Location("Bathroom");
-        Location livingRoom = new Location("Living Room");
-        Location landing = new Location("Landing");
+        Location hallway;
+        Location kitchen;
+        Location entry;
+        Location bathroom;
+        Location livingRoom;
+        Location landing;
 
-        [TestMethod]
+        [TestInitialize]
         public void Initialize()
         {
+            hallway = new Location("Hallway");
+            Assert.AreSame("Hallway", hallway.ToString());
+            Assert.AreEqual(0, hallway.ExitList.Count());
+
+            kitchen = new Location("Kitchen");
+            entry = new Location("Entry");
+            bathroom = new Location("Bathroom");
+            livingRoom = new Location("Living Room");
+            landing = new Location("Landing");
+
             hallway.AddExit(Direction.West, entry);
             entry.AddExit(Direction.East, hallway);
             hallway.AddExit(Direction.Northwest, kitchen);
@@ -30,7 +41,6 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             hallway.AddExit(Direction.Up, landing);
             landing.AddExit(Direction.Down, hallway);
 
-            Assert.AreEqual("Hallway", hallway.Name.ToString());
             Assert.AreEqual(5, hallway.Exits.Count);
             Assert.AreEqual("Bathroom", hallway.Exits[Direction.North].ToString());
             Assert.AreEqual("Bathroom", hallway.Exits[(Direction)(-1)].ToString());
@@ -38,17 +48,6 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
         [TestMethod]
         public void TestGetExit()
         {
-            hallway.AddExit(Direction.West, entry);
-            entry.AddExit(Direction.East, hallway);
-            hallway.AddExit(Direction.Northwest, kitchen);
-            kitchen.AddExit(Direction.Southeast, hallway);
-            hallway.AddExit(Direction.North, bathroom);
-            bathroom.AddExit(Direction.South, hallway);
-            hallway.AddExit(Direction.South, livingRoom);
-            livingRoom.AddExit(Direction.North, hallway);
-            hallway.AddExit(Direction.Up, landing);
-            landing.AddExit(Direction.Down, hallway);
-
             Assert.AreEqual("Living Room", hallway.GetExit(Direction.South).Name.ToString());
             Assert.AreEqual("Hallway", livingRoom.GetExit(Direction.North).Name.ToString());
             Assert.AreEqual("Hallway", kitchen.GetExit(Direction.Southeast).Name.ToString());
@@ -56,17 +55,6 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
         [TestMethod]
         public void TestExitList()
         {
-            hallway.AddExit(Direction.West, entry);
-            entry.AddExit(Direction.East, hallway);
-            hallway.AddExit(Direction.Northwest, kitchen);
-            kitchen.AddExit(Direction.Southeast, hallway);
-            hallway.AddExit(Direction.North, bathroom);
-            bathroom.AddExit(Direction.South, hallway);
-            hallway.AddExit(Direction.South, livingRoom);
-            livingRoom.AddExit(Direction.North, hallway);
-            hallway.AddExit(Direction.Up, landing);
-            landing.AddExit(Direction.Down, hallway);
-
             Assert.AreEqual(5, hallway.ExitList.Count());
             Assert.AreEqual(" - the Bathroom is to the North", hallway.ExitList.ToList()[0]);
             Assert.AreEqual(" - the Hallway is to the South", bathroom.ExitList.ToList()[0]);

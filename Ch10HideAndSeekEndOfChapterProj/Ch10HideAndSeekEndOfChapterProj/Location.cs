@@ -16,7 +16,7 @@ namespace Ch10HideAndSeekEndOfChapterProj
             .OrderBy(keyValuePair => (int)keyValuePair.Key)
             .OrderBy(keyValuePair => Math.Abs((int)keyValuePair.Key))
             .Select(keyValuePair => $" - the {keyValuePair.Value} is {ExitListDirection(keyValuePair.Key)}");
-        public string ExitListDirection(Direction d) => d switch
+        private string ExitListDirection(Direction d) => d switch
         {
             Direction.Up => "Up",
             Direction.Down => "Down",
