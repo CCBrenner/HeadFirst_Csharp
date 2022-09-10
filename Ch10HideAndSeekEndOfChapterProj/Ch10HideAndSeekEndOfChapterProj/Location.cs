@@ -11,20 +11,19 @@ namespace Ch10HideAndSeekEndOfChapterProj
         public string Name { get; set; }
         public IDictionary<Direction, Location> Exits { get; private set; } = new Dictionary<Direction, Location>();
         public override string ToString() => Name;
-        public IEnumerable<string> ExitList
+        public IEnumerable<string> ExitList =>
+            Exits
+            .OrderBy(keyValuePair => (int)keyValuePair.Key)
+            .OrderBy(keyValuePair => Math.Abs((int)keyValuePair.Key))
+            .Select(keyValuePair => $" - the {keyValuePair.Value} is {ExitListDirection(keyValuePair.Key)}");
+        public string ExitListDirection(Direction d) => d switch
         {
-            get
-            {
-                List<string> returnSequence = new List<string>();
-                var tempExits = Exits
-                    .OrderBy(x => x.Key)  // have this take the negative values, abs() them, and subtract 0.5 from them, then sort the order
-                    .ToList();
-                foreach (KeyValuePair<Direction, Location> pair in tempExits)
-                    returnSequence.Add($" - the {pair.Value} is to the {pair.Key}");
-                return returnSequence;
-                // goal: return IEnumerabe<string> with sorted options by direction
-            }
-        }
+            Direction.Up => "Up",
+            Direction.Down => "Down",
+            Direction.In => "In",
+            Direction.Out => "Out",
+            _ => $"to the {d}",
+        };
         public void AddExit(Direction direction, Location currentLocation) => Exits.Add(direction, currentLocation);
         public Location GetExit(Direction direction) => Exits[direction];
     }
