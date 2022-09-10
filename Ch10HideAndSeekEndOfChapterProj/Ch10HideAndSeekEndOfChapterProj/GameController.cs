@@ -14,7 +14,9 @@ namespace Ch10HideAndSeekEndOfChapterProj
         public string Prompt => "Which direction do you want to go: ";
         public bool Move(Direction exitDirection)
         {
-            throw new NotImplementedException();
+            bool canMove = CurrentLocation.Exits.ContainsKey(exitDirection);
+            if (canMove) CurrentLocation = CurrentLocation.Exits[exitDirection];
+            return canMove;
         }
         public string ParseInput(string input)
         {
