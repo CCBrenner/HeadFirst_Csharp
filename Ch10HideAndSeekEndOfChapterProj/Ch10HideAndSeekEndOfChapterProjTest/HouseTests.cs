@@ -16,43 +16,34 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.AreEqual("Entry", House.Entry.Name);
 
             var garage = House.Entry.GetExit(Direction.Out);
-            Assert.AreEqual("Garage", garage.Name);
-
             var hallway = House.Entry.GetExit(Direction.East);
+            Assert.AreEqual("Garage", garage.Name);
             Assert.AreEqual("Hallway", hallway.Name);
 
             var kitchen = hallway.GetExit(Direction.Northwest);
-            Assert.AreEqual("Kitchen", kitchen.Name);
-
             var downstairsBathroom = hallway.GetExit(Direction.North);
-            Assert.AreEqual("Downstairs Bathroom", downstairsBathroom.Name);
-
             var livingRoom = hallway.GetExit(Direction.South);
-            Assert.AreEqual("Living Room", livingRoom.Name);
-
             var landing = hallway.GetExit(Direction.Up);
+            Assert.AreEqual("Kitchen", kitchen.Name);
+            Assert.AreEqual("Downstairs Bathroom", downstairsBathroom.Name);
+            Assert.AreEqual("Living Room", livingRoom.Name);
             Assert.AreEqual("Landing", landing.Name);
 
             var masterBedroom = landing.GetExit(Direction.Northwest);
+            var upstairsBathroom = landing.GetExit(Direction.West);
+            var nursery = landing.GetExit(Direction.Southwest);
+            var pantry = landing.GetExit(Direction.South);
+            var kidsRoom = landing.GetExit(Direction.Southeast);
+            var attic = landing.GetExit(Direction.Up);
             Assert.AreEqual("Master Bedroom", masterBedroom.Name);
+            Assert.AreEqual("Upstairs Bathroom", upstairsBathroom.Name);
+            Assert.AreEqual("Nursery", nursery.Name);
+            Assert.AreEqual("Pantry", pantry.Name);
+            Assert.AreEqual("Kids Room", kidsRoom.Name);
+            Assert.AreEqual("Attic", attic.Name);
 
             var masterBathroom = masterBedroom.GetExit(Direction.East);
             Assert.AreEqual("Master Bathroom", masterBathroom.Name);
-
-            var upstairsBathroom = landing.GetExit(Direction.West);
-            Assert.AreEqual("Upstairs Bathroom", upstairsBathroom.Name);
-
-            var nursery = landing.GetExit(Direction.Southwest);
-            Assert.AreEqual("Nursery", nursery.Name);
-
-            var pantry = landing.GetExit(Direction.South);
-            Assert.AreEqual("Pantry", pantry.Name);
-
-            var kidsRoom = landing.GetExit(Direction.Southeast);
-            Assert.AreEqual("Kids Room", kidsRoom.Name);
-
-            var attic = landing.GetExit(Direction.Up);
-            Assert.AreEqual("Attic", attic.Name);
         }
     }
 }
