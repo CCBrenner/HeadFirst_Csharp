@@ -30,11 +30,11 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             livingRoom = new Location("Living Room");
             landing = new Location("Landing");
 
-            hallway.AddExit(Direction.West, entry);
-            hallway.AddExit(Direction.Northwest, kitchen);
-            hallway.AddExit(Direction.North, bathroom);
-            hallway.AddExit(Direction.South, livingRoom);
-            hallway.AddExit(Direction.Up, landing);
+            hallway.AddExitsOfConnectedLocations(Direction.West, entry);
+            hallway.AddExitsOfConnectedLocations(Direction.Northwest, kitchen);
+            hallway.AddExitsOfConnectedLocations(Direction.North, bathroom);
+            hallway.AddExitsOfConnectedLocations(Direction.South, livingRoom);
+            hallway.AddExitsOfConnectedLocations(Direction.Up, landing);
 
             Assert.AreEqual(5, hallway.Exits.Count);
             Assert.AreEqual("Bathroom", hallway.Exits[Direction.North].ToString());
@@ -67,13 +67,17 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.AreEqual(" - the Hallway is to the North", livingRoom.ExitList.ToList()[0]);
         }
         [TestMethod]
-        public void AddConnectingLocationExit()
+        public void TestAddExitsOfConnectedLocations()
         {
             Assert.AreSame(kitchen, hallway.Exits[Direction.Northwest]);
             Assert.AreSame(hallway, kitchen.Exits[Direction.Southeast]);
+            Assert.AreSame(entry, hallway.Exits[Direction.West]);
             Assert.AreSame(hallway, entry.Exits[Direction.East]);
+            Assert.AreSame(livingRoom, hallway.Exits[Direction.South]);
             Assert.AreSame(hallway, livingRoom.Exits[Direction.North]);
+            Assert.AreSame(bathroom, hallway.Exits[Direction.North]);
             Assert.AreSame(hallway, bathroom.Exits[Direction.South]);
+            Assert.AreSame(landing, hallway.Exits[Direction.Up]);
             Assert.AreSame(hallway, landing.Exits[Direction.Down]);
         }
         /*

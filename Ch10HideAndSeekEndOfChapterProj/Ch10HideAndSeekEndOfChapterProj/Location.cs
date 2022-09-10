@@ -24,14 +24,15 @@ namespace Ch10HideAndSeekEndOfChapterProj
             Direction.Out => "Out",
             _ => $"to the {d}",
         };
-        // this next method violates separation of concerns, but I am following and trusting the textbook
-        public void AddExit(Direction direction, Location connectingLocation)
-        {
-            // adds this location's exit direction and connecting location
+        public void AddExit(Direction direction, Location connectingLocation) =>
             Exits.Add(direction, connectingLocation);
-            // adds the connected location's exit direction and this object as it's connecting location
+        private void AddConnectingLocationExit(Direction direction, Location connectingLocation) =>
             connectingLocation.Exits.Add((Direction)(-(int)direction), this);
+        public void AddExitsOfConnectedLocations(Direction direction, Location connectingLocation)
+        {
+            AddExit(direction, connectingLocation);
+            AddConnectingLocationExit(direction, connectingLocation);
         }
-        public Location GetExit(Direction direction) => Exits[direction];
+        public Location GetExit(Direction d) => Exits[d];
     }
 }
