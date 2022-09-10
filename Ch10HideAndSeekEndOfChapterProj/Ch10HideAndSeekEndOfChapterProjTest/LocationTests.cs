@@ -21,7 +21,7 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
         public void Initialize()
         {
             hallway = new Location("Hallway");
-            Assert.AreSame("Hallway", hallway.ToString());
+            Assert.AreEqual("Hallway", hallway.ToString());
             Assert.AreEqual(0, hallway.ExitList.Count());
 
             kitchen = new Location("Kitchen");
@@ -80,12 +80,23 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.AreSame(landing, hallway.Exits[Direction.Up]);
             Assert.AreSame(hallway, landing.Exits[Direction.Down]);
         }
-        /*
         [TestMethod]
         public void TestAddHall()
         {
-            throw new NotImplementedException();
+            Location masterBedroom = new Location("Master Bedroom");
+            hallway
+                .Exits[Direction.Up]
+                .AddExitsOfConnectedLocations(Direction.Northwest, masterBedroom);
+            Assert.AreSame(masterBedroom, landing.Exits[Direction.Northwest]);
+            Assert.AreSame(landing, masterBedroom.Exits[Direction.Southeast]);
+
+            Location masterBathroom = new Location("Master Bathroom");
+            hallway
+                .Exits[Direction.Up]
+                .Exits[Direction.Northwest]
+                .AddExitsOfConnectedLocations(Direction.East, masterBathroom);
+            Assert.AreSame(masterBathroom, masterBedroom.Exits[Direction.East]);
+            Assert.AreSame(masterBedroom, masterBathroom.Exits[Direction.West]);
         }
-        */
     }
 }
