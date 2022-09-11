@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ch10HideAndSeekEndOfChapterProjTest
 {
-    using Ch10HideAndSeekEndOfChapterProj;
     [TestClass]
     public class HouseTests
     {
@@ -46,5 +44,21 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             var masterBathroom = masterBedroom.GetExit(Direction.East);
             Assert.AreEqual("Master Bathroom", masterBathroom.Name);
         }
+        [TestMethod]
+        public void TestGetLocationByName()
+        {
+            Assert.AreEqual("Entry", House.GetLocationByName("Entry").Name);
+            Assert.AreEqual("Attic", House.GetLocationByName("Attic").Name);
+            Assert.AreEqual("Garage", House.GetLocationByName("Garage").Name);
+            Assert.AreEqual("Master Bedroom", House.GetLocationByName("Master Bedroom").Name);
+            Assert.AreEqual("Entry", House.GetLocationByName("Secret Library").Name);
+        }
+        /*
+        [TestMethod]
+        public void TestRandomExit()
+        {
+            throw new NotImplementedException();
+        }
+        */
     }
 }

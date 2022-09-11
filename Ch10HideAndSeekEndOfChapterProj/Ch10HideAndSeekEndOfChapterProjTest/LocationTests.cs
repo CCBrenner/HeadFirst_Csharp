@@ -1,11 +1,9 @@
 using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using System.Collections;
 
 namespace Ch10HideAndSeekEndOfChapterProjTest
 {
-    using Ch10HideAndSeekEndOfChapterProj;
 
     [TestClass]
     public class LocationTests

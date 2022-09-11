@@ -1,9 +1,7 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Ch10HideAndSeekEndOfChapterProjTest
 {
-    using Ch10HideAndSeekEndOfChapterProj;
     [TestClass]
     public class GameControllerTests
     {
