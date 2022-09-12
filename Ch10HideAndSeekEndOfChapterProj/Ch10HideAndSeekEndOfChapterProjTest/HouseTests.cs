@@ -53,12 +53,31 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.AreEqual("Master Bedroom", House.GetLocationByName("Master Bedroom").Name);
             Assert.AreEqual("Null", House.GetLocationByName("Secret Library").Name);  // if location does not exist in House
         }
-        /*
         [TestMethod]
         public void TestRandomExit()
         {
-            throw new NotImplementedException();
+            Location landing = House.Entry.Exits[Direction.East].Exits[Direction.Up];
+
+            House.Random = new MockRandom() { ValueToReturn = 0 };
+            House.Random = new MockRandom() { ValueToReturn = 1 };
+            House.Random = new MockRandom() { ValueToReturn = 2 };
+            House.Random = new MockRandom() { ValueToReturn = 3 };
+            House.Random = new MockRandom() { ValueToReturn = 4 };
+            House.Random = new MockRandom() { ValueToReturn = 5 };
+            House.Random = new MockRandom() { ValueToReturn = 6 };
+            House.Random = new MockRandom() { ValueToReturn = 0 };
+
+            Assert.AreEqual("Attic", House.RandomExit(landing).Name);
+            Assert.AreEqual("Hallway", House.RandomExit(landing).Name);
+            Assert.AreEqual("Kids Room", House.RandomExit(landing).Name);
+            Assert.AreEqual("Master Bedroom", House.RandomExit(landing).Name);
+            Assert.AreEqual("Nursery", House.RandomExit(landing).Name);
+            Assert.AreEqual("Pantry", House.RandomExit(landing).Name);
+            Assert.AreEqual("Second Bathroom", House.RandomExit(landing).Name);
+
+            var kitchen = House.GetLocationByName("Kitchen");
+
+            Assert.AreEqual("Hallway", House.RandomExit(kitchen).Name);
         }
-        */
     }
 }
