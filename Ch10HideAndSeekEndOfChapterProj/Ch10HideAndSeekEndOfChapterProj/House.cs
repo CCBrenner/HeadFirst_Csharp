@@ -31,6 +31,7 @@ namespace Ch10HideAndSeekEndOfChapterProj
             Location masterBedroom = Entry.Exits[Direction.East].Exits[Direction.Up].Exits[Direction.Northwest];
             masterBedroom.AddExitsOfConnectedLocations(Direction.East, new Location("Master Bathroom"));
         }
+        public static Random Random = new Random();
         public static Location Entry { get; private set; }
         public static Location GetLocationByName(string name)
         {
@@ -47,6 +48,14 @@ namespace Ch10HideAndSeekEndOfChapterProj
                     if (pair.Value.Name == name)
                         return pair.Value;
             return new Location("Null");
+        }
+        public static Location RandomExit(Location location)
+        {
+            IOrderedEnumerable<Location>? locations = 
+                location.Exits
+                .Select(exit => exit.Value)
+                .OrderBy(selectLocation => selectLocation.Name);
+            return locations.ToList()[House.Random.Next(locations.Count())];
         }
     }
 }

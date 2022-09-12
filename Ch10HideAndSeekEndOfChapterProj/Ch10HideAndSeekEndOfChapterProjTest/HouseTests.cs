@@ -59,24 +59,28 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Location landing = House.Entry.Exits[Direction.East].Exits[Direction.Up];
 
             House.Random = new MockRandom() { ValueToReturn = 0 };
-            House.Random = new MockRandom() { ValueToReturn = 1 };
-            House.Random = new MockRandom() { ValueToReturn = 2 };
-            House.Random = new MockRandom() { ValueToReturn = 3 };
-            House.Random = new MockRandom() { ValueToReturn = 4 };
-            House.Random = new MockRandom() { ValueToReturn = 5 };
-            House.Random = new MockRandom() { ValueToReturn = 6 };
-            House.Random = new MockRandom() { ValueToReturn = 0 };
-
             Assert.AreEqual("Attic", House.RandomExit(landing).Name);
+
+            House.Random = new MockRandom() { ValueToReturn = 1 };
             Assert.AreEqual("Hallway", House.RandomExit(landing).Name);
+
+            House.Random = new MockRandom() { ValueToReturn = 2 };
             Assert.AreEqual("Kids Room", House.RandomExit(landing).Name);
+
+            House.Random = new MockRandom() { ValueToReturn = 3 };
             Assert.AreEqual("Master Bedroom", House.RandomExit(landing).Name);
+
+            House.Random = new MockRandom() { ValueToReturn = 4 };
             Assert.AreEqual("Nursery", House.RandomExit(landing).Name);
+
+            House.Random = new MockRandom() { ValueToReturn = 5 };
             Assert.AreEqual("Pantry", House.RandomExit(landing).Name);
-            Assert.AreEqual("Second Bathroom", House.RandomExit(landing).Name);
+
+            House.Random = new MockRandom() { ValueToReturn = 6 };
+            Assert.AreEqual("Upstairs Bathroom", House.RandomExit(landing).Name);
 
             var kitchen = House.GetLocationByName("Kitchen");
-
+            House.Random = new MockRandom() { ValueToReturn = 0 };
             Assert.AreEqual("Hallway", House.RandomExit(kitchen).Name);
         }
     }
