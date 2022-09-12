@@ -51,7 +51,7 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.AreEqual("Attic", House.GetLocationByName("Attic").Name);
             Assert.AreEqual("Garage", House.GetLocationByName("Garage").Name);
             Assert.AreEqual("Master Bedroom", House.GetLocationByName("Master Bedroom").Name);
-            Assert.AreEqual("Entry", House.GetLocationByName("Secret Library").Name);
+            Assert.AreEqual("Null", House.GetLocationByName("Secret Library").Name);  // if location does not exist in House
         }
         /*
         [TestMethod]

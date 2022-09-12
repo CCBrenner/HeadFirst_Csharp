@@ -32,5 +32,21 @@ namespace Ch10HideAndSeekEndOfChapterProj
             masterBedroom.AddExitsOfConnectedLocations(Direction.East, new Location("Master Bathroom"));
         }
         public static Location Entry { get; private set; }
+        public static Location GetLocationByName(string name)
+        {
+            List<Location> locationHubs = new List<Location>()
+            {
+                Entry,  // Entry
+                Entry.Exits[Direction.East],  // Hallway
+                Entry.Exits[Direction.East].Exits[Direction.Up],  // Landing
+                Entry.Exits[Direction.East].Exits[Direction.Up].Exits[Direction.Northwest],  // Master Bedroom
+            };
+
+            foreach(Location locationHub in locationHubs)
+                foreach (KeyValuePair<Direction, Location> pair in locationHub.Exits)
+                    if (pair.Value.Name == name)
+                        return pair.Value;
+            return new Location("Null");
+        }
     }
 }
