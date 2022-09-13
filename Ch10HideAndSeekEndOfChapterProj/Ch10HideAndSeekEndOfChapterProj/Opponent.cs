@@ -4,7 +4,7 @@ namespace Ch10HideAndSeekEndOfChapterProj
 {
     public class Opponent
     {
-        public Opponent(string name) => name = name;
+        public Opponent(string name) => Name = name;
         public readonly string Name;
         public override string ToString() => Name;
         public void Hide()

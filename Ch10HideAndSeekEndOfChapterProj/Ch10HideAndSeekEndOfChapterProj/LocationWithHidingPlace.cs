@@ -6,16 +6,17 @@ namespace Ch10HideAndSeekEndOfChapterProj
     {
         public LocationWithHidingPlace(string name, string hidingPlace) : base(name)
         {
-            throw new NotImplementedException();
+            HidingPlace = hidingPlace;
         }
-        public string HidingPlace => throw new NotImplementedException();
-        public void Hide(Opponent opponent)
-        {
-            throw new NotImplementedException();
-        }
+        public string HidingPlace { get; private set; }
+        private List<Opponent> opponentsHiddenHere = new List<Opponent>();
+        public void Hide(Opponent opponent) => opponentsHiddenHere.Add(opponent);
         public IEnumerable<Opponent> CheckHidingPlace()
         {
-            throw new NotImplementedException();
+            List<Opponent> returnEnumerable = new List<Opponent>();
+            foreach (var opponent in opponentsHiddenHere) returnEnumerable.Add(opponent);
+            opponentsHiddenHere.Clear();
+            return returnEnumerable;
         }
     }
 }
