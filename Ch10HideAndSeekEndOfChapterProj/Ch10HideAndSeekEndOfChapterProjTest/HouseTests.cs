@@ -83,5 +83,37 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             House.Random = new MockRandom() { ValueToReturn = 0 };
             Assert.AreEqual("Hallway", House.RandomExit(kitchen).Name);
         }
+        [TestMethod]
+        public void TestHidingPlaces()
+        {
+            Assert.IsInstanceOfType(House.GetLocationByName("Garage"), typeof(LocationWithHidingPlace));
+            Assert.IsInstanceOfType(House.GetLocationByName("Kitchen"), typeof(LocationWithHidingPlace));
+            Assert.IsInstanceOfType(House.GetLocationByName("Living Room"), typeof(LocationWithHidingPlace));
+            Assert.IsInstanceOfType(House.GetLocationByName("Downstairs Bathroom"), typeof(LocationWithHidingPlace));
+            Assert.IsInstanceOfType(House.GetLocationByName("Master Bedroom"), typeof(LocationWithHidingPlace));
+            Assert.IsInstanceOfType(House.GetLocationByName("Master Bath"), typeof(LocationWithHidingPlace));
+            Assert.IsInstanceOfType(House.GetLocationByName("Upstairs Bathroom"), typeof(LocationWithHidingPlace));
+            Assert.IsInstanceOfType(House.GetLocationByName("Kids Room"), typeof(LocationWithHidingPlace));
+            Assert.IsInstanceOfType(House.GetLocationByName("Nursery"), typeof(LocationWithHidingPlace));
+            Assert.IsInstanceOfType(House.GetLocationByName("Pantry"), typeof(LocationWithHidingPlace));
+            Assert.IsInstanceOfType(House.GetLocationByName("Attic"), typeof(LocationWithHidingPlace));
+        }
+        /*
+        [TestMethod]
+        public void TestClearHidingPlaces()
+        {
+            var garage = House.GetLocationByName("Garage") as LocationWithHidingPlace;
+            garage.Hide(new Opponent("Opponent1"));
+
+            var attic = House.GetLocationByName("Attic") as LocationWithHidingPlace;
+            attic.Hide(new Opponent("Opponent2"));
+            attic.Hide(new Opponent("Opponent3"));
+            attic.Hide(new Opponent("Opponent4"));
+
+            House.ClearHidingPlaces();
+            Assert.AreEqual(0, garage.CheckHidingPlace().Count());
+            Assert.AreEqual(0, attic.CheckHidingPlace().Count());
+        }
+        */
     }
 }
