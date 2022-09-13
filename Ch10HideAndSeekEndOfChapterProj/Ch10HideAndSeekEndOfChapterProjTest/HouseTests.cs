@@ -91,7 +91,7 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.IsInstanceOfType(House.GetLocationByName("Living Room"), typeof(LocationWithHidingPlace));
             Assert.IsInstanceOfType(House.GetLocationByName("Downstairs Bathroom"), typeof(LocationWithHidingPlace));
             Assert.IsInstanceOfType(House.GetLocationByName("Master Bedroom"), typeof(LocationWithHidingPlace));
-            Assert.IsInstanceOfType(House.GetLocationByName("Master Bath"), typeof(LocationWithHidingPlace));
+            Assert.IsInstanceOfType(House.GetLocationByName("Master Bathroom"), typeof(LocationWithHidingPlace));
             Assert.IsInstanceOfType(House.GetLocationByName("Upstairs Bathroom"), typeof(LocationWithHidingPlace));
             Assert.IsInstanceOfType(House.GetLocationByName("Kids Room"), typeof(LocationWithHidingPlace));
             Assert.IsInstanceOfType(House.GetLocationByName("Nursery"), typeof(LocationWithHidingPlace));
