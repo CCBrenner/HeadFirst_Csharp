@@ -98,7 +98,6 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.IsInstanceOfType(House.GetLocationByName("Pantry"), typeof(LocationWithHidingPlace));
             Assert.IsInstanceOfType(House.GetLocationByName("Attic"), typeof(LocationWithHidingPlace));
         }
-        /*
         [TestMethod]
         public void TestClearHidingPlaces()
         {
@@ -114,6 +113,5 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.AreEqual(0, garage.CheckHidingPlace().Count());
             Assert.AreEqual(0, attic.CheckHidingPlace().Count());
         }
-        */
     }
 }

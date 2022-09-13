@@ -30,9 +30,27 @@ namespace Ch10HideAndSeekEndOfChapterProj
 
             Location masterBedroom = Entry.Exits[Direction.East].Exits[Direction.Up].Exits[Direction.Northwest];
             masterBedroom.AddExitsOfConnectedLocations(Direction.East, new LocationWithHidingPlace("Master Bathroom", ""));
+
+            // Define/Assign locations field:
+            List<Location> locationHubs = new List<Location>()
+            {
+                Entry,  // Entry
+                Entry.Exits[Direction.East],  // Hallway
+                Entry.Exits[Direction.East].Exits[Direction.Up],  // Landing
+                Entry.Exits[Direction.East].Exits[Direction.Up].Exits[Direction.Northwest],  // Master Bedroom
+            };
+
+            List<Location> tempLocations = new List<Location>();
+
+            foreach (Location locationHub in locationHubs)
+                foreach (KeyValuePair<Direction, Location> pair in locationHub.Exits)
+                    if (!tempLocations.Contains(pair.Value)) 
+                        tempLocations.Add(pair.Value);
+            locations = tempLocations;
         }
         public static Random Random = new Random();
         public static Location Entry { get; private set; }
+        private static IEnumerable<Location> locations = new List<Location>();
         public static Location GetLocationByName(string name)
         {
             List<Location> locationHubs = new List<Location>()
@@ -56,6 +74,10 @@ namespace Ch10HideAndSeekEndOfChapterProj
                 .Select(exit => exit.Value)
                 .OrderBy(selectLocation => selectLocation.Name);
             return locations.ToList()[House.Random.Next(locations.Count())];
+        }
+        public static void ClearHidingPlaces()
+        {
+            throw new NotImplementedException();
         }
     }
 }
