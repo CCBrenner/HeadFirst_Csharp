@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Ch10HideAndSeekEndOfChapterProj
 {
@@ -9,8 +10,19 @@ namespace Ch10HideAndSeekEndOfChapterProj
         public override string ToString() => Name;
         public void Hide()
         {
-            // at some point calls a LocationWit5hHidingPlace.Hide() method with this Opponent as argument
-            throw new NotImplementedException();
+            Location currentLocation = House.Entry;
+            int locationsToMoveThrough = House.Random.Next(10, 20);
+
+            for (int i = 0; i < locationsToMoveThrough; i++)
+                currentLocation = House.RandomExit(currentLocation);
+            while (!(currentLocation is LocationWithHidingPlace))
+                currentLocation = House.RandomExit(currentLocation);
+
+            (currentLocation as LocationWithHidingPlace).Hide(this);
+
+            Debug.WriteLine($"{Name} is hiding " +
+                $"{(currentLocation as LocationWithHidingPlace).HidingPlace} " +
+                $"in the {currentLocation.Name}");
         }
     }
 }
