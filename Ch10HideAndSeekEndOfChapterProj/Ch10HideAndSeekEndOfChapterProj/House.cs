@@ -11,8 +11,8 @@ namespace Ch10HideAndSeekEndOfChapterProj
         static House()
         {
             Entry = new Location("Entry");
-            Entry.AddExitsOfConnectedLocations(Direction.Out, new LocationWithHidingPlace("Garage", ""));
             Entry.AddExitsOfConnectedLocations(Direction.East, new LocationWithHidingPlace("Hallway", ""));
+            Entry.AddExitsOfConnectedLocations(Direction.Out, new LocationWithHidingPlace("Garage", ""));
 
             Location hallway = Entry.Exits[Direction.East];
             hallway.AddExitsOfConnectedLocations(Direction.Northwest, new LocationWithHidingPlace("Kitchen", ""));
