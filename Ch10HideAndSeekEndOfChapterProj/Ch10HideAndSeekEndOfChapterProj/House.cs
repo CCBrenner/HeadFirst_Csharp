@@ -77,7 +77,9 @@ namespace Ch10HideAndSeekEndOfChapterProj
         }
         public static void ClearHidingPlaces()
         {
-            throw new NotImplementedException();
+            foreach (Location location in locations)
+                if (location is LocationWithHidingPlace locationWithHidingPlace)
+                    locationWithHidingPlace.CheckHidingPlace();
         }
     }
 }
