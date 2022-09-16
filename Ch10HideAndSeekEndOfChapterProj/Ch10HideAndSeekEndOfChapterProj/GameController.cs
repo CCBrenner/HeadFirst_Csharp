@@ -1,21 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Globalization;
 
 namespace Ch10HideAndSeekEndOfChapterProj
 {
     public class GameController
     {
-        public GameController() => CurrentLocation = House.Entry;
+        public GameController() 
+        {
+            House.ClearHidingPlaces();
+            foreach (Opponent opponent in Opponents)
+                opponent.Hide();
+
+            CurrentLocation = House.Entry;
+        }
         public Location CurrentLocation { get; private set; }
         public string Status => $"You are {HandleLandingGrammar(CurrentLocation.Name)} the {CurrentLocation.Name}. " +
             $"You see the following exits:" +
             $"{Environment.NewLine}" +
             $"{string.Join($"{Environment.NewLine}", CurrentLocation.ExitList)}";
-        public string Prompt => "Which direction do you want to go: ";
+        public int MoveNumber { get; set; } = 1;
+        public string Prompt => $"{MoveNumber}: Which direction do you want to go (or type 'check'): ";
+        public IEnumerable<Opponent> Opponents = new List<Opponent>()
+        {
+            new Opponent("Joe"),
+            new Opponent("Bob"),
+            new Opponent("Ana"),
+            new Opponent("Owen"),
+            new Opponent("Jimmy"),
+        };
+        private readonly IEnumerable<Opponent> foundOpponents = new List<Opponent>();
+        public bool GameOver => Opponents.Count() == foundOpponents.Count();
         private string HandleLandingGrammar(string location) => location == "Landing" ? "on" : "in";
         public bool Move(Direction exitDirection)
         {
