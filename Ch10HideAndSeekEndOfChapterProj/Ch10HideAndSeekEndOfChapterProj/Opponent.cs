@@ -15,7 +15,7 @@ namespace Ch10HideAndSeekEndOfChapterProj
 
             for (int i = 0; i < locationsToMoveThrough; i++)
                 currentLocation = House.RandomExit(currentLocation);
-            while (!(currentLocation is LocationWithHidingPlace))
+            while ((currentLocation as LocationWithHidingPlace).HidingPlace == "")
                 currentLocation = House.RandomExit(currentLocation);
 
             (currentLocation as LocationWithHidingPlace).Hide(this);

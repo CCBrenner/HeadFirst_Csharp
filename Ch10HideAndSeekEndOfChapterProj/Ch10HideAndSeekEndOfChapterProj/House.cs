@@ -10,13 +10,13 @@ namespace Ch10HideAndSeekEndOfChapterProj
     {
         static House()
         {
-            Entry = new Location("Entry");
+            Entry = new LocationWithHidingPlace("Entry", "");
             Entry.AddExitsOfConnectedLocations(Direction.East, new LocationWithHidingPlace("Hallway", ""));
-            Entry.AddExitsOfConnectedLocations(Direction.Out, new LocationWithHidingPlace("Garage", ""));
+            Entry.AddExitsOfConnectedLocations(Direction.Out, new LocationWithHidingPlace("Garage", "behind the car"));
 
             Location hallway = Entry.Exits[Direction.East];
-            hallway.AddExitsOfConnectedLocations(Direction.Northwest, new LocationWithHidingPlace("Kitchen", ""));
-            hallway.AddExitsOfConnectedLocations(Direction.North, new LocationWithHidingPlace("Downstairs Bathroom", ""));
+            hallway.AddExitsOfConnectedLocations(Direction.Northwest, new LocationWithHidingPlace("Kitchen", "next to the stove"));
+            hallway.AddExitsOfConnectedLocations(Direction.North, new LocationWithHidingPlace("Downstairs Bathroom", "behind the door"));
             hallway.AddExitsOfConnectedLocations(Direction.South, new LocationWithHidingPlace("Living Room", ""));
             hallway.AddExitsOfConnectedLocations(Direction.Up, new LocationWithHidingPlace("Landing", ""));
 
@@ -24,9 +24,9 @@ namespace Ch10HideAndSeekEndOfChapterProj
             landing.AddExitsOfConnectedLocations(Direction.Northwest, new LocationWithHidingPlace("Master Bedroom", ""));
             landing.AddExitsOfConnectedLocations(Direction.West, new LocationWithHidingPlace("Upstairs Bathroom", ""));
             landing.AddExitsOfConnectedLocations(Direction.Southwest, new LocationWithHidingPlace("Nursery", ""));
-            landing.AddExitsOfConnectedLocations(Direction.South, new LocationWithHidingPlace("Pantry", ""));
+            landing.AddExitsOfConnectedLocations(Direction.South, new LocationWithHidingPlace("Pantry", "inside a cabinet"));
             landing.AddExitsOfConnectedLocations(Direction.Southeast, new LocationWithHidingPlace("Kids Room", ""));
-            landing.AddExitsOfConnectedLocations(Direction.Up, new LocationWithHidingPlace("Attic", ""));
+            landing.AddExitsOfConnectedLocations(Direction.Up, new LocationWithHidingPlace("Attic", "in a trunk"));
 
             Location masterBedroom = Entry.Exits[Direction.East].Exits[Direction.Up].Exits[Direction.Northwest];
             masterBedroom.AddExitsOfConnectedLocations(Direction.East, new LocationWithHidingPlace("Master Bathroom", ""));
@@ -51,6 +51,7 @@ namespace Ch10HideAndSeekEndOfChapterProj
         public static Random Random = new Random();
         public static Location Entry { get; private set; }
         private static IEnumerable<Location> locations = new List<Location>();
+        public static string S(int count) => count == 1 ? "" : "s";
         public static Location GetLocationByName(string name)
         {
             List<Location> locationHubs = new List<Location>()

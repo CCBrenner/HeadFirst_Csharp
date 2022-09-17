@@ -50,11 +50,13 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
                 $"{Environment.NewLine} - the Living Room is to the South" +
                 $"{Environment.NewLine} - the Entry is to the West" +
                 $"{Environment.NewLine} - the Kitchen is to the Northwest" +
-                $"{Environment.NewLine} - the Landing is Up", gameController.Status);
+                $"{Environment.NewLine} - the Landing is Up" +
+                $"{Environment.NewLine}You have found 0 of 5 opponents: ", gameController.Status);
 
             Assert.AreEqual("Moving South", gameController.ParseInput("south"));
             Assert.AreEqual($"You are in the Living Room. You see the following exits:" +
-                $"{Environment.NewLine} - the Hallway is to the North", gameController.Status);
+                $"{Environment.NewLine} - the Hallway is to the North" +
+                $"{Environment.NewLine}You have found 0 of 5 opponents: ", gameController.Status);
 
             string landingStatus = $"You are on the Landing. You see the following exits:" +
                 $"{Environment.NewLine} - the Pantry is to the South" +
@@ -63,7 +65,8 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
                 $"{Environment.NewLine} - the Master Bedroom is to the Northwest" +
                 $"{Environment.NewLine} - the Kids Room is to the Southeast" +
                 $"{Environment.NewLine} - the Attic is Up" +
-                $"{Environment.NewLine} - the Hallway is Down";
+                $"{Environment.NewLine} - the Hallway is Down" +
+                $"{Environment.NewLine}You have found 0 of 5 opponents: ";
 
             Assert.AreEqual("Moving North", gameController.ParseInput("north"));
             Assert.AreEqual("Moving Up", gameController.ParseInput("UP"));
@@ -76,7 +79,8 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.AreEqual("Moving Northwest", gameController.ParseInput("Northwest"));
             Assert.AreEqual($"You are in the Master Bedroom. You see the following exits:" +
                 $"{Environment.NewLine} - the Master Bathroom is to the East" +
-                $"{Environment.NewLine} - the Landing is to the Southeast", gameController.Status);
+                $"{Environment.NewLine} - the Landing is to the Southeast" +
+                $"{Environment.NewLine}You have found 0 of 5 opponents: ", gameController.Status);
         }
         [TestMethod]
         public void TestParseCheck()
@@ -98,7 +102,7 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
 
             // Check the Entry -- there are no hiding players there
             Assert.AreEqual(1, gameController.MoveNumber);
-            Assert.AreEqual("There is no one hiding in the Entry", gameController.ParseInput("Check"));
+            Assert.AreEqual("There is no hiding place in the Entry", gameController.ParseInput("Check"));
             Assert.AreEqual(2, gameController.MoveNumber);
 
             // Move to the Garage
