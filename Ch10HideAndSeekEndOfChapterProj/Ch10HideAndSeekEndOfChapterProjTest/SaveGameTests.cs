@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json;
 
 namespace Ch10HideAndSeekEndOfChapterProjTest
 {
@@ -50,6 +51,7 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.AreEqual("11: Which direction do you want to go (or type 'check'): ", gameController.Prompt);
             Assert.AreEqual(11, gameController.MoveNumber);
         }
+
         [TestMethod]
         public void TestParseInput()
         {
@@ -59,7 +61,7 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.AreEqual(owen, atticHiders[1]);
 
             // Provide correct response if the saved file is not there
-            Assert.AreEqual("Could not load game: Saved file of name \"my_saved_game\"not found", gameController.ParseInput("load my_saved_game"));
+            Assert.AreEqual("Could not load game: Saved file of name \"my_saved_game\" not found", gameController.ParseInput("load my_saved_game"));
 
             // Save the state of the game to a file with given name located in 
             Assert.AreEqual("Saved current game to my_saved_game", gameController.ParseInput("save my_saved_game"));

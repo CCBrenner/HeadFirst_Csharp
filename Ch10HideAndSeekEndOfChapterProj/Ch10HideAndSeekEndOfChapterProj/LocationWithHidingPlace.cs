@@ -9,13 +9,13 @@ namespace Ch10HideAndSeekEndOfChapterProj
             HidingPlace = hidingPlace;
         }
         public string HidingPlace { get; private set; }
-        private List<Opponent> opponentsHiddenHere = new List<Opponent>();
-        public void Hide(Opponent opponent) => opponentsHiddenHere.Add(opponent);
+        public List<Opponent> OpponentsHiddenHere = new List<Opponent>();
+        public void Hide(Opponent opponent) => OpponentsHiddenHere.Add(opponent);
         public IEnumerable<Opponent> CheckHidingPlace()
         {
             List<Opponent> returnEnumerable = new List<Opponent>();
-            foreach (var opponent in opponentsHiddenHere) returnEnumerable.Add(opponent);
-            opponentsHiddenHere.Clear();
+            foreach (var opponent in OpponentsHiddenHere) returnEnumerable.Add(opponent);
+            OpponentsHiddenHere.Clear();
             return returnEnumerable;
         }
     }

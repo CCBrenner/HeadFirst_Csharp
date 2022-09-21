@@ -46,11 +46,11 @@ namespace Ch10HideAndSeekEndOfChapterProj
                 foreach (KeyValuePair<Direction, Location> pair in locationHub.Exits)
                     if (!tempLocations.Contains(pair.Value)) 
                         tempLocations.Add(pair.Value);
-            locations = tempLocations;
+            Locations = tempLocations;
         }
         public static Random Random = new Random();
         public static Location Entry { get; private set; }
-        private static IEnumerable<Location> locations = new List<Location>();
+        public static IEnumerable<Location> Locations = new List<Location>();
         public static string S(int count) => count == 1 ? "" : "s";
         public static Location GetLocationByName(string name)
         {
@@ -78,7 +78,7 @@ namespace Ch10HideAndSeekEndOfChapterProj
         }
         public static void ClearHidingPlaces()
         {
-            foreach (Location location in locations)
+            foreach (Location location in Locations)
                 if (location is LocationWithHidingPlace locationWithHidingPlace)
                     locationWithHidingPlace.CheckHidingPlace();
         }
