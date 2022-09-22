@@ -4,6 +4,7 @@ using System.Linq;
 using System.Globalization;
 using System.Text.Json;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Ch10HideAndSeekEndOfChapterProj
 {
@@ -47,57 +48,79 @@ namespace Ch10HideAndSeekEndOfChapterProj
         }
         private string Save(string nameForSavedFile)
         {
-            SaveGame saveGame = new SaveGame(CurrentLocation as LocationWithHidingPlace, MoveNumber, Status, foundOpponents);
+            Dictionary<string, string> opponentsInHidingLocations = new Dictionary<string, string>();
+            foreach (Location location in House.Locations)
+                if ((location as LocationWithHidingPlace).HidingPlace != "")
+                    foreach (Opponent opponent in (location as LocationWithHidingPlace).OpponentsHiddenHere)
+                        opponentsInHidingLocations.Add(opponent.Name, location.Name);
+            LocationWithHidingPlace currentLocation = new LocationWithHidingPlace(CurrentLocation.Name, (CurrentLocation as LocationWithHidingPlace).HidingPlace);
+            int moveNumber = MoveNumber;
+            string status = Status;
+            List<Opponent> foundOpponents = this.foundOpponents;
+
+            SaveGame saveGame = new SaveGame()
+            {
+                OpponentsInHidingLocations = opponentsInHidingLocations,
+                FoundOpponents = foundOpponents,
+                CurrentLocation = currentLocation,
+                MoveNumber = moveNumber,
+                Status = status,
+            };
 
             // string savedGame = JsonSerializer.Serialize(saveGame);  // Wasn't serializing the Opponent objects for some reason
             string savedGame = JsonConvert.SerializeObject(saveGame);  // Had to use this method from the Newtonsoft.Json NuGet package
 
             if (!nameForSavedFile.Contains('\\') && !nameForSavedFile.Contains(' '))
             {
-                using (StreamWriter writer = new StreamWriter($"{nameForSavedFile}.json", false))
+                var folder = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                using (StreamWriter writer = new StreamWriter($"{folder}{Path.DirectorySeparatorChar}{nameForSavedFile}.json", false))
                     writer.WriteLine(savedGame);
-                return $"Saved current game to {nameForSavedFile}";
+                return $"Saved current game to {nameForSavedFile}.json";
             }
-            return $"Could not save game to {nameForSavedFile}";
+            return $"Could not save game to {nameForSavedFile}.json";
         }
         private string Load(string nameOfFileToLoad)
         {
             if (nameOfFileToLoad.Contains('\\') || nameOfFileToLoad.Contains(' '))
-                return "Could not load game: Invalid characters detected. Please remove backlashes and/or spaces from file name.";
+                return "Could not load game: Invalid characters detected. Please remove backslashes and/or spaces from file name.";
 
             string gameDataToDeserialize = "";
-            SaveGame? loadedGame;
-            Console.WriteLine($"Name of parsed loaded file: \"{nameOfFileToLoad}\"");
+            JToken? loadedGame;
             try
             {
-                using (StreamReader reader = new StreamReader(nameOfFileToLoad))
+                string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), $"{nameOfFileToLoad}.json");
+                // string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.Personal)}{Path.DirectorySeparatorChar}{nameOfFileToLoad}.json"))  // an alternative
+                using (StreamReader reader = new StreamReader(filePath))
+                {
                     gameDataToDeserialize = reader.ReadToEnd();
+                }
+                File.Delete(filePath);
             }
             catch
             {
-                return $"Could not load game: Saved file of name \"{nameOfFileToLoad}\" not found";
+                return $"Could not load game: Saved file of name \"{nameOfFileToLoad}.json\" not found";
             }
 
             try
             {
-                loadedGame = (SaveGame?)JsonConvert.DeserializeObject(gameDataToDeserialize);
+                loadedGame = JsonConvert.DeserializeObject<JToken>(gameDataToDeserialize);
             }
             catch
             {
-                return $"Could not load game: Could not deserialize file with name \"{nameOfFileToLoad}\"";
+                return $"Could not load game: Could not deserialize file with name \"{nameOfFileToLoad}.json\"";
             }
-
-            CurrentLocation = loadedGame.CurrentLocation;
-            MoveNumber = loadedGame.MoveNumber;
-            status = loadedGame.Status;
-            foundOpponents = loadedGame.FoundOpponents;
+            SaveGame? gameState = loadedGame.ToObject<SaveGame>();
+            CurrentLocation = gameState.CurrentLocation;
+            MoveNumber = gameState.MoveNumber;
+            status = gameState.Status;
+            foundOpponents = gameState.FoundOpponents;
             foreach (LocationWithHidingPlace locationInHouse in House.Locations)
-                foreach (KeyValuePair<string, string> pair in loadedGame.OpponentsInHidingLocations)
+                foreach (KeyValuePair<string, string> pair in gameState.OpponentsInHidingLocations)
                     if (pair.Value == locationInHouse.Name)
                         locationInHouse.OpponentsHiddenHere.Add(new Opponent(pair.Key));
 
             if (loadedGame != null)
-                return $"Loaded game from {nameOfFileToLoad}";
+                return $"Loaded game from \"{nameOfFileToLoad}\".json";
             else
                 return "An unknown error occurred.";
         }

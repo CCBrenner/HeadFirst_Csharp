@@ -61,10 +61,10 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.AreEqual(owen, atticHiders[1]);
 
             // Provide correct response if the saved file is not there
-            Assert.AreEqual("Could not load game: Saved file of name \"my_saved_game\" not found", gameController.ParseInput("load my_saved_game"));
+            Assert.AreEqual("Could not load game: Saved file of name \"my_saved_game.json\" not found", gameController.ParseInput("load my_saved_game"));
 
             // Save the state of the game to a file with given name located in 
-            Assert.AreEqual("Saved current game to my_saved_game", gameController.ParseInput("save my_saved_game"));
+            Assert.AreEqual("Saved current game to my_saved_game.json", gameController.ParseInput("save my_saved_game"));
 
             // Start a new game
             gameController = new GameController();
@@ -85,7 +85,7 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.AreEqual(1, gameController.MoveNumber);
 
             // Check all of the game state variables that are relevant to resuming the game
-            Assert.AreEqual("Loaded game from my_saved_game", gameController.ParseInput("load my_saved_game"));
+            Assert.AreEqual("Loaded game from \"my_saved_game.json\"", gameController.ParseInput("load my_saved_game"));
             Assert.AreEqual($"You are in the Kitchen. You see the following exits:" +
                 $"{Environment.NewLine} - the Hallway is to the Southeast" +
                 $"{Environment.NewLine}Someone could hide next to the stove" +
@@ -99,7 +99,7 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.AreEqual(owen, atticHiders[1]);
 
             // Test that file has been deleted after it has been loaded so as not to load the game again in the future
-            Assert.AreEqual("Could not load game: Saved file of name \"my_saved_game\"not found", gameController.ParseInput("load my_saved_game"));
+            Assert.AreEqual("Could not load game: Saved file of name \"my_saved_game.json\"not found", gameController.ParseInput("load my_saved_game"));
         }
         /*
         [TestMethod]
