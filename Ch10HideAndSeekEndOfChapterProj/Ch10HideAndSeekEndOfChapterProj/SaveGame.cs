@@ -6,8 +6,8 @@ namespace Ch10HideAndSeekEndOfChapterProj
     {
         // Key = Opponent.Name, Value = LocationWithHidingPlace.HidingPlace
         public Dictionary<string, string> OpponentsInHidingLocations { get; set; }
-        public List<Opponent> FoundOpponents { get; set; } 
-        public LocationWithHidingPlace CurrentLocation { get; set; }
+        public List<string> FoundOpponents { get; set; } 
+        public string CurrentLocationName { get; set; }
         public int MoveNumber { get; set; }
         public string Status { get; set; }
     }

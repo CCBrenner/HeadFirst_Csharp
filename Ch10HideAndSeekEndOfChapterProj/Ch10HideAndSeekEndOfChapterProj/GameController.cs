@@ -53,16 +53,17 @@ namespace Ch10HideAndSeekEndOfChapterProj
                 if ((location as LocationWithHidingPlace).HidingPlace != "")
                     foreach (Opponent opponent in (location as LocationWithHidingPlace).OpponentsHiddenHere)
                         opponentsInHidingLocations.Add(opponent.Name, location.Name);
-            LocationWithHidingPlace currentLocation = new LocationWithHidingPlace(CurrentLocation.Name, (CurrentLocation as LocationWithHidingPlace).HidingPlace);
+            string currentLocation = CurrentLocation.Name;
             int moveNumber = MoveNumber;
             string status = Status;
-            List<Opponent> foundOpponents = this.foundOpponents;
+            List<string> foundOpponents = new List<string>();
+            foreach (Opponent opponent in this.foundOpponents) foundOpponents.Add(opponent.Name);
 
             SaveGame saveGame = new SaveGame()
             {
                 OpponentsInHidingLocations = opponentsInHidingLocations,
                 FoundOpponents = foundOpponents,
-                CurrentLocation = currentLocation,
+                CurrentLocationName = currentLocation,
                 MoveNumber = moveNumber,
                 Status = status,
             };
@@ -81,15 +82,16 @@ namespace Ch10HideAndSeekEndOfChapterProj
         }
         private string Load(string nameOfFileToLoad)
         {
+            nameOfFileToLoad = nameOfFileToLoad.Split('.')[0];  // if loaded with extension attached to filename, take only the filename
             if (nameOfFileToLoad.Contains('\\') || nameOfFileToLoad.Contains(' '))
                 return "Could not load game: Invalid characters detected. Please remove backslashes and/or spaces from file name.";
 
             string gameDataToDeserialize = "";
-            JToken? loadedGame;
             try
             {
+                // an alternative to the line below it:
+                // string filePath = $"{Environment.GetFolderPath(Environment.SpecialFolder.Personal)}{Path.DirectorySeparatorChar}{nameOfFileToLoad}.json"))
                 string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), $"{nameOfFileToLoad}.json");
-                // string path = $"{Environment.GetFolderPath(Environment.SpecialFolder.Personal)}{Path.DirectorySeparatorChar}{nameOfFileToLoad}.json"))  // an alternative
                 using (StreamReader reader = new StreamReader(filePath))
                 {
                     gameDataToDeserialize = reader.ReadToEnd();
@@ -101,26 +103,31 @@ namespace Ch10HideAndSeekEndOfChapterProj
                 return $"Could not load game: Saved file of name \"{nameOfFileToLoad}.json\" not found";
             }
 
+            SaveGame? loadedGame = new SaveGame();
             try
             {
-                loadedGame = JsonConvert.DeserializeObject<JToken>(gameDataToDeserialize);
+                loadedGame = System.Text.Json.JsonSerializer.Deserialize<SaveGame>(gameDataToDeserialize);
             }
             catch
             {
                 return $"Could not load game: Could not deserialize file with name \"{nameOfFileToLoad}.json\"";
             }
-            SaveGame? gameState = loadedGame.ToObject<SaveGame>();
-            CurrentLocation = gameState.CurrentLocation;
-            MoveNumber = gameState.MoveNumber;
-            status = gameState.Status;
-            foundOpponents = gameState.FoundOpponents;
-            foreach (LocationWithHidingPlace locationInHouse in House.Locations)
-                foreach (KeyValuePair<string, string> pair in gameState.OpponentsInHidingLocations)
-                    if (pair.Value == locationInHouse.Name)
-                        locationInHouse.OpponentsHiddenHere.Add(new Opponent(pair.Key));
+
+            foreach (LocationWithHidingPlace location in House.Locations) location.OpponentsHiddenHere = new List<Opponent>();
+
+            CurrentLocation = House.GetLocationByName(loadedGame.CurrentLocationName);
+            MoveNumber = loadedGame.MoveNumber;
+            status = loadedGame.Status;
+            foundOpponents.Clear();
+            foreach (string opponent in loadedGame.FoundOpponents) foundOpponents.Add(new Opponent(opponent));
+
+
+            Console.WriteLine($"Number of loaded hidden opponnets: {loadedGame.OpponentsInHidingLocations.Count()}");
+            foreach (KeyValuePair<string, string> pair in loadedGame.OpponentsInHidingLocations)
+                (House.GetLocationByName(pair.Value) as LocationWithHidingPlace).OpponentsHiddenHere.Add(new Opponent(pair.Key));
 
             if (loadedGame != null)
-                return $"Loaded game from \"{nameOfFileToLoad}\".json";
+                return $"Loaded game from \"{nameOfFileToLoad}.json\"";
             else
                 return "An unknown error occurred.";
         }

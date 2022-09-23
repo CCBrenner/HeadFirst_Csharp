@@ -56,7 +56,7 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
         public void TestParseInput()
         {
             // Verify the hiding locations of the remaining opponents
-            List<Opponent> atticHiders = (House.GetLocationByName("Attic") as LocationWithHidingPlace).CheckHidingPlace().ToList();
+            List<Opponent> atticHiders = (House.GetLocationByName("Attic") as LocationWithHidingPlace).OpponentsHiddenHere;
             Assert.AreEqual(ana, atticHiders[0]);
             Assert.AreEqual(owen, atticHiders[1]);
 
@@ -94,12 +94,15 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
             Assert.AreEqual(11, gameController.MoveNumber);
 
             // Verify the hiding locations of the remaining opponents
-            atticHiders = (House.GetLocationByName("Attic") as LocationWithHidingPlace).CheckHidingPlace().ToList();
-            Assert.AreEqual(ana, atticHiders[0]);
-            Assert.AreEqual(owen, atticHiders[1]);
+            atticHiders = (House.GetLocationByName("Attic") as LocationWithHidingPlace).OpponentsHiddenHere;
+            Console.WriteLine(string.Join(", ", atticHiders));
+            Assert.AreEqual(ana.Name, atticHiders[0].Name);
+            Assert.IsInstanceOfType(atticHiders[0], typeof(Opponent));
+            Assert.AreEqual(owen.Name, atticHiders[1].Name);
+            Assert.IsInstanceOfType(atticHiders[1], typeof(Opponent));
 
             // Test that file has been deleted after it has been loaded so as not to load the game again in the future
-            Assert.AreEqual("Could not load game: Saved file of name \"my_saved_game.json\"not found", gameController.ParseInput("load my_saved_game"));
+            Assert.AreEqual("Could not load game: Saved file of name \"my_saved_game.json\" not found", gameController.ParseInput("load my_saved_game"));
         }
         /*
         [TestMethod]
