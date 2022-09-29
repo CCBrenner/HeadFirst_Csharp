@@ -60,6 +60,7 @@ namespace Ch10HideAndSeekEndOfChapterProj
             CurrentLocation = House.GetLocationByName(loadedGame.CurrentLocationName);
             MoveNumber = loadedGame.MoveNumber;
             status = loadedGame.Status;
+
             FoundOpponents.Clear();
             List<Opponent> foundOpponents = new List<Opponent>();
             foreach (string opponent in loadedGame.FoundOpponents) foundOpponents.Add(new Opponent(opponent));
@@ -67,7 +68,6 @@ namespace Ch10HideAndSeekEndOfChapterProj
 
             foreach (KeyValuePair<string, string> pair in loadedGame.OpponentsInHidingLocations)
                 (House.GetLocationByName(pair.Value) as LocationWithHidingPlace).OpponentsHiddenHere.Clear();
-
             foreach (KeyValuePair<string, string> pair in loadedGame.OpponentsInHidingLocations)
                 (House.GetLocationByName(pair.Value) as LocationWithHidingPlace).OpponentsHiddenHere.Add(new Opponent(pair.Key));
 
