@@ -24,13 +24,41 @@ namespace Ch10HideAndSeekEOCwithUI
         public int MoveNumber { get; set; } = 1;
         public string Prompt => $"{MoveNumber}: Which direction do you want to go (or type 'check'): ";
         public bool GameOver => Opponents.Count() == FoundOpponents.Count();
+        public string FileNameToBeParsed = "";
+        public string ParsedOutput = "";
         private string status;
-        public string Status => $"You are {HandleLandingGrammar(CurrentLocation.Name)} the {CurrentLocation.Name}. " +
+        public string Status => !GameOver ? $"You are {HandleLandingGrammar(CurrentLocation.Name)} the {CurrentLocation.Name}. " +
             $"You see the following exits:" +
             $"{Environment.NewLine}" +
             $"{string.Join($"{Environment.NewLine}", CurrentLocation.ExitList)}" +
             $"{MentionHidingPlace(CurrentLocation)}" +
-            $"{Environment.NewLine}You have found {FoundOpponents.Count()} of {Opponents.Count()} opponents: {string.Join(", ", FoundOpponents)}"; 
+            $"{Environment.NewLine}You have found {FoundOpponents.Count()} of {Opponents.Count()} opponents: {string.Join(", ", FoundOpponents)}" 
+            : $"You won the game in {MoveNumber} moves!" +
+            $"{Environment.NewLine}Press \"Restart\" to restart to restart the game or press \"Quit\" to quit.";
+        private string gameProgress;
+        public string GameProgress
+        {
+            get
+            {
+                List<Opponent> hiddenOpponents = Opponents.ToList();
+                for (int i = 0; i < hiddenOpponents.Count(); i++)
+                {
+                    foreach (Opponent opponent in FoundOpponents)
+                    {
+                        if (hiddenOpponents[i] == opponent)
+                        {
+                            hiddenOpponents.RemoveAt(i);
+                            if (hiddenOpponents.Count() == Opponents.Count()) break;
+                        }
+                    }
+                    if (hiddenOpponents.Count() == Opponents.Count()) break;
+                }
+                return $"Opponents Found: {string.Join(", ", FoundOpponents)}" +
+                    $"{Environment.NewLine}Hidden Opponents: {string.Join(", ", hiddenOpponents)}";
+            }
+            set { gameProgress = value; }
+        }
+        public Direction SelectedDirection;
         public IEnumerable<Opponent> Opponents = new List<Opponent>()
         {
             new Opponent("Joe"),

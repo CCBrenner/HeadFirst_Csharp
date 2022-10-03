@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-<PageTitle>GoFish</PageTitle>
+<PageTitle>HideAndSeek</PageTitle>
 
 
 <div class="container">
@@ -8,61 +8,83 @@
     <div class="row">
         <div class="col-5">
             <div class="row">
-                <label size="18">Game Status</label>
+                <label class="text-center" size="18">Game Status</label>
 
-                <textarea rows="18">@gameController.gameState.GameStatus</textarea>
+                <textarea rows="18">
+                    @Status
+                </textarea>
             </div>
             <br/>
             <div class="row">
-                <label>Current Standings</label>
-                <textarea rows="6">@gameController.gameState.CurrentStandings</textarea>
+                <label class="text-center">Game Progress</label>
+                <textarea rows="6">@gameController.GameProgress</textarea>
             </div>
         </div>
         <div class="col-1"></div>
-        <div class="col-5">
+        <div class="col-4">
             <div class="row">
-                <div class="col-6">
-                    <label class="w-100">Your Hand
-                        <select @bind="gameController.gameState.SelectedCardIndex" size="16" class="w-100 text-center">
-                            @for (int i = 0; i < gameController.gameState.HumanPlayer.Hand.Count(); i++)
+                <div class="col-6 w-100">
+                    <label class="text-center  w-100">Directions
+                        <select @bind="gameController.SelectedDirection" size="8" class="w-100 text-center">
+                            @for (int i = 0; i < gameController.CurrentLocation.Exits.Count(); i++)
                             {
-                                <option value="@i">@gameController.gameState.HumanPlayer.Hand.Skip(i).First().ToString()</option>
+                                <option value="@gameController.CurrentLocation.Exits.ToList()[i].Key">
+                                    @gameController.CurrentLocation.Exits.ToList()[i].Key
+                                </option>
                             }
                         </select>
                     </label>
-                </div>
-                <div class="col-6">
-                    <label class="w-100">Opponents to Ask
-                        <select @bind="gameController.gameState.SelectedOpponentIndex" size="16" class="w-100 text-center">
-                            @for (int i = 0; i < gameController.gameState.Opponents.Count(); i++)
-                            {
-                                <option value="@i">@gameController.gameState.Opponents.Skip(i).First().Name</option>
-                            }
-                        </select>
-                    </label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="w-100">
-                    <br/>
-                    <div class="w-100">@gameController.gameState.AskStatus&nbsp;</div>
-                    <br/>
-                    <button class="btn btn-primary w-100" @onclick="NextRound">
-                        @gameController.gameState.ButtonText&nbsp;
+                    <button class="btn btn-primary w-100 my-2" @onclick="Move">
+                        Move
+                    </button>
+                    <button class="btn btn-info text-light w-100 my-2" @onclick="Check">
+                        Check
+                    </button>
+                    <input class="text-center w-100 mt-2" type="text" placeholder="filename for Save" @bind=gameController.FileNameToBeParsed/>
+                    <button class="btn btn-dark w-100 mb-2" @onclick="Save">
+                        Save
+                    </button>
+                    <input class="text-center w-100 mt-2" type="text" placeholder="filename for Load" @bind=gameController.FileNameToBeParsed/>
+                    <button class="btn btn-secondary w-100 mb-2" @onclick="Load">
+                        Load
+                    </button>
+                    <button class="btn btn-danger w-100 my-2" @onclick="NewGame">
+                        Restart
                     </button>
                 </div>
             </div>
         </div>
-        <div class="col-1"></div>
+        <div class="col-2"></div>
     </div>
 </div>
 
 @code
 {
-    GameController gameController = new GameController("Player 1", 4);
+    GameController gameController = new GameController();
 
-    public void NextRound()
+    public string Status => !gameController.GameOver 
+    ? gameController.ParsedOutput + Environment.NewLine + gameController.Status + Environment.NewLine + gameController.Prompt 
+    : gameController.ParsedOutput + Environment.NewLine + gameController.Status;
+
+    public void Move()
     {
-        gameController.NextRound();
+        gameController.ParsedOutput = gameController.ParseInput(gameController.SelectedDirection.ToString());
+        gameController.SelectedDirection = gameController.CurrentLocation.Exits.ToList()[0].Key;
+    }
+    public void Check()
+    {
+        gameController.ParsedOutput = gameController.ParseInput("check");
+    }
+    public void Save()
+    {
+        gameController.ParsedOutput = gameController.ParseInput($"save {gameController.FileNameToBeParsed}");
+    }
+    public void Load()
+    {
+        gameController.ParsedOutput = gameController.ParseInput($"load {gameController.FileNameToBeParsed}");
+    }
+    public void NewGame()
+    {
+        gameController = new GameController();
     }
 }
