@@ -106,12 +106,22 @@ namespace Ch10HideAndSeekEOCwithUI
             // Test that file has been deleted after it has been loaded so as not to load the game again in the future
             Assert.AreEqual("Could not load game: Saved file of name \"my_saved_game.json\" not found", gameController.ParseInput("load my_saved_game"));
         }
-        /*
         [TestMethod]
         public void TestHandleInvalidSymbols()
         {
-            throw new NotImplementedException();
+            Assert.AreEqual("Could not save game to \"my saved game.json\"", gameController.ParseInput("save my saved game"));
+            Assert.AreEqual("Could not save game to \"file a.json\"", gameController.ParseInput("save file a"));
+            Assert.AreEqual("Could not save game to \"my/saved/game.json\"", gameController.ParseInput("save my/saved/game"));
+            Assert.AreEqual("Could not save game to \"my saved//game.json\"", gameController.ParseInput("save my saved//game"));
+            Assert.AreEqual("Saved current game to \"my_saved_game.json\"", gameController.ParseInput("save my_saved_game"));
+            Assert.AreEqual("Saved current game to \"mysavedgame.json\"", gameController.ParseInput("save mySavedGame"));
+
+            Assert.AreEqual("Could not load game from \"my saved game.json\"", gameController.ParseInput("load my saved game"));
+            Assert.AreEqual("Could not load game from \"file a.json\"", gameController.ParseInput("load file a"));
+            Assert.AreEqual("Could not load game from \"my/saved/game.json\"", gameController.ParseInput("load my/saved/game"));
+            Assert.AreEqual("Could not load game from \"my saved//game.json\"", gameController.ParseInput("load my saved//game"));
+            Assert.AreEqual("Loaded current game from \"my_saved_game.json\"", gameController.ParseInput("load my_saved_game"));
+            Assert.AreEqual("Loaded current game from \"mysavedgame.json\"", gameController.ParseInput("load mySavedGame"));
         }
-        */
     }
 }
