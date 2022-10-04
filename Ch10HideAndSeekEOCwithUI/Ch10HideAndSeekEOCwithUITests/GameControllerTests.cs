@@ -50,13 +50,15 @@ namespace Ch10HideAndSeekEOCwithUI
                 $"{Environment.NewLine} - the Living Room is to the South" +
                 $"{Environment.NewLine} - the Entry is to the West" +
                 $"{Environment.NewLine} - the Kitchen is to the Northwest" +
-                $"{Environment.NewLine} - the Landing is Up" +
-                $"{Environment.NewLine}You have found 0 of 5 opponents: ", gameController.Status);
+                $"{Environment.NewLine} - the Landing is Up", gameController.Status);
+            Assert.AreEqual($"Opponents Found: " +
+                $"{Environment.NewLine}Hidden Opponents Remaining: 5", gameController.GameProgress);
 
             Assert.AreEqual("Moving South", gameController.ParseInput("south"));
             Assert.AreEqual($"You are in the Living Room. You see the following exits:" +
-                $"{Environment.NewLine} - the Hallway is to the North" +
-                $"{Environment.NewLine}You have found 0 of 5 opponents: ", gameController.Status);
+                $"{Environment.NewLine} - the Hallway is to the North", gameController.Status);
+            Assert.AreEqual($"Opponents Found: " +
+                $"{Environment.NewLine}Hidden Opponents Remaining: 5", gameController.GameProgress);
 
             string landingStatus = $"You are on the Landing. You see the following exits:" +
                 $"{Environment.NewLine} - the Pantry is to the South" +
@@ -65,8 +67,9 @@ namespace Ch10HideAndSeekEOCwithUI
                 $"{Environment.NewLine} - the Master Bedroom is to the Northwest" +
                 $"{Environment.NewLine} - the Kids Room is to the Southeast" +
                 $"{Environment.NewLine} - the Attic is Up" +
-                $"{Environment.NewLine} - the Hallway is Down" +
-                $"{Environment.NewLine}You have found 0 of 5 opponents: ";
+                $"{Environment.NewLine} - the Hallway is Down";
+            Assert.AreEqual($"Opponents Found: " +
+                $"{Environment.NewLine}Hidden Opponents Remaining: 5", gameController.GameProgress);
 
             Assert.AreEqual("Moving North", gameController.ParseInput("north"));
             Assert.AreEqual("Moving Up", gameController.ParseInput("UP"));
@@ -79,8 +82,9 @@ namespace Ch10HideAndSeekEOCwithUI
             Assert.AreEqual("Moving Northwest", gameController.ParseInput("Northwest"));
             Assert.AreEqual($"You are in the Master Bedroom. You see the following exits:" +
                 $"{Environment.NewLine} - the Master Bathroom is to the East" +
-                $"{Environment.NewLine} - the Landing is to the Southeast" +
-                $"{Environment.NewLine}You have found 0 of 5 opponents: ", gameController.Status);
+                $"{Environment.NewLine} - the Landing is to the Southeast", gameController.Status);
+            Assert.AreEqual($"Opponents Found: " +
+                $"{Environment.NewLine}Hidden Opponents Remaining: 5", gameController.GameProgress);
         }
         [TestMethod]
         public void TestParseCheck()
@@ -113,9 +117,10 @@ namespace Ch10HideAndSeekEOCwithUI
             Assert.AreEqual("You found 1 opponent hiding behind the car", gameController.ParseInput("check"));
             Assert.AreEqual($"You are in the Garage. You see the following exits:" +
                 $"{Environment.NewLine} - the Entry is In" +
-                $"{Environment.NewLine}Someone could hide behind the car" +
-                $"{Environment.NewLine}You have found 1 of 5 opponents: Joe", gameController.Status);
-            Assert.AreEqual("4: Which direction do you want to go (or type 'check'): ", gameController.Prompt);
+                $"{Environment.NewLine}Someone could hide behind the car", gameController.Status);
+            Assert.AreEqual($"Opponents Found: Joe" +
+                $"{Environment.NewLine}Hidden Opponents Remaining: 4", gameController.GameProgress);
+            Assert.AreEqual("4: Which direction do you want to go? (or click 'Check')", gameController.Prompt);
             Assert.AreEqual(4, gameController.MoveNumber);
 
             // Move to the bathroom, where no one is hiding
@@ -133,9 +138,10 @@ namespace Ch10HideAndSeekEOCwithUI
             Assert.AreEqual("You found 2 opponents hiding next to the stove", gameController.ParseInput("check"));
             Assert.AreEqual($"You are in the Kitchen. You see the following exits:" +
                 $"{Environment.NewLine} - the Hallway is to the Southeast" +
-                $"{Environment.NewLine}Someone could hide next to the stove" +
-                $"{Environment.NewLine}You have found 3 of 5 opponents: Joe, Bob, Jimmy", gameController.Status);
-            Assert.AreEqual("11: Which direction do you want to go (or type 'check'): ", gameController.Prompt);
+                $"{Environment.NewLine}Someone could hide next to the stove", gameController.Status);
+            Assert.AreEqual($"Opponents Found: Joe, Bob, Jimmy" +
+                $"{Environment.NewLine}Hidden Opponents Remaining: 2", gameController.GameProgress);
+            Assert.AreEqual("11: Which direction do you want to go? (or click 'Check')", gameController.Prompt);
             Assert.AreEqual(11, gameController.MoveNumber);
 
             Assert.IsFalse(gameController.GameOver);
@@ -155,11 +161,9 @@ namespace Ch10HideAndSeekEOCwithUI
             Assert.AreEqual(17, gameController.MoveNumber);
 
             Assert.AreEqual("You found 2 opponents hiding in a trunk", gameController.ParseInput("check"));
-            Assert.AreEqual($"You are in the Attic. You see the following exits:" +
-                $"{Environment.NewLine} - the Landing is Down" +
-                $"{Environment.NewLine}Someone could hide in a trunk" +
-                $"{Environment.NewLine}You have found 5 of 5 opponents: Joe, Bob, Jimmy, Ana, Owen", gameController.Status);
-            Assert.AreEqual("18: Which direction do you want to go (or type 'check'): ", gameController.Prompt);
+            Assert.AreEqual($"You won the game in 18 moves!" +
+                $"{Environment.NewLine}Press \"Restart\" to restart to restart the game or press \"Quit\" to quit.", gameController.Status);
+            Assert.AreEqual("18: Which direction do you want to go? (or click 'Check')", gameController.Prompt);
             Assert.AreEqual(18, gameController.MoveNumber);
 
             Assert.IsTrue(gameController.GameOver);

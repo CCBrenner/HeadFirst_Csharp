@@ -46,9 +46,10 @@ namespace Ch10HideAndSeekEOCwithUI
             Assert.AreEqual("You found 2 opponents hiding next to the stove", gameController.ParseInput("check"));
             Assert.AreEqual($"You are in the Kitchen. You see the following exits:" +
                 $"{Environment.NewLine} - the Hallway is to the Southeast" +
-                $"{Environment.NewLine}Someone could hide next to the stove" +
-                $"{Environment.NewLine}You have found 3 of 5 opponents: Joe, Bob, Jimmy", gameController.Status);
-            Assert.AreEqual("11: Which direction do you want to go (or type 'check'): ", gameController.Prompt);
+                $"{Environment.NewLine}Someone could hide next to the stove", gameController.Status);
+            Assert.AreEqual($"Opponents Found: Joe, Bob, Jimmy" +
+                $"{Environment.NewLine}Hidden Opponents Remaining: 2", gameController.GameProgress);
+            Assert.AreEqual("11: Which direction do you want to go? (or click 'Check')", gameController.Prompt);
             Assert.AreEqual(11, gameController.MoveNumber);
         }
 
@@ -88,9 +89,10 @@ namespace Ch10HideAndSeekEOCwithUI
             Assert.AreEqual("Loaded game from \"my_saved_game.json\"", gameController.ParseInput("load my_saved_game"));
             Assert.AreEqual($"You are in the Kitchen. You see the following exits:" +
                 $"{Environment.NewLine} - the Hallway is to the Southeast" +
-                $"{Environment.NewLine}Someone could hide next to the stove" +
-                $"{Environment.NewLine}You have found 3 of 5 opponents: Joe, Bob, Jimmy", gameController.Status);
-            Assert.AreEqual("11: Which direction do you want to go (or type 'check'): ", gameController.Prompt);
+                $"{Environment.NewLine}Someone could hide next to the stove", gameController.Status);
+            Assert.AreEqual($"Opponents Found: Joe, Bob, Jimmy" +
+                $"{Environment.NewLine}Hidden Opponents Remaining: 2", gameController.GameProgress);
+            Assert.AreEqual("11: Which direction do you want to go? (or click 'Check')", gameController.Prompt);
             Assert.AreEqual(11, gameController.MoveNumber);
 
             // Verify the hiding locations of the remaining opponents

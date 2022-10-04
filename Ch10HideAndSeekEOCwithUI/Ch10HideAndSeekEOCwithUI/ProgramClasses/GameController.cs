@@ -20,7 +20,7 @@ namespace Ch10HideAndSeekEOCwithUI
         }
         public Location CurrentLocation { get; private set; }
         public int MoveNumber { get; set; } = 1;
-        public string Prompt => $"{MoveNumber}: Which direction do you want to go (or type 'check'): ";
+        public string Prompt => $"{MoveNumber}: Which direction do you want to go? (or click 'Check')";
         public bool GameOver => Opponents.Count() == FoundOpponents.Count();
         public string FileNameToBeSaved = "";
         public string FileNameToBeLoaded = "";
@@ -30,8 +30,7 @@ namespace Ch10HideAndSeekEOCwithUI
             $"You see the following exits:" +
             $"{Environment.NewLine}" +
             $"{string.Join($"{Environment.NewLine}", CurrentLocation.ExitList)}" +
-            $"{MentionHidingPlace(CurrentLocation)}" +
-            $"{Environment.NewLine}You have found {FoundOpponents.Count()} of {Opponents.Count()} opponents: {string.Join(", ", FoundOpponents)}" 
+            $"{MentionHidingPlace(CurrentLocation)}" 
             : $"You won the game in {MoveNumber} moves!" +
             $"{Environment.NewLine}Press \"Restart\" to restart to restart the game or press \"Quit\" to quit.";
         public string GameProgress => $"Opponents Found: {string.Join(", ", FoundOpponents)}" +
