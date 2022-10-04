@@ -63,6 +63,7 @@ namespace Ch10HideAndSeekEOCwithUI
             string loadedGameResponse = loadedGame.Load(this, nameOfFileToLoad);
             if (loadedGameResponse != "") return loadedGameResponse;
 
+            nameOfFileToLoad = nameOfFileToLoad.Split('.').ToList()[0];  // if loaded with extension attached to filename, take only the filename
             CurrentLocation = House.GetLocationByName(loadedGame.CurrentLocationName);
             MoveNumber = loadedGame.MoveNumber;
             status = loadedGame.Status;
@@ -78,7 +79,7 @@ namespace Ch10HideAndSeekEOCwithUI
                 (House.GetLocationByName(pair.Value) as LocationWithHidingPlace).OpponentsHiddenHere.Add(new Opponent(pair.Key));
 
             if (loadedGame != null)
-                return $"Loaded game from \"{nameOfFileToLoad}.json\"";
+                return $"Loaded current game from \"{nameOfFileToLoad}.json\"";
             else
                 return "An unknown error occurred.";
         }
@@ -86,16 +87,22 @@ namespace Ch10HideAndSeekEOCwithUI
         {
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
             input = input.ToLower();
-            string[] inputArr = input.Split(" ");
+            List<string> inputArr = input.Split(" ").ToList();
 
             if (inputArr[0] == "save")
-                return Save(inputArr[1]);
+            {
+                inputArr.RemoveAt(0);
+                return Save(string.Join(' ', inputArr));
+            }
             else if (inputArr[0] == "load")
-                return Load(inputArr[1]);
+            {
+                inputArr.RemoveAt(0);
+                return Load(string.Join(' ', inputArr));
+            }
 
             MoveNumber++;
 
-            for (int i = 0; i < inputArr.Length; i++)
+            for (int i = 0; i < inputArr.Count(); i++)
                 inputArr[i] = textInfo.ToTitleCase(inputArr[i]);
             string formattedInput = string.Join("", inputArr);
 

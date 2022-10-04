@@ -108,18 +108,30 @@ namespace Ch10HideAndSeekEndOfChapterProjTest
         [TestMethod]
         public void TestHandleInvalidSymbols()
         {
-            Assert.AreEqual("Could not save game to \"my saved game.json\"", gameController.ParseInput("save my saved game"));
-            Assert.AreEqual("Could not save game to \"file a.json\"", gameController.ParseInput("save file a"));
-            Assert.AreEqual("Could not save game to \"my/saved/game.json\"", gameController.ParseInput("save my/saved/game"));
-            Assert.AreEqual("Could not save game to \"my saved//game.json\"", gameController.ParseInput("save my saved//game"));
+            Assert.AreEqual("Could not save game to \"my saved game.json\": " +
+                "Invalid characters detected. Please remove slashes and/or spaces from file name.", gameController.ParseInput("save my saved game"));
+            Assert.AreEqual("Could not save game to \"file a.json\": " +
+                "Invalid characters detected. Please remove slashes and/or spaces from file name.", gameController.ParseInput("save file a"));
+            Assert.AreEqual("Could not save game to \"my\\saved/game.json\": " +
+                "Invalid characters detected. Please remove slashes and/or spaces from file name.", gameController.ParseInput("save my\\saved/game"));
+            Assert.AreEqual("Could not save game to \"my saved//game.json\": " +
+                "Invalid characters detected. Please remove slashes and/or spaces from file name.", gameController.ParseInput("save my saved//game"));
+            Assert.AreEqual("Saved current game to \"my_saved_game.json\"", gameController.ParseInput("save my_saved_game.json"));
             Assert.AreEqual("Saved current game to \"my_saved_game.json\"", gameController.ParseInput("save my_saved_game"));
+            Assert.AreEqual("Saved current game to \"mysavedgame.json\"", gameController.ParseInput("save mySavedGame.json"));
             Assert.AreEqual("Saved current game to \"mysavedgame.json\"", gameController.ParseInput("save mySavedGame"));
 
-            Assert.AreEqual("Could not load game from \"my saved game.json\"", gameController.ParseInput("load my saved game"));
-            Assert.AreEqual("Could not load game from \"file a.json\"", gameController.ParseInput("load file a"));
-            Assert.AreEqual("Could not load game from \"my/saved/game.json\"", gameController.ParseInput("load my/saved/game"));
-            Assert.AreEqual("Could not load game from \"my saved//game.json\"", gameController.ParseInput("load my saved//game"));
+            Assert.AreEqual("Could not load game from \"my saved game\": " +
+                "Invalid characters detected. Please remove slashes and/or spaces from file name.", gameController.ParseInput("load my saved game"));
+            Assert.AreEqual("Could not load game from \"file a.json\": " +
+                "Invalid characters detected. Please remove slashes and/or spaces from file name.", gameController.ParseInput("load file a"));
+            Assert.AreEqual("Could not load game from \"my\\saved/game.json\": " +
+                "Invalid characters detected. Please remove slashes and/or spaces from file name.", gameController.ParseInput("load my\\saved/game"));
+            Assert.AreEqual("Could not load game from \"my saved//game.json\": " +
+                "Invalid characters detected. Please remove slashes and/or spaces from file name.", gameController.ParseInput("load my saved//game"));
+            Assert.AreEqual("Loaded current game from \"my_saved_game.json\"", gameController.ParseInput("load my_saved_game.json"));
             Assert.AreEqual("Loaded current game from \"my_saved_game.json\"", gameController.ParseInput("load my_saved_game"));
+            Assert.AreEqual("Loaded current game from \"mysavedgame.json\"", gameController.ParseInput("load mySavedGame.json"));
             Assert.AreEqual("Loaded current game from \"mysavedgame.json\"", gameController.ParseInput("load mySavedGame"));
         }
     }
