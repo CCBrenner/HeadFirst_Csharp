@@ -40,11 +40,11 @@
                     <button class="btn btn-info text-light w-100 my-2" @onclick="Check">
                         Check
                     </button>
-                    <input class="text-center w-100 mt-2" type="text" placeholder="filename for Save" @bind=gameController.FileNameToBeParsed/>
+                    <input class="text-center w-100 mt-2" type="text" placeholder="filename for Save" @bind=gameController.FileNameToBeSaved/>
                     <button class="btn btn-dark w-100 mb-2" @onclick="Save">
                         Save
                     </button>
-                    <input class="text-center w-100 mt-2" type="text" placeholder="filename for Load" @bind=gameController.FileNameToBeParsed/>
+                    <input class="text-center w-100 mt-2" type="text" placeholder="filename for Load" @bind=gameController.FileNameToBeLoaded/>
                     <button class="btn btn-secondary w-100 mb-2" @onclick="Load">
                         Load
                     </button>
@@ -77,11 +77,11 @@
     }
     public void Save()
     {
-        gameController.ParsedOutput = gameController.ParseInput($"save {gameController.FileNameToBeParsed}");
+        gameController.ParsedOutput = gameController.ParseInput($"save {gameController.FileNameToBeSaved}");
     }
     public void Load()
     {
-        gameController.ParsedOutput = gameController.ParseInput($"load {gameController.FileNameToBeParsed}");
+        gameController.ParsedOutput = gameController.ParseInput($"load {gameController.FileNameToBeLoaded}");
     }
     public void NewGame()
     {
