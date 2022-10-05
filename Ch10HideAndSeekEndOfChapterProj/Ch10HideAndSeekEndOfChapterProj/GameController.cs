@@ -54,9 +54,10 @@ namespace Ch10HideAndSeekEndOfChapterProj
         private string Load(string nameOfFileToLoad)
         {
             SaveGame loadedGame = new SaveGame();
-            string loadedGameResponse = loadedGame.Load(this, nameOfFileToLoad);
+            string loadedGameResponse = loadedGame.Load(nameOfFileToLoad);
             if (loadedGameResponse != "") return loadedGameResponse;
 
+            nameOfFileToLoad = nameOfFileToLoad.Split('.').ToList()[0];  // if loaded with extension attached to filename, take only the filename
             CurrentLocation = House.GetLocationByName(loadedGame.CurrentLocationName);
             MoveNumber = loadedGame.MoveNumber;
             status = loadedGame.Status;
@@ -72,7 +73,7 @@ namespace Ch10HideAndSeekEndOfChapterProj
                 (House.GetLocationByName(pair.Value) as LocationWithHidingPlace).OpponentsHiddenHere.Add(new Opponent(pair.Key));
 
             if (loadedGame != null)
-                return $"Loaded game from \"{nameOfFileToLoad}.json\"";
+                return $"Loaded current game from \"{nameOfFileToLoad}.json\"";
             else
                 return "An unknown error occurred.";
         }
@@ -80,18 +81,24 @@ namespace Ch10HideAndSeekEndOfChapterProj
         {
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
             input = input.ToLower();
-            string[] inputArr = input.Split(" ");
+            List<string> inputList = input.Split(" ").ToList();
 
-            if (inputArr[0] == "save")
-                return Save(inputArr[1]);
-            else if (inputArr[0] == "load")
-                return Load(inputArr[1]);
+            if (inputList[0] == "save")
+            {
+                inputList.RemoveAt(0);
+                return Save(string.Join(' ', inputList));
+            }
+            else if (inputList[0] == "load")
+            {
+                inputList.RemoveAt(0);
+                return Load(string.Join(' ', inputList));
+            }
 
             MoveNumber++;
 
-            for (int i = 0; i < inputArr.Length; i++)
-                inputArr[i] = textInfo.ToTitleCase(inputArr[i]);
-            string formattedInput = string.Join("", inputArr);
+            for (int i = 0; i < inputList.Count(); i++)
+                inputList[i] = textInfo.ToTitleCase(inputList[i]);
+            string formattedInput = string.Join("", inputList);
 
             if(formattedInput.ToLower() == "check")
             {

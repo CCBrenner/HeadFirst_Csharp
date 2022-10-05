@@ -14,6 +14,7 @@ namespace Ch10HideAndSeekEndOfChapterProj
 
         public string Save(GameController gameController, string nameForSavedFile)
         {
+            nameForSavedFile = nameForSavedFile.Split('.').ToList()[0];  // if loaded with extension attached to filename, take only the filename
             Dictionary<string, string> opponentsInHidingLocations = new Dictionary<string, string>();
             foreach (Location location in House.Locations)
                 if ((location as LocationWithHidingPlace).HidingPlace != "")
@@ -29,20 +30,22 @@ namespace Ch10HideAndSeekEndOfChapterProj
 
             string savedGame = JsonConvert.SerializeObject(this);
 
-            if (!nameForSavedFile.Contains('\\') && !nameForSavedFile.Contains(' '))
+            if (!nameForSavedFile.Contains(@"/") && !nameForSavedFile.Contains(@"\") && !nameForSavedFile.Contains(' '))
             {
                 var folder = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
                 using (StreamWriter writer = new StreamWriter($"{folder}{Path.DirectorySeparatorChar}{nameForSavedFile}.json", false))
                     writer.WriteLine(savedGame);
-                return $"Saved current game to {nameForSavedFile}.json";
+                return $"Saved current game to \"{nameForSavedFile}.json\"";
             }
-            return $"Could not save game to {nameForSavedFile}.json";
+            return $"Could not save game to \"{nameForSavedFile}.json\": " +
+                $"Invalid characters detected. Please remove slashes and/or spaces from file name.";
         }
-        public string Load(GameController gameController, string nameOfFileToLoad)
+        public string Load(string nameOfFileToLoad)
         {
-            nameOfFileToLoad = nameOfFileToLoad.Split('.')[0];  // if loaded with extension attached to filename, take only the filename
-            if (nameOfFileToLoad.Contains('\\') || nameOfFileToLoad.Contains(' '))
-                return "Could not load game: Invalid characters detected. Please remove backslashes and/or spaces from file name.";
+            nameOfFileToLoad = nameOfFileToLoad.Split('.').ToList()[0];  // if loaded with extension attached to filename, take only the filename
+            if (nameOfFileToLoad.Contains(@"/") || nameOfFileToLoad.Contains(@"\") || nameOfFileToLoad.Contains(' '))
+                return $"Could not load game from \"{nameOfFileToLoad}.json\": " +
+                    "Invalid characters detected. Please remove slashes and/or spaces from file name.";
 
             string gameDataToDeserialize = "";
             try

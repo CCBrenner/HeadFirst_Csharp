@@ -40,7 +40,7 @@ namespace Ch10HideAndSeekEOCwithUI
             return $"Could not save game to \"{nameForSavedFile}.json\": " +
                 $"Invalid characters detected. Please remove slashes and/or spaces from file name.";
         }
-        public string Load(GameController gameController, string nameOfFileToLoad)
+        public string Load(string nameOfFileToLoad)
         {
             nameOfFileToLoad = nameOfFileToLoad.Split('.').ToList()[0];  // if loaded with extension attached to filename, take only the filename
             if (nameOfFileToLoad.Contains(@"\") || nameOfFileToLoad.Contains(@"/") || nameOfFileToLoad.Contains(' '))

@@ -65,7 +65,7 @@ namespace Ch10HideAndSeekEOCwithUI
             Assert.AreEqual("Could not load game: Saved file of name \"my_saved_game.json\" not found", gameController.ParseInput("load my_saved_game"));
 
             // Save the state of the game to a file with given name located in 
-            Assert.AreEqual("Saved current game to my_saved_game.json", gameController.ParseInput("save my_saved_game"));
+            Assert.AreEqual("Saved current game to \"my_saved_game.json\"", gameController.ParseInput("save my_saved_game"));
 
             // Start a new game
             gameController = new GameController();
@@ -86,7 +86,7 @@ namespace Ch10HideAndSeekEOCwithUI
             Assert.AreEqual(1, gameController.MoveNumber);
 
             // Check all of the game state variables that are relevant to resuming the game
-            Assert.AreEqual("Loaded game from \"my_saved_game.json\"", gameController.ParseInput("load my_saved_game"));
+            Assert.AreEqual("Loaded current game from \"my_saved_game.json\"", gameController.ParseInput("load my_saved_game"));
             Assert.AreEqual($"You are in the Kitchen. You see the following exits:" +
                 $"{Environment.NewLine} - the Hallway is to the Southeast" +
                 $"{Environment.NewLine}Someone could hide next to the stove", gameController.Status);

@@ -60,7 +60,7 @@ namespace Ch10HideAndSeekEOCwithUI
         private string Load(string nameOfFileToLoad)
         {
             SaveGame loadedGame = new SaveGame();
-            string loadedGameResponse = loadedGame.Load(this, nameOfFileToLoad);
+            string loadedGameResponse = loadedGame.Load(nameOfFileToLoad);
             if (loadedGameResponse != "") return loadedGameResponse;
 
             nameOfFileToLoad = nameOfFileToLoad.Split('.').ToList()[0];  // if loaded with extension attached to filename, take only the filename
@@ -87,24 +87,24 @@ namespace Ch10HideAndSeekEOCwithUI
         {
             TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
             input = input.ToLower();
-            List<string> inputArr = input.Split(" ").ToList();
+            List<string> inputList = input.Split(" ").ToList();
 
-            if (inputArr[0] == "save")
+            if (inputList[0] == "save")
             {
-                inputArr.RemoveAt(0);
-                return Save(string.Join(' ', inputArr));
+                inputList.RemoveAt(0);
+                return Save(string.Join(' ', inputList));
             }
-            else if (inputArr[0] == "load")
+            else if (inputList[0] == "load")
             {
-                inputArr.RemoveAt(0);
-                return Load(string.Join(' ', inputArr));
+                inputList.RemoveAt(0);
+                return Load(string.Join(' ', inputList));
             }
 
             MoveNumber++;
 
-            for (int i = 0; i < inputArr.Count(); i++)
-                inputArr[i] = textInfo.ToTitleCase(inputArr[i]);
-            string formattedInput = string.Join("", inputArr);
+            for (int i = 0; i < inputList.Count(); i++)
+                inputList[i] = textInfo.ToTitleCase(inputList[i]);
+            string formattedInput = string.Join("", inputList);
 
             if(formattedInput.ToLower() == "check")
             {
