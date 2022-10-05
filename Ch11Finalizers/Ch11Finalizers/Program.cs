@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
+
+// This program demonstrates how finalizer works for objects that are garbage collected
+// Here we are also forcing garbage collection when the user presses 'g'
+
 class EvilClone
 {
     public static int CloneCount = 0;
@@ -26,9 +30,12 @@ class Program
                     break;
                 case 'c':
                     Console.WriteLine("Clearing list at time {0}", stopwatch.ElapsedMilliseconds);
+                    clones.Clear();
                     break;
                 case 'g':
-                    Console.WriteLine("Collecting at time {0}", stopwatch.ElapsedMiliseconds);
+                    Console.WriteLine("Collecting at time {0}", stopwatch.ElapsedMilliseconds);
+                    GC.Collect();
+                    break;
             }
         }
     }
