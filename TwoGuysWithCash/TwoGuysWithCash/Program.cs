@@ -80,6 +80,9 @@ class Guy
     /// </returns>
     public int GiveCash(int amount)
     {
+        // Will be thrown if Cash = 0 and Guy tries to give money; ultimately would include code for handling it
+        if (Cash <= 0) throw new OutOfCashException($"{Name} ran out of cash");
+
         if (amount <= 0)
         {
             Console.WriteLine(Name + " says:" + amount + " isn't a valid amount.");
@@ -113,4 +116,9 @@ class Guy
             Cash += amount;
         }
     }
+}
+
+class OutOfCashException : System.Exception
+{
+    public OutOfCashException(string message) : base(message) { }
 }

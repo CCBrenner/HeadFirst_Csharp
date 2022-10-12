@@ -10,7 +10,7 @@ class Program
         // dotnet run bin/Debug/net6.0/binarydata.dat
 
         var position = 0;
-        using (FileStream input = File.OpenRead(args[0]))
+        using (Stream input = GetInputStream(args))
         {
             // Read up to the next 16 bytes from the file into a byte array:
             var buffer = new byte[16];
@@ -39,6 +39,24 @@ class Program
                 // Write the actual characters in the byte array
                 var bufferContents = Encoding.UTF8.GetString(buffer);
                 Console.WriteLine("   {0}", bufferContents.Substring(0, bytesRead));
+            }
+        }
+    }
+
+    static Stream GetInputStream(string[] args)
+    {
+        if ((args.Length != 1) || !File.Exists(args[0]))
+            return Console.OpenStandardInput();
+        else
+        {
+            try
+            {
+                return File.OpenRead(args[0]);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Console.Error.WriteLine("Unable to read {0}, dumping from stdin: {1}", args[0], ex.Message);
+                return Console.OpenStandardInput();
             }
         }
     }

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Ch11Finally": {
+      "commandName": "Project",
+      "commandLineArgs": "textdata.txt"
+    }
+  }
+}
