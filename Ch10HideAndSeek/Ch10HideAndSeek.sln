@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch10HideAndSeek", "Ch10HideAndSeek\Ch10HideAndSeek.csproj", "{D5CC4908-CE29-4162-97F9-719F1BF5417B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ch10HideAndSeekTests", "Ch10HideAndSeekTests\Ch10HideAndSeekTests.csproj", "{4635D3B6-348A-484B-84A1-9AC95DA57B6E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5CC4908-CE29-4162-97F9-719F1BF5417B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5CC4908-CE29-4162-97F9-719F1BF5417B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5CC4908-CE29-4162-97F9-719F1BF5417B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5CC4908-CE29-4162-97F9-719F1BF5417B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4635D3B6-348A-484B-84A1-9AC95DA57B6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4635D3B6-348A-484B-84A1-9AC95DA57B6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4635D3B6-348A-484B-84A1-9AC95DA57B6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4635D3B6-348A-484B-84A1-9AC95DA57B6E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8C657AF5-1D49-4302-A1B6-88F3B119172B}
+	EndGlobalSection
+EndGlobal
