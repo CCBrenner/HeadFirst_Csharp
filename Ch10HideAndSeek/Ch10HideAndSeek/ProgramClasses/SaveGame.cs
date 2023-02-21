@@ -1,5 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Ch10HideAndSeek
 {
@@ -15,16 +14,19 @@ namespace Ch10HideAndSeek
         public string Save(GameController gameController, string nameForSavedFile)
         {
             nameForSavedFile = nameForSavedFile.Split('.')[0];  // if loaded with extension attached to filename, take only the filename
+
             Dictionary<string, string> opponentsInHidingLocations = new Dictionary<string, string>();
             foreach (Location location in House.Locations)
                 if ((location as LocationWithHidingPlace).HidingPlace != "")
                     foreach (Opponent opponent in (location as LocationWithHidingPlace).OpponentsHiddenHere)
                         opponentsInHidingLocations.Add(opponent.Name, location.Name);
             OpponentsInHidingLocations = opponentsInHidingLocations;
+
             CurrentLocationName = gameController.CurrentLocation.Name;
             MoveNumber = gameController.MoveNumber;
             Status = gameController.Status;
             List<string> foundOpponents = new List<string>();
+
             foreach (Opponent opponent in gameController.FoundOpponents) foundOpponents.Add(opponent.Name);
             FoundOpponents = foundOpponents;
 
@@ -43,6 +45,7 @@ namespace Ch10HideAndSeek
         public string Load(string nameOfFileToLoad)
         {
             nameOfFileToLoad = nameOfFileToLoad.Split('.').ToList()[0];  // if loaded with extension attached to filename, take only the filename
+
             if (nameOfFileToLoad.Contains(@"\") || nameOfFileToLoad.Contains(@"/") || nameOfFileToLoad.Contains(' '))
                 return $"Could not load game from \"{nameOfFileToLoad}.json\": " +
                     $"Invalid characters detected. Please remove slashes and/or spaces from file name.";

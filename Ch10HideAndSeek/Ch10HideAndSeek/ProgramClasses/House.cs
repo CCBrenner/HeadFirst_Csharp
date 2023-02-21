@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ch10HideAndSeek
+﻿namespace Ch10HideAndSeek
 {
     public static class House
     {

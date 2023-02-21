@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Ch10HideAndSeek
+﻿namespace Ch10HideAndSeek
 {
     public enum Direction
     {

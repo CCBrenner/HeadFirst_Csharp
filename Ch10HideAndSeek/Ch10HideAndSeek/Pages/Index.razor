@@ -45,7 +45,7 @@
                         Load
                     </button>
                     <button class="btn btn-danger w-100 my-2" @onclick="NewGame">
-                        Restart
+                        New Game
                     </button>
                 </div>
             </div>
@@ -64,12 +64,18 @@
 
     public void Move()
     {
-        gameController.ParsedOutput = gameController.ParseInput(gameController.SelectedDirection.ToString());
-        gameController.SelectedDirection = gameController.CurrentLocation.Exits.ToList()[0].Key;
+        if (!gameController.GameOver)
+        {
+            gameController.ParsedOutput = gameController.ParseInput(gameController.SelectedDirection.ToString());
+            gameController.SelectedDirection = gameController.CurrentLocation.Exits.ToList()[0].Key;
+        }
     }
     public void Check()
     {
-        gameController.ParsedOutput = gameController.ParseInput("check");
+        if (!gameController.GameOver)
+        {
+            gameController.ParsedOutput = gameController.ParseInput("check");
+        }
     }
     public void Save()
     {
