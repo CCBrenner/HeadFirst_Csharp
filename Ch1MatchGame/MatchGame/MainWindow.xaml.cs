@@ -49,6 +49,7 @@ namespace MatchGame
         private void SetUpGame()
         {
             timer.Interval = TimeSpan.FromSeconds(.1);
+            // timer.Tick subscribes to the Timer_Tick method
             timer.Tick += Timer_Tick;
 
             foreach (TextBlock textblock in mainGrid.Children.OfType<TextBlock>())
@@ -56,7 +57,7 @@ namespace MatchGame
                 textblock.Visibility = Visibility.Visible;
             }
 
-                List<string> animalEmoji = new List<string>()
+            List<string> animalEmoji = new List<string>()
             {
                 "🦍", "🦍",
                 "🦊", "🦊",
